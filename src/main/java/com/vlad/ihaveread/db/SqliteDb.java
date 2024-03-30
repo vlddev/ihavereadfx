@@ -1,14 +1,15 @@
 package com.vlad.ihaveread.db;
 
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @Getter
 public class SqliteDb implements AutoCloseable {
+
+    private static Logger log = LoggerFactory.getLogger(SqliteDb.class);
 
     Connection connection;
     AuthorDb authorDb;
@@ -70,6 +71,28 @@ public class SqliteDb implements AutoCloseable {
                 )""");
         st.executeBatch();
         st.close();
+    }
+
+    public void scanDb() {
+        String[] tables = {"author","author_book","author_names","book","book_names","book_readed"};
+        for (String table : tables) {
+            try {
+                long cnt = getRowCount(table);
+                log.info("{} - {} row(s)", table, cnt);
+            } catch (SQLException e) {
+                log.warn("{} - {}", table, e.getMessage());
+            }
+        }
+    }
+
+    public long getRowCount(String tableName) throws SQLException {
+        Statement st = connection.createStatement();
+        ResultSet rs = st.executeQuery("select count(*) from "+tableName);
+        rs.next();
+        long ret = rs.getLong(1);
+        rs.close();
+        st.close();
+        return ret;
     }
 
     @Override

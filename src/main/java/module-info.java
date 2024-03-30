@@ -6,6 +6,7 @@ module com.vlad.ihaveread {
     requires com.dlsc.formsfx;
     requires lombok;
     requires java.sql;
+    requires org.slf4j;
 
     opens com.vlad.ihaveread to javafx.fxml;
     exports com.vlad.ihaveread;
