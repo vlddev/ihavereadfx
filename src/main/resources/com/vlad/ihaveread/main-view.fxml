@@ -1,30 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="996.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vlad.ihaveread.MainController">
   <tabs>
     <Tab text="Readed">
       <content>
-        <AnchorPane />
+        <AnchorPane>
+            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+                <top>
+                    <HBox>
+                        <children>
+                            <TextField fx:id="tfSearchReadedText" prefWidth="300.0" />
+                            <Separator orientation="VERTICAL" />
+                            <Button fx:id="btnReadedSearch" mnemonicParsing="false" onAction="#doSearchReadedByYear" text="by year" />
+                            <Separator orientation="VERTICAL" />
+                            <Button mnemonicParsing="false" onAction="#doSearchReadedByAuthor" text="by author" />
+                            <Separator orientation="VERTICAL" />
+                            <Button mnemonicParsing="false" onAction="#doSearchReadedByTitle" text="by title" />
+                        </children>
+                    </HBox>
+                </top>
+                <center>
+                  <TableView fx:id="tvReadedBooks">
+                    <columns>
+                        <TableColumn prefWidth="40" text="id">
+                            <cellValueFactory><PropertyValueFactory property="bookId" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="100" text="read on">
+                            <cellValueFactory><PropertyValueFactory property="dateRead" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="200" text="author">
+                            <cellValueFactory><PropertyValueFactory property="authors" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="300" text="title">
+                            <cellValueFactory><PropertyValueFactory property="titleRead" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="40" text="lang">
+                            <cellValueFactory><PropertyValueFactory property="langRead" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="70" text="published">
+                            <cellValueFactory><PropertyValueFactory property="publishDate" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="80" text="medium">
+                            <cellValueFactory><PropertyValueFactory property="medium" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="30" text="score">
+                            <cellValueFactory><PropertyValueFactory property="score" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="150" text="genre">
+                            <cellValueFactory><PropertyValueFactory property="genre" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="400" text="note">
+                            <cellValueFactory><PropertyValueFactory property="note" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                  </TableView>
+                </center>
+            </BorderPane>
+
+        </AnchorPane>
       </content>
     </Tab>
     <Tab text="Author">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <BorderPane layoutX="43.0" layoutY="33.0" prefHeight="671.0" prefWidth="996.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                      <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                  <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                      <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
                      <top>
-                        <HBox prefHeight="29.0" prefWidth="996.0" BorderPane.alignment="CENTER">
+                        <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField fx:id="tfSearchText" prefHeight="24.0" prefWidth="395.0" />
+                              <TextField fx:id="tfSearchText" prefWidth="300.0" />
                               <Separator orientation="VERTICAL" />
                               <Button fx:id="btnAuthorSearch" mnemonicParsing="false" onAction="#doSearchAuthor" text="Search" />
                               <Separator orientation="VERTICAL" />
-                              <Button mnemonicParsing="false" text="New author" />
+                              <Button mnemonicParsing="false" onAction="#doAddAuthor" text="New author" />
                            </children>
                         </HBox>
                      </top>
@@ -33,28 +98,27 @@
                      </left>
                      <center>
                         <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
-                           <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                           <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
                            <children>
                                <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                               <TextField fx:id="tfAuthorName" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="300.0" />
+                               <TextField fx:id="tfAuthorName" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                               <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1"  />
+                               <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                               <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="2"  />
-                               <HBox GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2" alignment="BASELINE_LEFT">
+                               <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                               <HBox GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                                    <Button fx:id="btnAuthorSave" mnemonicParsing="false" onAction="#doSaveAuthor" text="Save" />
                                    <Separator orientation="VERTICAL" />
                                    <Button fx:id="btnAuthorDelete" mnemonicParsing="false" onAction="#doDeleteAuthor" text="Delete" />
                                </HBox>
-                               <ListView fx:id="lstAuthorNames" GridPane.columnIndex="0" GridPane.rowIndex="4"
-                                         GridPane.columnSpan="2" prefHeight="100.0"/>
+                               <ListView fx:id="lstAuthorNames" prefHeight="100.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                                <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                               <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1" GridPane.rowIndex="5"  />
+                               <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                                <TextField fx:id="tfAuthorNamesLang" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="7" />
                                <TextField fx:id="tfAuthorNamesType" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                               <HBox GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="2" alignment="CENTER_LEFT">
+                               <HBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="8">
                                    <Button fx:id="btnAuthorNamesSave" mnemonicParsing="false" onAction="#doSaveAuthorName" text="Save" />
                                    <Separator orientation="VERTICAL" />
                                    <Button fx:id="btnAuthorNamesNew" mnemonicParsing="false" onAction="#doAddAuthorName" text="New" />
@@ -62,6 +126,21 @@
                                    <Button fx:id="btnAuthorNamesDelete" mnemonicParsing="false" onAction="#doDeleteAuthorName" text="Delete" />
                                </HBox>
                            </children>
+                           <columnConstraints>
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
                         </GridPane>
                      </center></BorderPane>
                </children>

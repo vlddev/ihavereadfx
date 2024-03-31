@@ -24,8 +24,7 @@ class AuthorDbTest {
     @Test
     @Order(1)
     void insertAuthor() throws SQLException {
-        Author newAuthor = sqliteDb.getAuthorDb().insertAuthor(sqliteDb.getConnection(),
-                "Test", "Author", "en", "note");
+        Author newAuthor = sqliteDb.getAuthorDb().insertAuthor("Test", "Author", "en", "note");
         assertNotNull(newAuthor);
         assertTrue(newAuthor.getId() > 0);
     }
@@ -34,7 +33,7 @@ class AuthorDbTest {
     @Order(2)
     void getByName() throws SQLException {
         String name = "Test, Author";
-        Author author = sqliteDb.getAuthorDb().getByName(sqliteDb.getConnection(), name);
+        Author author = sqliteDb.getAuthorDb().getByName(name);
         assertNotNull(author);
         assertTrue(author.getId() > 0);
         assertEquals(author.getName(), name);
@@ -43,7 +42,7 @@ class AuthorDbTest {
     @Test
     @Order(3)
     void getAll() throws SQLException {
-        List<Author> authors = sqliteDb.getAuthorDb().getAll(sqliteDb.getConnection());
+        List<Author> authors = sqliteDb.getAuthorDb().getAll();
         assertTrue(authors.size() > 0);
     }
 
@@ -52,7 +51,7 @@ class AuthorDbTest {
     void findByName() throws SQLException {
         String name = "Test, Author";
         String namePart = "%Author%";
-        List<Author> authors = sqliteDb.getAuthorDb().findByName(sqliteDb.getConnection(), namePart);
+        List<Author> authors = sqliteDb.getAuthorDb().findByName(namePart);
         assertTrue(authors.size() > 0);
         assertEquals(authors.get(0).getName(), name);
     }
@@ -62,10 +61,10 @@ class AuthorDbTest {
     @Order(5)
     void deleteAuthor() throws SQLException {
         String name = "Test, Author";
-        Author author = sqliteDb.getAuthorDb().getByName(sqliteDb.getConnection(), name);
+        Author author = sqliteDb.getAuthorDb().getByName(name);
         assertNotNull(author);
-        sqliteDb.getAuthorDb().deleteAuthor(sqliteDb.getConnection(), author.getId());
-        Author delAuthor = sqliteDb.getAuthorDb().getByName(sqliteDb.getConnection(), name);
+        sqliteDb.getAuthorDb().deleteAuthor(author.getId());
+        Author delAuthor = sqliteDb.getAuthorDb().getByName(name);
         assertNull(delAuthor);
     }
 }
