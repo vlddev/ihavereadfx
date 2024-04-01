@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefWidth="500">
+
+    <content>
+        <GridPane hgap="5" vgap="5">
+            <Label text="Name(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="tfAuthorNames" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Surname" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="tfAuthorSurname" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Language" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="tfAuthorLang" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.fillWidth="false"/>
+
+            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+        </GridPane>
+    </content>
+
+    <buttonTypes>
+        <ButtonType fx:id="btnCreate" text="Create" buttonData="OK_DONE"/>
+        <ButtonType text="Cancel" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+
+</DialogPane>

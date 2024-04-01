@@ -29,6 +29,8 @@ public class MainController {
     private Author curAuthor;
     private AuthorName curAuthorName;
 
+    private NewAuthorDialog newAuthorDialog;
+
     @FXML
     private TextField tfSearchText, tfAuthorName, tfAuthorLang, tfAuthorNote;
 
@@ -43,9 +45,12 @@ public class MainController {
     @FXML
     private TableView tvReadedBooks;
 
-    public MainController() throws SQLException {
-        sqliteDb = new SqliteDb("jdbc:sqlite:/home/volodymrvlod/Dokumente/mydev/db/ihaveread.db");
-        //sqliteDb.scanDb();
+    public void setSqliteDb(SqliteDb sqliteDb) {
+        this.sqliteDb = sqliteDb;
+    }
+
+    public void setNewAuthorDialog(NewAuthorDialog newAuthorDialog) {
+        this.newAuthorDialog = newAuthorDialog;
     }
 
     public void initListeners() {
@@ -83,8 +88,8 @@ public class MainController {
         log.info("Search for author '{}'", strToFind);
         if (strToFind.length() > 0) {
             List<Author> authors = sqliteDb.getAuthorDb().findByName("%"+strToFind+"%");
+            lstFoundAuthors.getItems().clear();
             if (!authors.isEmpty()) {
-                lstFoundAuthors.getItems().clear();
                 lstFoundAuthors.getItems().addAll(authors);
             } else {
                 log.info("Nothing found");
@@ -142,6 +147,7 @@ public class MainController {
     }
 
     public void doAddAuthor(ActionEvent actionEvent) {
+        newAuthorDialog.showAndWait();
     }
 
     public void doSaveAuthor(ActionEvent actionEvent) {
