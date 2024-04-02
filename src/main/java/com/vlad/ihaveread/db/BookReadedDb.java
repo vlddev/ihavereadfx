@@ -1,5 +1,7 @@
 package com.vlad.ihaveread.db;
 
+import com.vlad.ihaveread.dao.Book;
+import com.vlad.ihaveread.dao.BookReaded;
 import com.vlad.ihaveread.dao.BookReadedTblRow;
 
 import java.sql.Connection;
@@ -78,6 +80,25 @@ public class BookReadedDb {
             throw new RuntimeException(e);
         }
         return ret;
+    }
+
+    public BookReaded insertBookReaded(BookReaded book) throws SQLException {
+        String sql = "INSERT INTO book_readed (book_id, date_read, lang_read, medium, score, note) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, book.getBookId());
+            ps.setString(2, book.getDateRead());
+            ps.setString(3, book.getLangRead());
+            ps.setString(4, book.getMedium());
+            ps.setInt(5, book.getScore());
+            ps.setString(6, book.getNote());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                book.setId(rs.getInt(1));
+                return book;
+            } else {
+                return null;
+            }
+        }
     }
 
 

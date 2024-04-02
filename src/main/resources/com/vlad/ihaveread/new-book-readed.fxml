@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefWidth="550">
+
+    <content>
+        <GridPane hgap="5" vgap="5">
+            <Label text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Button fx:id="btnAddAuthor"  mnemonicParsing="false" text="Add author" />
+                <Button fx:id="btnDeleteAuthor"  mnemonicParsing="false" text="Delete author" />
+            </HBox>
+
+
+            <Label text="Title" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="tfReadTitle" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Label text="Read lang" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="tfReadLang" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.fillWidth="false"/>
+
+            <Label text="Orig title" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <TextField fx:id="tfOrigTitle" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+            <Label text="Orig lang" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <TextField fx:id="tfOrigLang" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.fillWidth="false"/>
+
+            <Label text="Publish date" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+            <TextField fx:id="tfPublishDate" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="false"/>
+
+            <Label text="Genre" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+            <TextField fx:id="tfGenre" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+            <TextArea fx:id="taNote" prefHeight="100" prefWidth="440" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.fillWidth="false"/>
+
+            <Label text="Read date" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+            <TextField fx:id="tfReadDate" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.fillWidth="false"/>
+
+            <Label text="Medium" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+            <TextField fx:id="tfMedium" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.fillWidth="false"/>
+
+            <Label text="Score" GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+            <TextField fx:id="tfScore" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.fillWidth="false"/>
+
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+        </GridPane>
+    </content>
+
+    <buttonTypes>
+        <ButtonType fx:id="btnCreate" text="Create" buttonData="OK_DONE"/>
+        <ButtonType text="Cancel" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+
+</DialogPane>

@@ -151,7 +151,24 @@
     </Tab>
     <Tab text="Book">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200">
+          <children>
+            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+              <top>
+                <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <TextField fx:id="tfBookSearchText" prefWidth="300.0" />
+                        <Separator orientation="VERTICAL" />
+                        <Button fx:id="btnBookSearch" mnemonicParsing="false" onAction="#doSearchBook" text="Search" />
+                        <Separator orientation="VERTICAL" />
+                        <Button mnemonicParsing="false" onAction="#doAddBook" text="New book" />
+                    </children>
+                </HBox>
+              </top>
+            </BorderPane>
+          </children>
+        </AnchorPane>
       </content>
     </Tab>
   </tabs>

@@ -19,6 +19,7 @@ public class MainApplication extends Application {
         mainController.setSqliteDb(sqliteDb);
         mainController.initListeners();
         mainController.setNewAuthorDialog(new NewAuthorDialog(scene.getWindow(), sqliteDb));
+        mainController.setNewBookreadedDialog(new NewBookreadedDialog(scene.getWindow(), sqliteDb));
 
         stage.setTitle("I have read");
         stage.setScene(scene);

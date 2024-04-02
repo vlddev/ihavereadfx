@@ -30,6 +30,7 @@ public class MainController {
     private AuthorName curAuthorName;
 
     private NewAuthorDialog newAuthorDialog;
+    private NewBookreadedDialog newBookreadedDialog;
 
     @FXML
     private TextField tfSearchText, tfAuthorName, tfAuthorLang, tfAuthorNote;
@@ -51,6 +52,10 @@ public class MainController {
 
     public void setNewAuthorDialog(NewAuthorDialog newAuthorDialog) {
         this.newAuthorDialog = newAuthorDialog;
+    }
+
+    public void setNewBookreadedDialog(NewBookreadedDialog newBookreadedDialog) {
+        this.newBookreadedDialog = newBookreadedDialog;
     }
 
     public void initListeners() {
@@ -239,5 +244,12 @@ public class MainController {
                 log.info("Nothing found");
             }
         }
+    }
+
+    public void doSearchBook(ActionEvent actionEvent) {
+    }
+
+    public void doAddBook(ActionEvent actionEvent) {
+        newBookreadedDialog.showAndWait();
     }
 }

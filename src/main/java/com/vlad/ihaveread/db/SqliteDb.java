@@ -13,11 +13,13 @@ public class SqliteDb implements AutoCloseable {
 
     Connection connection;
     AuthorDb authorDb;
+    BookDb bookDb;
     BookReadedDb bookReadedDb;
 
     public SqliteDb(String dbUrl) throws SQLException {
         this.connection = DriverManager.getConnection(dbUrl);
         this.authorDb = new AuthorDb(connection);
+        this.bookDb = new BookDb(connection);
         this.bookReadedDb = new BookReadedDb(connection);
     }
 
