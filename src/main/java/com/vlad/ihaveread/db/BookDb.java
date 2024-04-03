@@ -16,6 +16,34 @@ public class BookDb {
         this.con = c;
     }
 
+    public Book getById(int id) throws SQLException {
+        Book ret = null;
+        String sql = "SELECT * FROM book WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ret = getBookFromRs(rs);
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
+    public List<BookName> getBookNameByBookId(int bookId) throws SQLException {
+        List<BookName> ret = new ArrayList<>();
+        String sql = "SELECT * FROM book_names WHERE book_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getBookNameFromRs(rs));
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
     public List<Book> findByName(String namePart) throws SQLException {
         List<Book> ret = new ArrayList<>();
         String sql = """

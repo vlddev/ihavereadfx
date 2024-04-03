@@ -45,6 +45,23 @@ public class AuthorDb {
         return ret;
     }
 
+    public List<Author> getByBookId(int bookId) throws SQLException {
+        List<Author> ret = new ArrayList<>();
+        String sql = """
+            SELECT a.*
+            FROM author a, author_book ab
+            WHERE ab.book_id = ? and a.id = ab.author_id""";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getFromRs(rs));
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
     public List<Author> findByName(String namePart) throws SQLException {
         List<Author> ret = new ArrayList<>();
         String sql = """

@@ -1,6 +1,7 @@
 package com.vlad.ihaveread.db;
 
 import com.vlad.ihaveread.dao.Book;
+import com.vlad.ihaveread.dao.BookName;
 import com.vlad.ihaveread.dao.BookReaded;
 import com.vlad.ihaveread.dao.BookReadedTblRow;
 
@@ -16,6 +17,20 @@ public class BookReadedDb {
 
     public BookReadedDb(Connection c) {
         this.con = c;
+    }
+
+    public List<BookReaded> getByBookId(int bookId) throws SQLException {
+        List<BookReaded> ret = new ArrayList<>();
+        String sql = "SELECT * FROM book_readed WHERE book_id = ? ORDER BY date_read";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getBookReadedFromRs(rs));
+            }
+            rs.close();
+        }
+        return ret;
     }
 
     public List<BookReadedTblRow> getReadedBooksByYear(String dateRead) {
@@ -101,7 +116,6 @@ public class BookReadedDb {
         }
     }
 
-
     public BookReadedTblRow getFromRs(ResultSet rs) throws SQLException {
         return BookReadedTblRow.builder()
                 .bookId(rs.getInt("book_id"))
@@ -113,6 +127,18 @@ public class BookReadedDb {
                 .medium(rs.getString("medium"))
                 .score(rs.getInt("score"))
                 .genre(rs.getString("genre"))
+                .note(rs.getString("note"))
+                .build();
+    }
+
+    public BookReaded getBookReadedFromRs(ResultSet rs) throws SQLException {
+        return BookReaded.builder()
+                .id(rs.getInt("id"))
+                .bookId(rs.getInt("book_id"))
+                .dateRead(rs.getString("date_read"))
+                .langRead(rs.getString("lang_read"))
+                .medium(rs.getString("medium"))
+                .score(rs.getInt("score"))
                 .note(rs.getString("note"))
                 .build();
     }

@@ -5,7 +5,6 @@ import com.vlad.ihaveread.db.SqliteDb;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import javafx.scene.layout.AnchorPane;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -42,6 +40,8 @@ public class MainController {
 
     @FXML
     private Tab tabBook;
+    @FXML
+    private TabPane tabPane;
 
     @FXML
     private TextField tfSearchReadedText;
@@ -105,6 +105,38 @@ public class MainController {
                     setText(item.getTitle());
                 }
             }
+        });
+        lstBookAuthors.setCellFactory(callback -> new ListCell<Author>() {
+            @Override
+            protected void updateItem(Author item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getName());
+                }
+            }
+        });
+        lstBookNames.setCellFactory(callback -> new ListCell<BookName>() {
+            @Override
+            protected void updateItem(BookName item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getLang()+" | "+item.getName());
+                }
+            }
+        });
+        tvReadedBooks.setRowFactory(tv -> {
+            TableRow<BookReadedTblRow> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    BookReadedTblRow rowData = row.getItem();
+                    showInBookTab(rowData);
+                }
+            });
+            return row ;
         });
     }
 
@@ -279,7 +311,7 @@ public class MainController {
         tfGenre.clear();
         taBookNote.clear();
         curBook = null;
-        lstFoundBooks.getItems().clear();
+        lstBookAuthors.getItems().clear();
         lstBookNames.getItems().clear();
         lstReadBooks.getItems().clear();
     }
@@ -299,9 +331,22 @@ public class MainController {
         }
     }
 
+    public void showInBookTab(BookReadedTblRow bookReaded) {
+        try {
+            Book book = sqliteDb.getBookDb().getById(bookReaded.getBookId());
+            lstFoundBooks.getItems().clear();
+            lstFoundBooks.getItems().add(book);
+            lstFoundBooks.getSelectionModel().select(book);
+            tabPane.getSelectionModel().select(tabBook);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void onSelectBookName(Book book) {
+        clearBook();
         if (book == null) {
-            clearBook();
             return;
         }
         curBook = book;
@@ -311,10 +356,14 @@ public class MainController {
         tfGenre.setText(book.getGenre());
         taBookNote.setText(book.getNote());
         curBook = null;
-        // TODO fill lists
-        //lstFoundBooks;
-        //lstBookNames;
-        //lstReadBooks;
+        // fill lists
+        try {
+            lstBookAuthors.getItems().addAll(sqliteDb.getAuthorDb().getByBookId(book.getId()));
+            lstBookNames.getItems().addAll(sqliteDb.getBookDb().getBookNameByBookId(book.getId()));
+            lstReadBooks.getItems().addAll(sqliteDb.getBookReadedDb().getByBookId(book.getId()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

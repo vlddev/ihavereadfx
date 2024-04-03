@@ -7,6 +7,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="996.0"
          tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+         fx:id="tabPane"
          fx:controller="com.vlad.ihaveread.MainController">
   <tabs>
     <Tab text="Readed">
@@ -180,7 +181,8 @@
                                   <TextField fx:id="tfGenre" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
                                   <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-                                  <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="false"/>
+                                  <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
+                                            GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
                                   <HBox GridPane.columnIndex="0" GridPane.rowIndex="7">
                                       <Button fx:id="btnSaveBook"  mnemonicParsing="false" text="Save book" />
                                   </HBox>
