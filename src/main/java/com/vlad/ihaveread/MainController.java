@@ -1,23 +1,21 @@
 package com.vlad.ihaveread;
 
-import com.vlad.ihaveread.dao.Author;
-import com.vlad.ihaveread.dao.AuthorName;
-import com.vlad.ihaveread.dao.BookReaded;
-import com.vlad.ihaveread.dao.BookReadedTblRow;
+import com.vlad.ihaveread.dao.*;
 import com.vlad.ihaveread.db.SqliteDb;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import javafx.scene.layout.AnchorPane;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -27,6 +25,7 @@ public class MainController {
 
     private SqliteDb sqliteDb;
     private Author curAuthor;
+    private Book curBook;
     private AuthorName curAuthorName;
 
     private NewAuthorDialog newAuthorDialog;
@@ -36,15 +35,24 @@ public class MainController {
     private TextField tfSearchText, tfAuthorName, tfAuthorLang, tfAuthorNote;
 
     @FXML
-    private ListView lstFoundAuthors, lstAuthorNames;
+    private ListView lstFoundAuthors, lstAuthorNames, lstFoundBooks, lstBookAuthors, lstBookNames, lstReadBooks;
 
     @FXML
     private TextField tfAuthorNamesName, tfAuthorNamesLang, tfAuthorNamesType;
 
     @FXML
+    private Tab tabBook;
+
+    @FXML
     private TextField tfSearchReadedText;
     @FXML
     private TableView tvReadedBooks;
+
+    @FXML
+    private TextField tfBookSearchText, tfBookTitle, tfBookLang, tfPublishDate, tfGenre;
+
+    @FXML
+    private TextArea taBookNote;
 
     public void setSqliteDb(SqliteDb sqliteDb) {
         this.sqliteDb = sqliteDb;
@@ -85,6 +93,24 @@ public class MainController {
                 }
             }
         });
+        lstFoundBooks.getSelectionModel().selectedItemProperty().addListener(
+                (ChangeListener<Book>) (ov, oldVal, newVal) -> onSelectBookName(newVal));
+        lstFoundBooks.setCellFactory(callback -> new ListCell<Book>() {
+            @Override
+            protected void updateItem(Book item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTitle());
+                }
+            }
+        });
+    }
+
+    public void initComponents(Scene scene) throws IOException {
+        setNewAuthorDialog(new NewAuthorDialog(scene.getWindow(), sqliteDb));
+        setNewBookreadedDialog(new NewBookreadedDialog(scene.getWindow(), sqliteDb));
     }
 
     public void doSearchAuthor(ActionEvent actionEvent) throws SQLException {
@@ -246,8 +272,51 @@ public class MainController {
         }
     }
 
-    public void doSearchBook(ActionEvent actionEvent) {
+    public void clearBook() {
+        tfBookTitle.clear();
+        tfBookLang.clear();
+        tfPublishDate.clear();
+        tfGenre.clear();
+        taBookNote.clear();
+        curBook = null;
+        lstFoundBooks.getItems().clear();
+        lstBookNames.getItems().clear();
+        lstReadBooks.getItems().clear();
     }
+
+    public void doSearchBook(ActionEvent actionEvent) throws SQLException {
+        clearBook();
+        String strToFind = tfBookSearchText.getText().trim();
+        log.info("Search for book '{}'", strToFind);
+        if (strToFind.length() > 0) {
+            List<Book> books = sqliteDb.getBookDb().findByName("%"+strToFind+"%");
+            lstFoundBooks.getItems().clear();
+            if (!books.isEmpty()) {
+                lstFoundBooks.getItems().addAll(books);
+            } else {
+                log.info("Nothing found");
+            }
+        }
+    }
+
+    public void onSelectBookName(Book book) {
+        if (book == null) {
+            clearBook();
+            return;
+        }
+        curBook = book;
+        tfBookTitle.setText(book.getTitle());
+        tfBookLang.setText(book.getLang());
+        tfPublishDate.setText(book.getPublishDate());
+        tfGenre.setText(book.getGenre());
+        taBookNote.setText(book.getNote());
+        curBook = null;
+        // TODO fill lists
+        //lstFoundBooks;
+        //lstBookNames;
+        //lstReadBooks;
+    }
+
 
     public void doAddBook(ActionEvent actionEvent) {
         newBookreadedDialog.showAndWait();

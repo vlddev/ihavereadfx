@@ -2,8 +2,11 @@ package com.vlad.ihaveread;
 
 import com.vlad.ihaveread.db.SqliteDb;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,8 +21,7 @@ public class MainApplication extends Application {
         MainController mainController = (MainController) fxmlLoader.getController();
         mainController.setSqliteDb(sqliteDb);
         mainController.initListeners();
-        mainController.setNewAuthorDialog(new NewAuthorDialog(scene.getWindow(), sqliteDb));
-        mainController.setNewBookreadedDialog(new NewBookreadedDialog(scene.getWindow(), sqliteDb));
+        mainController.initComponents(scene);
 
         stage.setTitle("I have read");
         stage.setScene(scene);

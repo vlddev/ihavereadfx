@@ -16,6 +16,23 @@ public class BookDb {
         this.con = c;
     }
 
+    public List<Book> findByName(String namePart) throws SQLException {
+        List<Book> ret = new ArrayList<>();
+        String sql = """
+            SELECT distinct b.*
+            FROM book b, book_names bn
+            WHERE bn.name like ? and b.id = bn.book_id""";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, namePart);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getBookFromRs(rs));
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
     public Book insertBook(Book book) throws SQLException {
         String sql = "INSERT INTO book(title, publish_date, lang, genre, note) VALUES (?, ?, ?, ?, ?) RETURNING id";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
