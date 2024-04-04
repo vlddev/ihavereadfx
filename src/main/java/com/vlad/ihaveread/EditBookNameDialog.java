@@ -1,6 +1,7 @@
 package com.vlad.ihaveread;
 
 import com.vlad.ihaveread.dao.Author;
+import com.vlad.ihaveread.dao.BookName;
 import com.vlad.ihaveread.db.SqliteDb;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -13,21 +14,19 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.util.Objects;
 
-public class NewAuthorDialog extends Dialog<String> {
+public class EditBookNameDialog extends Dialog<BookName> {
 
+    private BookName bookName;
     @FXML
-    private TextField tfAuthorNames, tfAuthorSurname, tfAuthorLang, tfAuthorNote;
+    private TextField tfName, tfLang;
 
     @FXML
     private ButtonType btnCreate;
 
-    private SqliteDb sqliteDb;
-
-    public NewAuthorDialog(Window owner, SqliteDb sqliteDb) {
+    public EditBookNameDialog(Window owner) {
         try {
-            this.sqliteDb = sqliteDb;
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("new-author.fxml"));
+            loader.setLocation(getClass().getResource("edit-book-name.fxml"));
             loader.setController(this);
 
             DialogPane dialogPane = loader.load();
@@ -37,19 +36,32 @@ public class NewAuthorDialog extends Dialog<String> {
             initModality(Modality.APPLICATION_MODAL);
 
             setResizable(true);
-            setTitle("New author");
+            setTitle("New book name");
             setDialogPane(dialogPane);
             setResultConverter(buttonType -> {
                 if(!Objects.equals(ButtonBar.ButtonData.OK_DONE, buttonType.getButtonData())) {
                     return null;
                 }
 
-                return "";
+                return bookName;
             });
 
-            setOnShowing(dialogEvent -> Platform.runLater(() -> tfAuthorNames.requestFocus()));
+            setOnShowing(dialogEvent -> Platform.runLater(() -> tfName.requestFocus()));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void setBookName(BookName bookName) {
+        this.bookName = bookName;
+        if (bookName != null) {
+            setTitle("Edit book name");
+            tfName.setText(bookName.getName());
+            tfLang.setText(bookName.getLang());
+        } else {
+            setTitle("New book name");
+            tfName.clear();
+            tfLang.clear();
         }
     }
 
@@ -61,17 +73,22 @@ public class NewAuthorDialog extends Dialog<String> {
     private void onCreate(ActionEvent event) {
         try {
             // validate input
-            String strVal = tfAuthorNames.getText().trim();
-            if (strVal.length() == 0) {
-                throw new RuntimeException("Names not set");
+            String strName = tfName.getText().trim();
+            if (strName.length() == 0) {
+                throw new RuntimeException("Name not set");
             }
-            strVal = tfAuthorSurname.getText().trim();
-            if (strVal.length() == 0) {
-                throw new RuntimeException("Surname not set");
+            String strLang = tfLang.getText().trim();
+            if (strLang.length() == 0) {
+                throw new RuntimeException("Language not set");
             }
 
-            Author newAuthor = sqliteDb.getAuthorDb().insertAuthor(tfAuthorSurname.getText().trim(), tfAuthorNames.getText().trim(),
-                    tfAuthorLang.getText().trim(), tfAuthorNote.getText().trim());
+            if (bookName == null) { //new book name
+                bookName = BookName.builder().name(strName)
+                        .lang(strLang).build();
+            } else {
+                bookName.setName(strName);
+                bookName.setLang(strLang);
+            }
             return;
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

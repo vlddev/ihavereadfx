@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,9 @@ public class MainController {
 
     private NewAuthorDialog newAuthorDialog;
     private NewBookreadedDialog newBookreadedDialog;
+    private SelectAuthorDialog selectAuthorDialog;
+    private EditBookNameDialog editBookNameDialog;
+    private EditBookReadedDialog editBookReadedDialog;
 
     @FXML
     private TextField tfSearchText, tfAuthorName, tfAuthorLang, tfAuthorNote;
@@ -56,14 +60,6 @@ public class MainController {
 
     public void setSqliteDb(SqliteDb sqliteDb) {
         this.sqliteDb = sqliteDb;
-    }
-
-    public void setNewAuthorDialog(NewAuthorDialog newAuthorDialog) {
-        this.newAuthorDialog = newAuthorDialog;
-    }
-
-    public void setNewBookreadedDialog(NewBookreadedDialog newBookreadedDialog) {
-        this.newBookreadedDialog = newBookreadedDialog;
     }
 
     public void initListeners() {
@@ -141,8 +137,11 @@ public class MainController {
     }
 
     public void initComponents(Scene scene) throws IOException {
-        setNewAuthorDialog(new NewAuthorDialog(scene.getWindow(), sqliteDb));
-        setNewBookreadedDialog(new NewBookreadedDialog(scene.getWindow(), sqliteDb));
+        newAuthorDialog = new NewAuthorDialog(scene.getWindow(), sqliteDb);
+        newBookreadedDialog = new NewBookreadedDialog(scene.getWindow(), sqliteDb);
+        selectAuthorDialog = new SelectAuthorDialog(scene.getWindow(), sqliteDb);
+        editBookNameDialog = new EditBookNameDialog(scene.getWindow());
+        editBookReadedDialog = new EditBookReadedDialog(scene.getWindow());
     }
 
     public void doSearchAuthor(ActionEvent actionEvent) throws SQLException {
@@ -355,7 +354,6 @@ public class MainController {
         tfPublishDate.setText(book.getPublishDate());
         tfGenre.setText(book.getGenre());
         taBookNote.setText(book.getNote());
-        curBook = null;
         // fill lists
         try {
             lstBookAuthors.getItems().addAll(sqliteDb.getAuthorDb().getByBookId(book.getId()));
@@ -369,5 +367,93 @@ public class MainController {
 
     public void doAddBook(ActionEvent actionEvent) {
         newBookreadedDialog.showAndWait();
+    }
+
+    public void doAddBookAuthor(ActionEvent actionEvent) throws SQLException {
+        Optional<Author> ret = selectAuthorDialog.showAndWait();
+        if (ret.isPresent()) {
+            if (!lstBookAuthors.getItems().contains(ret.get())) {
+                sqliteDb.getBookDb().insertBookAuthor(curBook.getId(), ret.get().getId());
+                lstBookAuthors.getItems().add(ret.get());
+            }
+        }
+    }
+
+    public void doDeleteBookAuthor(ActionEvent actionEvent) throws SQLException {
+        int selInd = lstBookAuthors.getSelectionModel().getSelectedIndex();
+        Author author = (Author)lstBookAuthors.getItems().get(selInd);
+        sqliteDb.getBookDb().deleteBookAuthor(curBook.getId(), author.getId());
+        lstBookAuthors.getItems().remove(selInd);
+    }
+
+    public void doSaveBook(ActionEvent actionEvent) throws SQLException {
+        curBook.setLang(tfBookLang.getText().trim());
+        curBook.setTitle(tfBookTitle.getText().trim());
+        curBook.setGenre(tfGenre.getText().trim());
+        curBook.setPublishDate(tfPublishDate.getText().trim());
+        curBook.setNote(taBookNote.getText().trim());
+        sqliteDb.getBookDb().updateBook(curBook);
+    }
+
+    public void doAddBookName(ActionEvent actionEvent) throws SQLException {
+        editBookNameDialog.setBookName(null);
+        Optional<BookName> ret = editBookNameDialog.showAndWait();
+        if (ret.isPresent()) {
+            ret.get().setBookId(curBook.getId());
+            BookName newEntity = sqliteDb.getBookDb().insertBookName(ret.get());
+            lstBookNames.getItems().add(newEntity);
+        }
+    }
+
+    public void doEditBookName(ActionEvent actionEvent) throws SQLException {
+        int selInd = lstBookNames.getSelectionModel().getSelectedIndex();
+        if (selInd > -1) {
+            editBookNameDialog.setBookName((BookName)lstBookNames.getItems().get(selInd));
+            Optional<BookName> ret = editBookNameDialog.showAndWait();
+            if (ret.isPresent()) {
+                sqliteDb.getBookDb().updateBookName(ret.get());
+                lstBookNames.getItems().set(selInd, ret.get());
+            }
+        }
+    }
+
+    public void doDeleteBookName(ActionEvent actionEvent) throws SQLException {
+        int selInd = lstBookNames.getSelectionModel().getSelectedIndex();
+        if (selInd > -1) {
+            BookName item = (BookName)lstBookNames.getItems().get(selInd);
+            sqliteDb.getBookDb().deleteBookName(item.getId());
+            lstBookNames.getItems().remove(selInd);
+        }
+    }
+
+    public void doAddReadBook(ActionEvent actionEvent) throws SQLException {
+        editBookReadedDialog.setEntity(null);
+        Optional<BookReaded> ret = editBookReadedDialog.showAndWait();
+        if (ret.isPresent()) {
+            ret.get().setBookId(curBook.getId());
+            BookReaded newEntity = sqliteDb.getBookReadedDb().insertBookReaded(ret.get());
+            lstReadBooks.getItems().add(newEntity);
+        }
+    }
+
+    public void doEditReadBook(ActionEvent actionEvent) throws SQLException {
+        int selInd = lstReadBooks.getSelectionModel().getSelectedIndex();
+        if (selInd > -1) {
+            editBookReadedDialog.setEntity((BookReaded)lstReadBooks.getItems().get(selInd));
+            Optional<BookReaded> ret = editBookReadedDialog.showAndWait();
+            if (ret.isPresent()) {
+                sqliteDb.getBookReadedDb().updateBookReaded(ret.get());
+                lstReadBooks.getItems().set(selInd, ret.get());
+            }
+        }
+    }
+
+    public void doDeleteReadBook(ActionEvent actionEvent) throws SQLException {
+        int selInd = lstReadBooks.getSelectionModel().getSelectedIndex();
+        if (selInd > -1) {
+            BookReaded item = (BookReaded) lstReadBooks.getItems().get(selInd);
+            sqliteDb.getBookReadedDb().deleteBookReaded(item.getId());
+            lstReadBooks.getItems().remove(selInd);
+        }
     }
 }

@@ -116,6 +116,28 @@ public class BookReadedDb {
         }
     }
 
+    public void updateBookReaded(BookReaded item) throws SQLException {
+        String sql = "UPDATE book_readed SET book_id = ?, date_read = ?, lang_read = ?, medium = ?, score = ?, note = ? WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, item.getBookId());
+            ps.setString(2, item.getDateRead());
+            ps.setString(3, item.getLangRead());
+            ps.setString(4, item.getMedium());
+            ps.setInt(5, item.getScore());
+            ps.setString(6, item.getNote());
+            ps.setInt(7, item.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    public void deleteBookReaded(int bookReadedId) throws SQLException {
+        String sql = "DELETE FROM book_readed WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookReadedId);
+            ps.executeUpdate();
+        }
+    }
+
     public BookReadedTblRow getFromRs(ResultSet rs) throws SQLException {
         return BookReadedTblRow.builder()
                 .bookId(rs.getInt("book_id"))

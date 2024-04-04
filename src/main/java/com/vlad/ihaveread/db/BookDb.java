@@ -79,6 +79,19 @@ public class BookDb {
         }
     }
 
+    public void updateBook(Book book) throws SQLException {
+        String sql = "UPDATE book SET title = ?, publish_date = ?, lang = ?, genre = ?, note = ?  WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getPublishDate());
+            ps.setString(3, book.getLang());
+            ps.setString(4, book.getGenre());
+            ps.setString(5, book.getNote());
+            ps.setInt(6, book.getId());
+            int ret = ps.executeUpdate();
+        }
+    }
+
     public void insertBookNames(List<BookName> bookNames) throws SQLException {
         String sql = "INSERT INTO book_names(book_id, name, lang) VALUES (?,?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -92,6 +105,41 @@ public class BookDb {
         }
     }
 
+    public BookName insertBookName(BookName bookName) throws SQLException {
+        String sql = "INSERT INTO book_names(book_id, name, lang) VALUES (?,?,?) RETURNING id";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookName.getBookId());
+            ps.setString(2, bookName.getName());
+            ps.setString(3, bookName.getLang());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                bookName.setId(rs.getInt(1));
+                return bookName;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public void updateBookName(BookName bookName) throws SQLException {
+        String sql = "UPDATE book_names SET book_id = ?, name = ?, lang = ? WHERE id = ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookName.getBookId());
+            ps.setString(2, bookName.getName());
+            ps.setString(3, bookName.getLang());
+            ps.setInt(4, bookName.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    public void deleteBookName(int bookNameId) throws SQLException {
+        String sql = "DELETE FROM book_names WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookNameId);
+            ps.executeUpdate();
+        }
+    }
+
     public void insertBookAuthors(Book book, List<Author> authors) throws SQLException {
         String sql = "INSERT INTO author_book(book_id, author_id) VALUES (?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -101,6 +149,24 @@ public class BookDb {
                 ps.addBatch();
             }
             ps.executeBatch();
+        }
+    }
+
+    public void insertBookAuthor(int bookId, int authorId) throws SQLException {
+        String sql = "INSERT INTO author_book(book_id, author_id) VALUES (?,?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.setInt(2, authorId);
+            ps.executeUpdate();
+        }
+    }
+
+    public void deleteBookAuthor(int bookId, int authorId) throws SQLException {
+        String sql = "DELETE FROM author_book WHERE book_id = ? AND author_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.setInt(2, authorId);
+            ps.executeUpdate();
         }
     }
 

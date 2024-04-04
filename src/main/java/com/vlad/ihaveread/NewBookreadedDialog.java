@@ -112,7 +112,7 @@ public class NewBookreadedDialog extends Dialog<String> {
     @FXML
     private void onCreate(ActionEvent event) {
         try {
-            //TODO validate input
+            // validate input
             if (lstBookAuthors.getItems().isEmpty()) {
                 throw new RuntimeException("Author(s) not set");
             }

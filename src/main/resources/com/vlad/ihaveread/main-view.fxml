@@ -163,9 +163,9 @@
                                   <Label text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                                   <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                      <Button fx:id="btnAddAuthor"  mnemonicParsing="false" text="Add author" />
+                                      <Button fx:id="btnAddAuthor"  mnemonicParsing="false" onAction="#doAddBookAuthor" text="Add author" />
                                       <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btnDeleteAuthor"  mnemonicParsing="false" text="Delete author" />
+                                      <Button fx:id="btnDeleteAuthor"  mnemonicParsing="false" onAction="#doDeleteBookAuthor" text="Delete author" />
                                   </HBox>
 
                                   <Label text="Title" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
@@ -184,27 +184,27 @@
                                   <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
                                             GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
                                   <HBox GridPane.columnIndex="0" GridPane.rowIndex="7">
-                                      <Button fx:id="btnSaveBook"  mnemonicParsing="false" text="Save book" />
+                                      <Button fx:id="btnSaveBook"  mnemonicParsing="false" onAction="#doSaveBook" text="Save book" />
                                   </HBox>
 
                                   <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
                                   <ListView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
                                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                      <Button fx:id="btnAddBookName"  mnemonicParsing="false" text="Add name" />
+                                      <Button fx:id="btnAddBookName"  mnemonicParsing="false" onAction="#doAddBookName" text="Add name" />
                                       <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btnEditBookName"  mnemonicParsing="false" text="Edit name" />
+                                      <Button fx:id="btnEditBookName"  mnemonicParsing="false" onAction="#doEditBookName" text="Edit name" />
                                       <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btndeleteBookName"  mnemonicParsing="false" text="Delete name" />
+                                      <Button fx:id="btnDeleteBookName"  mnemonicParsing="false" onAction="#doDeleteBookName" text="Delete name" />
                                   </HBox>
 
                                   <Label text="Read book" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
                                   <ListView fx:id="lstReadBooks" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
                                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="11">
-                                      <Button fx:id="btnAddReadBook"  mnemonicParsing="false" text="Add book" />
+                                      <Button fx:id="btnAddReadBook"  mnemonicParsing="false" onAction="#doAddReadBook" text="Add book" />
                                       <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btnEditReadBook"  mnemonicParsing="false" text="Edit book" />
+                                      <Button fx:id="btnEditReadBook"  mnemonicParsing="false" onAction="#doEditReadBook" text="Edit book" />
                                       <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btndeleteReadBook"  mnemonicParsing="false" text="Delete book" />
+                                      <Button fx:id="btndeleteReadBook"  mnemonicParsing="false" onAction="#doDeleteReadBook" text="Delete book" />
                                   </HBox>
 
                                   <columnConstraints>
