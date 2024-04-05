@@ -51,7 +51,7 @@
                             <cellValueFactory><PropertyValueFactory property="langRead" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="70" text="published">
+                        <TableColumn prefWidth="100" text="published">
                             <cellValueFactory><PropertyValueFactory property="publishDate" />
                             </cellValueFactory>
                         </TableColumn>
@@ -59,7 +59,7 @@
                             <cellValueFactory><PropertyValueFactory property="medium" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="30" text="score">
+                        <TableColumn prefWidth="60" text="score">
                             <cellValueFactory><PropertyValueFactory property="score" />
                             </cellValueFactory>
                         </TableColumn>
@@ -83,7 +83,7 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                      <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+                     <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
                      <top>
                         <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
                            <children>
@@ -96,11 +96,11 @@
                         </HBox>
                      </top>
                      <left>
-                        <ListView fx:id="lstFoundAuthors" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                        <ListView fx:id="lstFoundAuthors" prefWidth="300.0" BorderPane.alignment="CENTER" />
                      </left>
                      <center>
                         <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
-                           <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+                           <padding><Insets left="10" /></padding>
                            <children>
                                <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                <TextField fx:id="tfAuthorName" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -156,10 +156,11 @@
                               </HBox>
                           </top>
                           <left>
-                              <ListView fx:id="lstFoundBooks" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                              <ListView fx:id="lstFoundBooks" prefWidth="400.0" BorderPane.alignment="CENTER" />
                           </left>
                           <center>
                               <GridPane hgap="5" vgap="5">
+                                  <padding><Insets left="10"/></padding>
                                   <Label text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                                   <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -198,7 +199,30 @@
                                   </HBox>
 
                                   <Label text="Read book" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
-                                  <ListView fx:id="lstReadBooks" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+                                  <TableView fx:id="lstReadBooks" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                    <columns>
+                                        <TableColumn prefWidth="100" text="read on">
+                                            <cellValueFactory><PropertyValueFactory property="dateRead" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="40" text="lang">
+                                            <cellValueFactory><PropertyValueFactory property="langRead" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="100" text="medium">
+                                            <cellValueFactory><PropertyValueFactory property="medium" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="60" text="score">
+                                            <cellValueFactory><PropertyValueFactory property="score" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="250" text="note">
+                                            <cellValueFactory><PropertyValueFactory property="note" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                    </columns>
+                                  </TableView>
                                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="11">
                                       <Button fx:id="btnAddReadBook"  mnemonicParsing="false" onAction="#doAddReadBook" text="Add book" />
                                       <Separator orientation="VERTICAL" />

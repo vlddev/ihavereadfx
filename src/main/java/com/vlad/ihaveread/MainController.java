@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import javafx.scene.input.MouseButton;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -37,7 +38,7 @@ public class MainController {
     private TextField tfSearchText, tfAuthorName, tfAuthorLang, tfAuthorNote;
 
     @FXML
-    private ListView lstFoundAuthors, lstAuthorNames, lstFoundBooks, lstBookAuthors, lstBookNames, lstReadBooks;
+    private ListView lstFoundAuthors, lstAuthorNames, lstFoundBooks, lstBookAuthors, lstBookNames;
 
     @FXML
     private TextField tfAuthorNamesName, tfAuthorNamesLang, tfAuthorNamesType;
@@ -50,7 +51,7 @@ public class MainController {
     @FXML
     private TextField tfSearchReadedText;
     @FXML
-    private TableView tvReadedBooks;
+    private TableView tvReadedBooks, lstReadBooks;
 
     @FXML
     private TextField tfBookSearchText, tfBookTitle, tfBookLang, tfPublishDate, tfGenre;
@@ -121,15 +122,31 @@ public class MainController {
                     setText(null);
                 } else {
                     setText(item.getLang()+" | "+item.getName());
-                }
+                    setOnMouseClicked(mouseClickedEvent -> {
+                        if (mouseClickedEvent.getButton().equals(MouseButton.PRIMARY) && mouseClickedEvent.getClickCount() == 2) {
+                            doEditBookName(null);
+                        }
+                    });                }
             }
         });
+        // double-click on table row
         tvReadedBooks.setRowFactory(tv -> {
             TableRow<BookReadedTblRow> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     BookReadedTblRow rowData = row.getItem();
                     showInBookTab(rowData);
+                }
+            });
+            return row ;
+        });
+        // double-click on table row
+        lstReadBooks.setRowFactory(tv -> {
+            TableRow<BookReaded> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    BookReaded rowData = row.getItem();
+                    doEditReadBook(null);
                 }
             });
             return row ;
@@ -227,6 +244,7 @@ public class MainController {
 
     public void doDeleteAuthor(ActionEvent actionEvent) {
         if (curAuthor != null) {
+            // TODO ask "are you sure?"
             try {
                 sqliteDb.getAuthorDb().deleteAuthor(curAuthor.getId());
             } catch (SQLException e) {
@@ -291,7 +309,7 @@ public class MainController {
 
     private void doSearchReadedBy(Function<String, List<BookReadedTblRow>> getBy) {
         String strToFind = tfSearchReadedText.getText().trim();
-        log.info("Search by year '{}'", strToFind);
+        log.info("Search for '{}'", strToFind);
         if (strToFind.length() > 0) {
             List<BookReadedTblRow> books = getBy.apply(strToFind);
             tvReadedBooks.getItems().clear();
@@ -405,13 +423,17 @@ public class MainController {
         }
     }
 
-    public void doEditBookName(ActionEvent actionEvent) throws SQLException {
+    public void doEditBookName(ActionEvent actionEvent) {
         int selInd = lstBookNames.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
             editBookNameDialog.setBookName((BookName)lstBookNames.getItems().get(selInd));
             Optional<BookName> ret = editBookNameDialog.showAndWait();
             if (ret.isPresent()) {
-                sqliteDb.getBookDb().updateBookName(ret.get());
+                try {
+                    sqliteDb.getBookDb().updateBookName(ret.get());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 lstBookNames.getItems().set(selInd, ret.get());
             }
         }
@@ -436,13 +458,17 @@ public class MainController {
         }
     }
 
-    public void doEditReadBook(ActionEvent actionEvent) throws SQLException {
+    public void doEditReadBook(ActionEvent actionEvent) {
         int selInd = lstReadBooks.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
             editBookReadedDialog.setEntity((BookReaded)lstReadBooks.getItems().get(selInd));
             Optional<BookReaded> ret = editBookReadedDialog.showAndWait();
             if (ret.isPresent()) {
-                sqliteDb.getBookReadedDb().updateBookReaded(ret.get());
+                try {
+                    sqliteDb.getBookReadedDb().updateBookReaded(ret.get());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 lstReadBooks.getItems().set(selInd, ret.get());
             }
         }

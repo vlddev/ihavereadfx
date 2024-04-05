@@ -24,7 +24,7 @@
     </content>
 
     <buttonTypes>
-        <ButtonType fx:id="btnCreate" text="Create" buttonData="OK_DONE"/>
+        <ButtonType fx:id="btnCreate" text="Apply" buttonData="OK_DONE"/>
         <ButtonType text="Cancel" buttonData="CANCEL_CLOSE"/>
     </buttonTypes>
 
