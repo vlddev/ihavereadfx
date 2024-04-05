@@ -15,10 +15,8 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class NewBookreadedDialog extends Dialog<String> {
 
@@ -72,6 +70,8 @@ public class NewBookreadedDialog extends Dialog<String> {
 
             setResizable(true);
             setTitle("New book readed");
+            // set to current date
+            tfReadDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             setDialogPane(dialogPane);
             setResultConverter(buttonType -> {
                 if(!Objects.equals(ButtonBar.ButtonData.OK_DONE, buttonType.getButtonData())) {
