@@ -24,7 +24,6 @@ public class MainApplication extends Application {
         if (!dbFile.exists()) {
             throw new RuntimeException("DB file "+strDbFile+" not exist.");
         }
-        //SqliteDb sqliteDb = new SqliteDb("jdbc:sqlite:/home/volodymrvlod/Dokumente/mydev/db/ihaveread.db");
         SqliteDb sqliteDb = new SqliteDb("jdbc:sqlite:"+strDbFile);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1400, 1000);
