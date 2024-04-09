@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -33,6 +34,7 @@ public class MainApplication extends Application {
         mainController.initListeners();
         mainController.initComponents(scene);
 
+        stage.getIcons().add(new Image(MainApplication.class.getResourceAsStream("icon.png")));
         stage.setTitle("I have read");
         stage.setScene(scene);
         stage.show();
