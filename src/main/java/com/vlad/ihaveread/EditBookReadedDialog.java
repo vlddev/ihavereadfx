@@ -1,8 +1,6 @@
 package com.vlad.ihaveread;
 
-import com.vlad.ihaveread.dao.BookName;
 import com.vlad.ihaveread.dao.BookReaded;
-import com.vlad.ihaveread.db.SqliteDb;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -93,7 +91,7 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             if (strLang.length() == 0) {
                 throw new RuntimeException("Language not set");
             }
-            int score = 0;
+            int score;
             try {
                 score = Integer.parseInt(tfScore.getText().trim());
             } catch (NumberFormatException e) {

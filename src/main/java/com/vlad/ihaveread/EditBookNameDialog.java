@@ -1,8 +1,6 @@
 package com.vlad.ihaveread;
 
-import com.vlad.ihaveread.dao.Author;
 import com.vlad.ihaveread.dao.BookName;
-import com.vlad.ihaveread.db.SqliteDb;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

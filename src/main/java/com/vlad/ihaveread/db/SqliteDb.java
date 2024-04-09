@@ -9,7 +9,7 @@ import java.sql.*;
 @Getter
 public class SqliteDb implements AutoCloseable {
 
-    private static Logger log = LoggerFactory.getLogger(SqliteDb.class);
+    private static final Logger log = LoggerFactory.getLogger(SqliteDb.class);
 
     Connection connection;
     AuthorDb authorDb;

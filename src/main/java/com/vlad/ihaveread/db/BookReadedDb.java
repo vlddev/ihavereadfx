@@ -1,7 +1,5 @@
 package com.vlad.ihaveread.db;
 
-import com.vlad.ihaveread.dao.Book;
-import com.vlad.ihaveread.dao.BookName;
 import com.vlad.ihaveread.dao.BookReaded;
 import com.vlad.ihaveread.dao.BookReadedTblRow;
 
@@ -99,7 +97,7 @@ public class BookReadedDb {
 
     public BookReaded insertBookReaded(BookReaded book) throws SQLException {
         String sql = """
-            INSERT INTO book_readed (book_id, date_read, lang_read, medium, score, note, goodreads_id, lib_file) 
+            INSERT INTO book_readed (book_id, date_read, lang_read, medium, score, note, goodreads_id, lib_file)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id""";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, book.getBookId());
@@ -122,7 +120,7 @@ public class BookReadedDb {
 
     public void updateBookReaded(BookReaded item) throws SQLException {
         String sql = """
-            UPDATE book_readed 
+            UPDATE book_readed
             SET book_id = ?, date_read = ?, lang_read = ?, medium = ?, score = ?, note = ?, goodreads_id = ?, lib_file = ?
             WHERE id = ?""";
         try (PreparedStatement ps = con.prepareStatement(sql)) {

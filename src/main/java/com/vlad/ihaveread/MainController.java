@@ -2,13 +2,10 @@ package com.vlad.ihaveread;
 
 import com.vlad.ihaveread.dao.*;
 import com.vlad.ihaveread.db.SqliteDb;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,20 +35,32 @@ public class MainController {
     private TextField tfSearchText, tfAuthorName, tfAuthorLang, tfAuthorNote;
 
     @FXML
-    private ListView lstFoundAuthors, lstAuthorNames, lstFoundBooks, lstBookAuthors, lstBookNames;
+    private ListView<Author> lstFoundAuthors, lstBookAuthors;
+
+    @FXML
+    private ListView<AuthorName> lstAuthorNames;
+
+    @FXML
+    private ListView<Book> lstFoundBooks;
+
+    @FXML
+    private ListView<BookName> lstBookNames;
 
     @FXML
     private TextField tfAuthorNamesName, tfAuthorNamesLang, tfAuthorNamesType;
 
     @FXML
     private Tab tabBook, tabAuthor, tabReaded;
+
     @FXML
     private TabPane tabPane;
 
     @FXML
     private TextField tfSearchReadedText;
     @FXML
-    private TableView tvReadedBooks, lstReadBooks;
+    private TableView<BookReadedTblRow> tvFoundReadBooks;
+    @FXML
+    private TableView<BookReaded> lstReadBooks;
 
     @FXML
     private TextField tfBookSearchText, tfBookTitle, tfBookLang, tfPublishDate, tfGenre;
@@ -65,8 +74,8 @@ public class MainController {
 
     public void initListeners() {
         lstFoundAuthors.getSelectionModel().selectedItemProperty().addListener(
-                (ChangeListener<Author>) (ov, oldVal, newVal) -> onSelectAuthor(newVal));
-        lstFoundAuthors.setCellFactory(callback -> new ListCell<Author>() {
+                (ov, oldVal, newVal) -> onSelectAuthor(newVal));
+        lstFoundAuthors.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(Author item, boolean empty) {
                 super.updateItem(item, empty);
@@ -78,8 +87,8 @@ public class MainController {
             }
         });
         lstAuthorNames.getSelectionModel().selectedItemProperty().addListener(
-                (ChangeListener<AuthorName>) (ov, oldVal, newVal) -> onSelectAuthorName(newVal));
-        lstAuthorNames.setCellFactory(callback -> new ListCell<AuthorName>() {
+                (ov, oldVal, newVal) -> onSelectAuthorName(newVal));
+        lstAuthorNames.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(AuthorName item, boolean empty) {
                 super.updateItem(item, empty);
@@ -91,8 +100,8 @@ public class MainController {
             }
         });
         lstFoundBooks.getSelectionModel().selectedItemProperty().addListener(
-                (ChangeListener<Book>) (ov, oldVal, newVal) -> onSelectBookName(newVal));
-        lstFoundBooks.setCellFactory(callback -> new ListCell<Book>() {
+                (ov, oldVal, newVal) -> onSelectBookName(newVal));
+        lstFoundBooks.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(Book item, boolean empty) {
                 super.updateItem(item, empty);
@@ -103,7 +112,7 @@ public class MainController {
                 }
             }
         });
-        lstBookAuthors.setCellFactory(callback -> new ListCell<Author>() {
+        lstBookAuthors.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(Author item, boolean empty) {
                 super.updateItem(item, empty);
@@ -119,7 +128,7 @@ public class MainController {
                 }
             }
         });
-        lstBookNames.setCellFactory(callback -> new ListCell<BookName>() {
+        lstBookNames.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(BookName item, boolean empty) {
                 super.updateItem(item, empty);
@@ -129,14 +138,14 @@ public class MainController {
                     setText(item.getLang()+" | "+item.getName());
                     setOnMouseClicked(mouseClickedEvent -> {
                         if (mouseClickedEvent.getButton().equals(MouseButton.PRIMARY) && mouseClickedEvent.getClickCount() == 2) {
-                            doEditBookName(null);
+                            doEditBookName();
                         }
                     });
                 }
             }
         });
         // double-click on table row - show book in Book-Tab
-        tvReadedBooks.setRowFactory(tv -> {
+        tvFoundReadBooks.setRowFactory(tv -> {
             TableRow<BookReadedTblRow> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
@@ -151,15 +160,15 @@ public class MainController {
             TableRow<BookReaded> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-                    BookReaded rowData = row.getItem();
-                    doEditReadBook(null);
+                    //BookReaded rowData = row.getItem();
+                    doEditReadBook();
                 }
             });
             return row ;
         });
     }
 
-    public void initComponents(Scene scene) throws IOException {
+    public void initComponents(Scene scene) {
         newAuthorDialog = new NewAuthorDialog(scene.getWindow(), sqliteDb);
         newBookreadedDialog = new NewBookreadedDialog(scene.getWindow(), sqliteDb);
         selectAuthorDialog = new SelectAuthorDialog(scene.getWindow(), sqliteDb);
@@ -167,7 +176,7 @@ public class MainController {
         editBookReadedDialog = new EditBookReadedDialog(scene.getWindow());
     }
 
-    public void doSearchAuthor(ActionEvent actionEvent) throws SQLException {
+    public void doSearchAuthor() throws SQLException {
         clearAuthor();
         String strToFind = tfSearchText.getText().trim();
         log.info("Search for author '{}'", strToFind);
@@ -182,11 +191,11 @@ public class MainController {
         }
     }
 
-    public void showAuthorBooks(ActionEvent actionEvent) {
+    public void showAuthorBooks() {
         if (curAuthor != null) {
-            tvReadedBooks.getItems().clear();
+            tvFoundReadBooks.getItems().clear();
             tfSearchReadedText.setText(curAuthor.getName());
-            doSearchReadedByAuthor(null);
+            doSearchReadedByAuthor();
             tabPane.getSelectionModel().select(tabReaded);
         }
     }
@@ -240,11 +249,11 @@ public class MainController {
         curAuthorName = authorName;
     }
 
-    public void doAddAuthor(ActionEvent actionEvent) {
+    public void doAddAuthor() {
         newAuthorDialog.showAndWait();
     }
 
-    public void doSaveAuthor(ActionEvent actionEvent) {
+    public void doSaveAuthor() {
         if (curAuthor != null) {
             curAuthor.setName(tfAuthorName.getText());
             curAuthor.setLang(tfAuthorLang.getText());
@@ -257,7 +266,7 @@ public class MainController {
         }
     }
 
-    public void doDeleteAuthor(ActionEvent actionEvent) {
+    public void doDeleteAuthor() {
         if (curAuthor != null) {
             // TODO ask "are you sure?"
             try {
@@ -268,7 +277,7 @@ public class MainController {
         }
     }
 
-    public void doSaveAuthorName(ActionEvent actionEvent) {
+    public void doSaveAuthorName() {
         if (curAuthorName != null) {
             String oldName = curAuthorName.getName();
             curAuthorName.setName(tfAuthorNamesName.getText());
@@ -283,7 +292,7 @@ public class MainController {
         }
     }
 
-    public void doAddAuthorName(ActionEvent actionEvent) {
+    public void doAddAuthorName() {
         String strAuthorName = tfAuthorNamesName.getText().trim();
         if (curAuthor != null && curAuthorName == null && strAuthorName.length() > 0) {
             List<AuthorName> authorNames = new ArrayList<>(1);
@@ -299,7 +308,7 @@ public class MainController {
         }
     }
 
-    public void doDeleteAuthorName(ActionEvent actionEvent) {
+    public void doDeleteAuthorName() {
         if (curAuthorName != null) {
             try {
                 sqliteDb.getAuthorDb().deleteAuthorName(curAuthorName);
@@ -310,15 +319,15 @@ public class MainController {
         }
     }
 
-    public void doSearchReadedByTitle(ActionEvent actionEvent) {
+    public void doSearchReadedByTitle() {
         doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByTitle);
     }
 
-    public void doSearchReadedByAuthor(ActionEvent actionEvent) {
+    public void doSearchReadedByAuthor() {
         doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByAuthor);
     }
 
-    public void doSearchReadedByYear(ActionEvent actionEvent) {
+    public void doSearchReadedByYear() {
         doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByYear);
     }
 
@@ -327,9 +336,9 @@ public class MainController {
         log.info("Search for '{}'", strToFind);
         if (strToFind.length() > 0) {
             List<BookReadedTblRow> books = getBy.apply(strToFind);
-            tvReadedBooks.getItems().clear();
+            tvFoundReadBooks.getItems().clear();
             if (!books.isEmpty()) {
-                tvReadedBooks.getItems().addAll(books);
+                tvFoundReadBooks.getItems().addAll(books);
             } else {
                 log.info("Nothing found");
             }
@@ -348,7 +357,7 @@ public class MainController {
         lstReadBooks.getItems().clear();
     }
 
-    public void doSearchBook(ActionEvent actionEvent) throws SQLException {
+    public void doSearchBook() throws SQLException {
         clearBook();
         String strToFind = tfBookSearchText.getText().trim();
         log.info("Search for book '{}'", strToFind);
@@ -404,11 +413,11 @@ public class MainController {
     }
 
 
-    public void doAddBook(ActionEvent actionEvent) {
+    public void doAddBook() {
         newBookreadedDialog.showAndWait();
     }
 
-    public void doAddBookAuthor(ActionEvent actionEvent) throws SQLException {
+    public void doAddBookAuthor() throws SQLException {
         Optional<Author> ret = selectAuthorDialog.showAndWait();
         if (ret.isPresent()) {
             if (!lstBookAuthors.getItems().contains(ret.get())) {
@@ -418,14 +427,14 @@ public class MainController {
         }
     }
 
-    public void doDeleteBookAuthor(ActionEvent actionEvent) throws SQLException {
+    public void doDeleteBookAuthor() throws SQLException {
         int selInd = lstBookAuthors.getSelectionModel().getSelectedIndex();
-        Author author = (Author)lstBookAuthors.getItems().get(selInd);
+        Author author = lstBookAuthors.getItems().get(selInd);
         sqliteDb.getBookDb().deleteBookAuthor(curBook.getId(), author.getId());
         lstBookAuthors.getItems().remove(selInd);
     }
 
-    public void doSaveBook(ActionEvent actionEvent) throws SQLException {
+    public void doSaveBook() throws SQLException {
         curBook.setLang(tfBookLang.getText().trim());
         curBook.setTitle(tfBookTitle.getText().trim());
         curBook.setGenre(tfGenre.getText().trim());
@@ -434,7 +443,7 @@ public class MainController {
         sqliteDb.getBookDb().updateBook(curBook);
     }
 
-    public void doAddBookName(ActionEvent actionEvent) throws SQLException {
+    public void doAddBookName() throws SQLException {
         editBookNameDialog.setBookName(null);
         Optional<BookName> ret = editBookNameDialog.showAndWait();
         if (ret.isPresent()) {
@@ -444,10 +453,10 @@ public class MainController {
         }
     }
 
-    public void doEditBookName(ActionEvent actionEvent) {
+    public void doEditBookName() {
         int selInd = lstBookNames.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
-            editBookNameDialog.setBookName((BookName)lstBookNames.getItems().get(selInd));
+            editBookNameDialog.setBookName(lstBookNames.getItems().get(selInd));
             Optional<BookName> ret = editBookNameDialog.showAndWait();
             if (ret.isPresent()) {
                 try {
@@ -460,16 +469,16 @@ public class MainController {
         }
     }
 
-    public void doDeleteBookName(ActionEvent actionEvent) throws SQLException {
+    public void doDeleteBookName() throws SQLException {
         int selInd = lstBookNames.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
-            BookName item = (BookName)lstBookNames.getItems().get(selInd);
+            BookName item = lstBookNames.getItems().get(selInd);
             sqliteDb.getBookDb().deleteBookName(item.getId());
             lstBookNames.getItems().remove(selInd);
         }
     }
 
-    public void doAddReadBook(ActionEvent actionEvent) throws SQLException {
+    public void doAddReadBook() throws SQLException {
         editBookReadedDialog.setEntity(null);
         Optional<BookReaded> ret = editBookReadedDialog.showAndWait();
         if (ret.isPresent()) {
@@ -479,10 +488,10 @@ public class MainController {
         }
     }
 
-    public void doEditReadBook(ActionEvent actionEvent) {
+    public void doEditReadBook() {
         int selInd = lstReadBooks.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
-            editBookReadedDialog.setEntity((BookReaded)lstReadBooks.getItems().get(selInd));
+            editBookReadedDialog.setEntity(lstReadBooks.getItems().get(selInd));
             Optional<BookReaded> ret = editBookReadedDialog.showAndWait();
             if (ret.isPresent()) {
                 try {
@@ -495,10 +504,10 @@ public class MainController {
         }
     }
 
-    public void doDeleteReadBook(ActionEvent actionEvent) throws SQLException {
+    public void doDeleteReadBook() throws SQLException {
         int selInd = lstReadBooks.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
-            BookReaded item = (BookReaded) lstReadBooks.getItems().get(selInd);
+            BookReaded item = lstReadBooks.getItems().get(selInd);
             sqliteDb.getBookReadedDb().deleteBookReaded(item.getId());
             lstReadBooks.getItems().remove(selInd);
         }

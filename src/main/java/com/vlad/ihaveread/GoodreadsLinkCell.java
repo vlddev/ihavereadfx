@@ -7,13 +7,12 @@ import javafx.util.Callback;
 import org.controlsfx.control.PropertySheet;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public class GoodreadsLinkCell implements Callback<TableColumn<PropertySheet.Item, String>, TableCell<PropertySheet.Item, String>> {
 
     @Override
     public TableCell<PropertySheet.Item, String> call(TableColumn<PropertySheet.Item, String> arg) {
-        TableCell<PropertySheet.Item, String> cell = new TableCell<>() {
+        return new TableCell<>() {
 
             private final Hyperlink hyperlink = new Hyperlink();
 
@@ -22,8 +21,6 @@ public class GoodreadsLinkCell implements Callback<TableColumn<PropertySheet.Ite
                     String url = "https://www.goodreads.com/book/show/"+getItem();
                     try {
                         new ProcessBuilder("xdg-open", url).start();
-                    } catch (MalformedURLException e) {
-                        throw new RuntimeException(e);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -41,6 +38,5 @@ public class GoodreadsLinkCell implements Callback<TableColumn<PropertySheet.Ite
                 }
             }
         };
-        return cell;
     }
 }

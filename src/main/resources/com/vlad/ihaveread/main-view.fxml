@@ -6,254 +6,299 @@
 <?import javafx.scene.layout.*?>
 
 <?import com.vlad.ihaveread.GoodreadsLinkCell?>
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="996.0"
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0"
+         prefWidth="996.0"
          tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
          fx:id="tabPane"
          fx:controller="com.vlad.ihaveread.MainController">
-  <tabs>
     <Tab fx:id="tabReaded" text="Readed">
-      <content>
         <AnchorPane>
-            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        AnchorPane.topAnchor="0.0">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10"/>
+                </padding>
                 <top>
                     <HBox>
-                        <padding><Insets bottom="10"/></padding>
-                        <children>
-                            <TextField fx:id="tfSearchReadedText" prefWidth="300.0" />
-                            <Separator orientation="VERTICAL" />
-                            <Button fx:id="btnReadedSearch" mnemonicParsing="false" onAction="#doSearchReadedByYear" text="by year" />
-                            <Separator orientation="VERTICAL" />
-                            <Button mnemonicParsing="false" onAction="#doSearchReadedByAuthor" text="by author" />
-                            <Separator orientation="VERTICAL" />
-                            <Button mnemonicParsing="false" onAction="#doSearchReadedByTitle" text="by title" />
-                        </children>
+                        <padding>
+                            <Insets bottom="10"/>
+                        </padding>
+                        <TextField fx:id="tfSearchReadedText" prefWidth="300.0"/>
+                        <Separator orientation="VERTICAL"/>
+                        <Button fx:id="btnReadedSearch" mnemonicParsing="false" onAction="#doSearchReadedByYear"
+                                text="by year"/>
+                        <Separator orientation="VERTICAL"/>
+                        <Button mnemonicParsing="false" onAction="#doSearchReadedByAuthor" text="by author"/>
+                        <Separator orientation="VERTICAL"/>
+                        <Button mnemonicParsing="false" onAction="#doSearchReadedByTitle" text="by title"/>
                     </HBox>
                 </top>
                 <center>
-                  <TableView fx:id="tvReadedBooks">
-                    <columns>
-                        <TableColumn prefWidth="40" text="id">
-                            <cellValueFactory><PropertyValueFactory property="bookId" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="100" text="read on">
-                            <cellValueFactory><PropertyValueFactory property="dateRead" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="200" text="author">
-                            <cellValueFactory><PropertyValueFactory property="authors" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="300" text="title">
-                            <cellValueFactory><PropertyValueFactory property="titleRead" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="40" text="lang">
-                            <cellValueFactory><PropertyValueFactory property="langRead" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="100" text="published">
-                            <cellValueFactory><PropertyValueFactory property="publishDate" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="80" text="medium">
-                            <cellValueFactory><PropertyValueFactory property="medium" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="60" text="score">
-                            <cellValueFactory><PropertyValueFactory property="score" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="150" text="genre">
-                            <cellValueFactory><PropertyValueFactory property="genre" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="400" text="note">
-                            <cellValueFactory><PropertyValueFactory property="note" />
-                            </cellValueFactory>
-                        </TableColumn>
-                    </columns>
-                  </TableView>
+                    <TableView fx:id="tvFoundReadBooks">
+                        <columns>
+                            <TableColumn prefWidth="40" text="id">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="bookId"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="100" text="read on">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="dateRead"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="200" text="author">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="authors"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="300" text="title">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="titleRead"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="40" text="lang">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="langRead"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="100" text="published">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="publishDate"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="80" text="medium">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="medium"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="60" text="score">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="score"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="150" text="genre">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="genre"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="400" text="note">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="note"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                        </columns>
+                    </TableView>
                 </center>
             </BorderPane>
         </AnchorPane>
-      </content>
     </Tab>
     <Tab fx:id="tabAuthor" text="Author">
-      <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
-                     <top>
+            <children>
+                <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                            AnchorPane.topAnchor="0.0">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10"/>
+                    </padding>
+                    <top>
                         <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <TextField fx:id="tfSearchText" prefWidth="300.0" />
-                              <Separator orientation="VERTICAL" />
-                              <Button mnemonicParsing="false" onAction="#doSearchAuthor" text="Search" />
-                              <Separator orientation="VERTICAL" />
-                              <Button fx:id="btnAuthorBooks" mnemonicParsing="false" onAction="#showAuthorBooks" text="Show books" />
-                              <Separator orientation="VERTICAL" />
-                              <Button mnemonicParsing="false" onAction="#doAddAuthor" text="New author" />
-                           </children>
+                            <TextField fx:id="tfSearchText" prefWidth="300.0"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button mnemonicParsing="false" onAction="#doSearchAuthor" text="Search"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button fx:id="btnAuthorBooks" mnemonicParsing="false" onAction="#showAuthorBooks"
+                                    text="Show books"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button mnemonicParsing="false" onAction="#doAddAuthor" text="New author"/>
                         </HBox>
-                     </top>
-                     <left>
-                        <ListView fx:id="lstFoundAuthors" prefWidth="300.0" BorderPane.alignment="CENTER" />
-                     </left>
-                     <center>
+                    </top>
+                    <left>
+                        <ListView fx:id="lstFoundAuthors" prefWidth="300.0" BorderPane.alignment="CENTER"/>
+                    </left>
+                    <center>
                         <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
-                           <padding><Insets left="10" /></padding>
-                           <children>
-                               <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                               <TextField fx:id="tfAuthorName" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                               <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                               <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                               <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                               <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                               <HBox GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                                   <Button fx:id="btnAuthorSave" mnemonicParsing="false" onAction="#doSaveAuthor" text="Save" />
-                                   <Separator orientation="VERTICAL" />
-                                   <Button fx:id="btnAuthorDelete" mnemonicParsing="false" onAction="#doDeleteAuthor" text="Delete" />
-                               </HBox>
-                               <ListView fx:id="lstAuthorNames" prefHeight="100.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-                               <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                               <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                               <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                               <TextField fx:id="tfAuthorNamesLang" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                               <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                               <TextField fx:id="tfAuthorNamesType" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                               <HBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="8">
-                                   <Button fx:id="btnAuthorNamesSave" mnemonicParsing="false" onAction="#doSaveAuthorName" text="Save" />
-                                   <Separator orientation="VERTICAL" />
-                                   <Button fx:id="btnAuthorNamesNew" mnemonicParsing="false" onAction="#doAddAuthorName" text="New" />
-                                   <Separator orientation="VERTICAL" />
-                                   <Button fx:id="btnAuthorNamesDelete" mnemonicParsing="false" onAction="#doDeleteAuthorName" text="Delete" />
-                               </HBox>
-                           </children>
-                           <columnConstraints>
-                              <ColumnConstraints />
-                              <ColumnConstraints />
-                           </columnConstraints>
+                            <padding>
+                                <Insets left="10"/>
+                            </padding>
+                            <columnConstraints>
+                                <ColumnConstraints/>
+                                <ColumnConstraints/>
+                            </columnConstraints>
+                            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <TextField fx:id="tfAuthorName" prefWidth="300.0" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="0"/>
+                            <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                            <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            <HBox GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                <Button fx:id="btnAuthorSave" mnemonicParsing="false" onAction="#doSaveAuthor"
+                                        text="Save"/>
+                                <Separator orientation="VERTICAL"/>
+                                <Button fx:id="btnAuthorDelete" mnemonicParsing="false"
+                                        onAction="#doDeleteAuthor" text="Delete"/>
+                            </HBox>
+                            <ListView fx:id="lstAuthorNames" prefHeight="100.0" GridPane.columnIndex="0"
+                                      GridPane.columnSpan="2" GridPane.rowIndex="4"/>
+                            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                            <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="5"/>
+                            <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                            <TextField fx:id="tfAuthorNamesLang" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="6"/>
+                            <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                            <TextField fx:id="tfAuthorNamesType" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="7"/>
+                            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                  GridPane.rowIndex="8">
+                                <Button fx:id="btnAuthorNamesSave" mnemonicParsing="false"
+                                        onAction="#doSaveAuthorName" text="Save"/>
+                                <Separator orientation="VERTICAL"/>
+                                <Button fx:id="btnAuthorNamesNew" mnemonicParsing="false"
+                                        onAction="#doAddAuthorName" text="New"/>
+                                <Separator orientation="VERTICAL"/>
+                                <Button fx:id="btnAuthorNamesDelete" mnemonicParsing="false"
+                                        onAction="#doDeleteAuthorName" text="Delete"/>
+                            </HBox>
                         </GridPane>
-                     </center></BorderPane>
-               </children>
+                    </center>
+                </BorderPane>
+            </children>
         </AnchorPane>
-      </content>
     </Tab>
     <Tab fx:id="tabBook" text="Book">
-          <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200">
-                  <children>
-                      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
-                          <top>
-                              <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
-                                  <children>
-                                      <TextField fx:id="tfBookSearchText" prefWidth="300.0" />
-                                      <Separator orientation="VERTICAL" />
-                                      <Button mnemonicParsing="false" onAction="#doSearchBook" text="Search" />
-                                      <Separator orientation="VERTICAL" />
-                                      <Button mnemonicParsing="false" onAction="#doAddBook" text="New book" />
-                                  </children>
-                              </HBox>
-                          </top>
-                          <left>
-                              <ListView fx:id="lstFoundBooks" prefWidth="400.0" BorderPane.alignment="CENTER" />
-                          </left>
-                          <center>
-                              <GridPane hgap="5" vgap="5">
-                                  <padding><Insets left="10"/></padding>
-                                  <Label text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                  <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                  <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                      <Button fx:id="btnAddAuthor"  mnemonicParsing="false" onAction="#doAddBookAuthor" text="Add author" />
-                                      <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btnDeleteAuthor"  mnemonicParsing="false" onAction="#doDeleteBookAuthor" text="Delete author" />
-                                  </HBox>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200">
+            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        AnchorPane.topAnchor="0.0">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10"/>
+                </padding>
+                <top>
+                    <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
+                        <TextField fx:id="tfBookSearchText" prefWidth="300.0"/>
+                        <Separator orientation="VERTICAL"/>
+                        <Button mnemonicParsing="false" onAction="#doSearchBook" text="Search"/>
+                        <Separator orientation="VERTICAL"/>
+                        <Button mnemonicParsing="false" onAction="#doAddBook" text="New book"/>
+                    </HBox>
+                </top>
+                <left>
+                    <ListView fx:id="lstFoundBooks" prefWidth="400.0" BorderPane.alignment="CENTER"/>
+                </left>
+                <center>
+                    <GridPane hgap="5" vgap="5">
+                        <padding>
+                            <Insets left="10"/>
+                        </padding>
+                        <Label text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1"
+                                  GridPane.rowIndex="0"/>
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Button fx:id="btnAddAuthor" mnemonicParsing="false" onAction="#doAddBookAuthor"
+                                    text="Add author"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button fx:id="btnDeleteAuthor" mnemonicParsing="false"
+                                    onAction="#doDeleteBookAuthor" text="Delete author"/>
+                        </HBox>
 
-                                  <Label text="Title" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                  <TextField fx:id="tfBookTitle" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label text="Title" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="tfBookTitle" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                                  <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                  <TextField fx:id="tfBookLang" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.fillWidth="false"/>
+                        <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <TextField fx:id="tfBookLang" prefWidth="100" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="3" GridPane.fillWidth="false"/>
 
-                                  <Label text="Publish date" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                  <TextField fx:id="tfPublishDate" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.fillWidth="false"/>
+                        <Label text="Publish date" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <TextField fx:id="tfPublishDate" prefWidth="100" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="4" GridPane.fillWidth="false"/>
 
-                                  <Label text="Genre" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                                  <TextField fx:id="tfGenre" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                        <Label text="Genre" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <TextField fx:id="tfGenre" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-                                  <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-                                  <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
-                                            GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
-                                  <HBox GridPane.columnIndex="0" GridPane.rowIndex="7">
-                                      <Button fx:id="btnSaveBook"  mnemonicParsing="false" onAction="#doSaveBook" text="Save book" />
-                                  </HBox>
+                        <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
+                        <HBox GridPane.columnIndex="0" GridPane.rowIndex="7">
+                            <Button fx:id="btnSaveBook" mnemonicParsing="false" onAction="#doSaveBook"
+                                    text="Save book"/>
+                        </HBox>
 
-                                  <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-                                  <ListView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
-                                  <HBox GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                      <Button fx:id="btnAddBookName"  mnemonicParsing="false" onAction="#doAddBookName" text="Add name" />
-                                      <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btnEditBookName"  mnemonicParsing="false" onAction="#doEditBookName" text="Edit name" />
-                                      <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btnDeleteBookName"  mnemonicParsing="false" onAction="#doDeleteBookName" text="Delete name" />
-                                  </HBox>
+                        <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+                        <ListView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1"
+                                  GridPane.rowIndex="8"/>
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="9">
+                            <Button fx:id="btnAddBookName" mnemonicParsing="false" onAction="#doAddBookName"
+                                    text="Add name"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button fx:id="btnEditBookName" mnemonicParsing="false" onAction="#doEditBookName"
+                                    text="Edit name"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button fx:id="btnDeleteBookName" mnemonicParsing="false"
+                                    onAction="#doDeleteBookName" text="Delete name"/>
+                        </HBox>
 
-                                  <Label text="Read book" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
-                                  <TableView fx:id="lstReadBooks" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                                    <columns>
-                                        <TableColumn prefWidth="100" text="read on">
-                                            <cellValueFactory><PropertyValueFactory property="dateRead" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                        <TableColumn prefWidth="40" text="lang">
-                                            <cellValueFactory><PropertyValueFactory property="langRead" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                        <TableColumn prefWidth="100" text="medium">
-                                            <cellValueFactory><PropertyValueFactory property="medium" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                        <TableColumn prefWidth="60" text="score">
-                                            <cellValueFactory><PropertyValueFactory property="score" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                        <TableColumn prefWidth="100" text="goodreads id">
-                                            <cellValueFactory><PropertyValueFactory property="goodreadsId" />
-                                            </cellValueFactory>
-                                            <cellFactory><GoodreadsLinkCell/></cellFactory>
-                                        </TableColumn>
-                                        <TableColumn prefWidth="100" text="lib file">
-                                            <cellValueFactory><PropertyValueFactory property="libFile" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                        <TableColumn prefWidth="250" text="note">
-                                            <cellValueFactory><PropertyValueFactory property="note" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                    </columns>
-                                  </TableView>
-                                  <HBox GridPane.columnIndex="1" GridPane.rowIndex="11">
-                                      <Button fx:id="btnAddReadBook"  mnemonicParsing="false" onAction="#doAddReadBook" text="Add book" />
-                                      <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btnEditReadBook"  mnemonicParsing="false" onAction="#doEditReadBook" text="Edit book" />
-                                      <Separator orientation="VERTICAL" />
-                                      <Button fx:id="btndeleteReadBook"  mnemonicParsing="false" onAction="#doDeleteReadBook" text="Delete book" />
-                                  </HBox>
+                        <Label text="Read book" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+                        <TableView fx:id="lstReadBooks" prefHeight="100" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="10">
+                            <columns>
+                                <TableColumn prefWidth="100" text="read on">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="dateRead"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="40" text="lang">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="langRead"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="100" text="medium">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="medium"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="60" text="score">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="score"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="100" text="goodreads id">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="goodreadsId"/>
+                                    </cellValueFactory>
+                                    <cellFactory>
+                                        <GoodreadsLinkCell/>
+                                    </cellFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="100" text="lib file">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="libFile"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="250" text="note">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="note"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                        </TableView>
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="11">
+                            <Button fx:id="btnAddReadBook" mnemonicParsing="false" onAction="#doAddReadBook"
+                                    text="Add book"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button fx:id="btnEditReadBook" mnemonicParsing="false" onAction="#doEditReadBook"
+                                    text="Edit book"/>
+                            <Separator orientation="VERTICAL"/>
+                            <Button fx:id="btndeleteReadBook" mnemonicParsing="false"
+                                    onAction="#doDeleteReadBook" text="Delete book"/>
+                        </HBox>
 
-                                  <columnConstraints>
-                                      <ColumnConstraints/>
-                                      <ColumnConstraints hgrow="ALWAYS"/>
-                                  </columnConstraints>
-                              </GridPane>
-                          </center>
-                      </BorderPane>
-                  </children>
-              </AnchorPane>
-          </content>
+                        <columnConstraints>
+                            <ColumnConstraints/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+                    </GridPane>
+                </center>
+            </BorderPane>
+        </AnchorPane>
     </Tab>
-  </tabs>
 </TabPane>
