@@ -245,7 +245,7 @@ public class MainController {
             alert.setHeaderText("Delete "+curAuthor.getName()+"?");
             //alert.setContentText("");
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if (result.isPresent() && result.get() == ButtonType.OK){
                 try {
                     sqliteDb.getAuthorDb().deleteAuthor(curAuthor.getId());
                     doSearchAuthor();

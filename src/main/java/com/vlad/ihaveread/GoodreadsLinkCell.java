@@ -4,14 +4,13 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
-import org.controlsfx.control.PropertySheet;
 
 import java.io.IOException;
 
-public class GoodreadsLinkCell implements Callback<TableColumn<PropertySheet.Item, String>, TableCell<PropertySheet.Item, String>> {
+public class GoodreadsLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
 
     @Override
-    public TableCell<PropertySheet.Item, String> call(TableColumn<PropertySheet.Item, String> arg) {
+    public TableCell<S, T> call(TableColumn<S, T> arg) {
         return new TableCell<>() {
 
             private final Hyperlink hyperlink = new Hyperlink();
@@ -28,12 +27,12 @@ public class GoodreadsLinkCell implements Callback<TableColumn<PropertySheet.Ite
             }
 
             @Override
-            protected void updateItem(String url, boolean empty) {
-                super.updateItem(url, empty);
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    hyperlink.setText(url);
+                    hyperlink.setText(item == null ? "" : item.toString());
                     setGraphic(hyperlink);
                 }
             }
