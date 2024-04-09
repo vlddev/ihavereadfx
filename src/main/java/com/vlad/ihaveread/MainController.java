@@ -185,6 +185,8 @@ public class MainController {
             lstFoundAuthors.getItems().clear();
             if (!authors.isEmpty()) {
                 lstFoundAuthors.getItems().addAll(authors);
+                lstFoundAuthors.getSelectionModel().select(0);
+                lstFoundAuthors.requestFocus();
             } else {
                 log.info("Nothing found");
             }
@@ -373,6 +375,8 @@ public class MainController {
             lstFoundBooks.getItems().clear();
             if (!books.isEmpty()) {
                 lstFoundBooks.getItems().addAll(books);
+                lstFoundBooks.getSelectionModel().select(0);
+                lstFoundBooks.requestFocus();
             } else {
                 log.info("Nothing found");
             }

@@ -6,15 +6,14 @@
 <?import javafx.scene.layout.*?>
 
 <?import com.vlad.ihaveread.GoodreadsLinkCell?>
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0"
-         prefWidth="996.0"
+<TabPane maxHeight="1200" maxWidth="1900" minHeight="100" minWidth="200" prefHeight="900" prefWidth="1300"
          tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
          fx:id="tabPane"
          fx:controller="com.vlad.ihaveread.MainController">
     <Tab fx:id="tabReaded" text="Readed">
         <AnchorPane>
-            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="0.0">
+            <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                        AnchorPane.topAnchor="0">
                 <padding>
                     <Insets bottom="10" left="10" right="10" top="10"/>
                 </padding>
@@ -23,7 +22,7 @@
                         <padding>
                             <Insets bottom="10"/>
                         </padding>
-                        <TextField fx:id="tfSearchReadedText" prefWidth="300.0"/>
+                        <TextField fx:id="tfSearchReadedText" prefWidth="300"/>
                         <Separator orientation="VERTICAL"/>
                         <Button fx:id="btnReadedSearch" mnemonicParsing="false" onAction="#doSearchReadedByYear"
                                 text="by year"/>
@@ -93,16 +92,16 @@
         </AnchorPane>
     </Tab>
     <Tab fx:id="tabAuthor" text="Author">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane minHeight="0" minWidth="0" prefHeight="180" prefWidth="200">
             <children>
-                <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                            AnchorPane.topAnchor="0.0">
+                <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                            AnchorPane.topAnchor="0">
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10"/>
                     </padding>
                     <top>
-                        <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
-                            <TextField fx:id="tfSearchText" prefWidth="300.0"/>
+                        <HBox prefHeight="30" BorderPane.alignment="CENTER">
+                            <TextField fx:id="tfSearchText" prefWidth="300" onAction="#doSearchAuthor"/>
                             <Separator orientation="VERTICAL"/>
                             <Button mnemonicParsing="false" onAction="#doSearchAuthor" text="Search"/>
                             <Separator orientation="VERTICAL"/>
@@ -113,7 +112,7 @@
                         </HBox>
                     </top>
                     <left>
-                        <ListView fx:id="lstFoundAuthors" prefWidth="300.0" BorderPane.alignment="CENTER"/>
+                        <ListView fx:id="lstFoundAuthors" prefWidth="300" BorderPane.alignment="CENTER"/>
                     </left>
                     <center>
                         <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
@@ -125,7 +124,7 @@
                                 <ColumnConstraints/>
                             </columnConstraints>
                             <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                            <TextField fx:id="tfAuthorName" prefWidth="300.0" GridPane.columnIndex="1"
+                            <TextField fx:id="tfAuthorName" prefWidth="300" GridPane.columnIndex="1"
                                        GridPane.rowIndex="0"/>
                             <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                             <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
@@ -138,7 +137,7 @@
                                 <Button fx:id="btnAuthorDelete" mnemonicParsing="false"
                                         onAction="#doDeleteAuthor" text="Delete"/>
                             </HBox>
-                            <ListView fx:id="lstAuthorNames" prefHeight="100.0" GridPane.columnIndex="0"
+                            <ListView fx:id="lstAuthorNames" prefHeight="100" GridPane.columnIndex="0"
                                       GridPane.columnSpan="2" GridPane.rowIndex="4"/>
                             <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
                             <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1"
@@ -167,15 +166,15 @@
         </AnchorPane>
     </Tab>
     <Tab fx:id="tabBook" text="Book">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200">
-            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="0.0">
+        <AnchorPane minHeight="0" minWidth="0" prefHeight="180" prefWidth="200">
+            <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                        AnchorPane.topAnchor="0">
                 <padding>
                     <Insets bottom="10" left="10" right="10" top="10"/>
                 </padding>
                 <top>
                     <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
-                        <TextField fx:id="tfBookSearchText" prefWidth="300.0"/>
+                        <TextField fx:id="tfBookSearchText" prefWidth="300" onAction="#doSearchBook"/>
                         <Separator orientation="VERTICAL"/>
                         <Button mnemonicParsing="false" onAction="#doSearchBook" text="Search"/>
                         <Separator orientation="VERTICAL"/>
@@ -183,7 +182,7 @@
                     </HBox>
                 </top>
                 <left>
-                    <ListView fx:id="lstFoundBooks" prefWidth="400.0" BorderPane.alignment="CENTER"/>
+                    <ListView fx:id="lstFoundBooks" prefWidth="400" BorderPane.alignment="CENTER"/>
                 </left>
                 <center>
                     <GridPane hgap="5" vgap="5">
@@ -269,12 +268,12 @@
                                         <GoodreadsLinkCell/>
                                     </cellFactory>
                                 </TableColumn>
-                                <TableColumn prefWidth="100" text="lib file">
+                                <TableColumn prefWidth="250" text="lib file">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="libFile"/>
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn prefWidth="250" text="note">
+                                <TableColumn prefWidth="300" text="note">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="note"/>
                                     </cellValueFactory>
