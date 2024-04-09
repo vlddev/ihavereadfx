@@ -5,12 +5,13 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
+<?import com.vlad.ihaveread.GoodreadsLinkCell?>
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="996.0"
          tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
          fx:id="tabPane"
          fx:controller="com.vlad.ihaveread.MainController">
   <tabs>
-    <Tab text="Readed">
+    <Tab fx:id="tabReaded" text="Readed">
       <content>
         <AnchorPane>
             <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -79,7 +80,7 @@
         </AnchorPane>
       </content>
     </Tab>
-    <Tab text="Author">
+    <Tab fx:id="tabAuthor" text="Author">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -90,7 +91,9 @@
                            <children>
                               <TextField fx:id="tfSearchText" prefWidth="300.0" />
                               <Separator orientation="VERTICAL" />
-                              <Button fx:id="btnAuthorSearch" mnemonicParsing="false" onAction="#doSearchAuthor" text="Search" />
+                              <Button mnemonicParsing="false" onAction="#doSearchAuthor" text="Search" />
+                              <Separator orientation="VERTICAL" />
+                              <Button fx:id="btnAuthorBooks" mnemonicParsing="false" onAction="#showAuthorBooks" text="Show books" />
                               <Separator orientation="VERTICAL" />
                               <Button mnemonicParsing="false" onAction="#doAddAuthor" text="New author" />
                            </children>
@@ -163,7 +166,7 @@
                               <GridPane hgap="5" vgap="5">
                                   <padding><Insets left="10"/></padding>
                                   <Label text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                  <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                  <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                                       <Button fx:id="btnAddAuthor"  mnemonicParsing="false" onAction="#doAddBookAuthor" text="Add author" />
                                       <Separator orientation="VERTICAL" />
@@ -216,6 +219,15 @@
                                         </TableColumn>
                                         <TableColumn prefWidth="60" text="score">
                                             <cellValueFactory><PropertyValueFactory property="score" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="100" text="goodreads id">
+                                            <cellValueFactory><PropertyValueFactory property="goodreadsId" />
+                                            </cellValueFactory>
+                                            <cellFactory><GoodreadsLinkCell/></cellFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="100" text="lib file">
+                                            <cellValueFactory><PropertyValueFactory property="libFile" />
                                             </cellValueFactory>
                                         </TableColumn>
                                         <TableColumn prefWidth="250" text="note">

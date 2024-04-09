@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 
 public class MainController {
 
-    private static Logger log = LoggerFactory.getLogger(MainController.class);
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
     private SqliteDb sqliteDb;
     private Author curAuthor;
@@ -44,7 +44,7 @@ public class MainController {
     private TextField tfAuthorNamesName, tfAuthorNamesLang, tfAuthorNamesType;
 
     @FXML
-    private Tab tabBook;
+    private Tab tabBook, tabAuthor, tabReaded;
     @FXML
     private TabPane tabPane;
 
@@ -111,6 +111,11 @@ public class MainController {
                     setText(null);
                 } else {
                     setText(item.getName());
+                    setOnMouseClicked(mouseClickedEvent -> {
+                        if (mouseClickedEvent.getButton().equals(MouseButton.PRIMARY) && mouseClickedEvent.getClickCount() == 2) {
+                            showInAuthorTab(item);
+                        }
+                    });
                 }
             }
         });
@@ -126,10 +131,11 @@ public class MainController {
                         if (mouseClickedEvent.getButton().equals(MouseButton.PRIMARY) && mouseClickedEvent.getClickCount() == 2) {
                             doEditBookName(null);
                         }
-                    });                }
+                    });
+                }
             }
         });
-        // double-click on table row
+        // double-click on table row - show book in Book-Tab
         tvReadedBooks.setRowFactory(tv -> {
             TableRow<BookReadedTblRow> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -140,7 +146,7 @@ public class MainController {
             });
             return row ;
         });
-        // double-click on table row
+        // double-click on table row - show edit dialog
         lstReadBooks.setRowFactory(tv -> {
             TableRow<BookReaded> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -173,6 +179,15 @@ public class MainController {
             } else {
                 log.info("Nothing found");
             }
+        }
+    }
+
+    public void showAuthorBooks(ActionEvent actionEvent) {
+        if (curAuthor != null) {
+            tvReadedBooks.getItems().clear();
+            tfSearchReadedText.setText(curAuthor.getName());
+            doSearchReadedByAuthor(null);
+            tabPane.getSelectionModel().select(tabReaded);
         }
     }
 
@@ -360,6 +375,12 @@ public class MainController {
         }
     }
 
+    public void showInAuthorTab(Author entity) {
+        lstFoundAuthors.getItems().clear();
+        lstFoundAuthors.getItems().add(entity);
+        lstFoundAuthors.getSelectionModel().select(entity);
+        tabPane.getSelectionModel().select(tabAuthor);
+    }
 
     public void onSelectBookName(Book book) {
         clearBook();

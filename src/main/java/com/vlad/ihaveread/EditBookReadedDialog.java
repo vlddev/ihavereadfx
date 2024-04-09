@@ -18,7 +18,7 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
 
     private BookReaded entity;
     @FXML
-    private TextField tfReadLang, tfReadDate, tfMedium, tfScore;
+    private TextField tfReadLang, tfReadDate, tfMedium, tfScore, tfGoodreadId, tfLibFile;
     @FXML
     private TextArea taNote;
 
@@ -61,6 +61,8 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             tfReadLang.setText(entity.getLangRead());
             tfReadDate.setText(entity.getDateRead());
             tfMedium.setText(entity.getMedium());
+            tfGoodreadId.setText(entity.getGoodreadsId());
+            tfLibFile.setText(entity.getLibFile());
             tfScore.setText(entity.getScore().toString());
             taNote.setText(entity.getNote());
         } else {
@@ -69,6 +71,8 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             tfReadDate.clear();
             tfMedium.clear();
             tfScore.clear();
+            tfGoodreadId.clear();
+            tfLibFile.clear();
             taNote.clear();
         }
     }
@@ -97,19 +101,16 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             }
 
             if (entity == null) { //new book name
-                entity = BookReaded.builder().dateRead(strDate)
-                        .langRead(strLang)
-                        .medium(tfMedium.getText().trim())
-                        .note(taNote.getText().trim())
-                        .score(score)
-                        .build();
-            } else {
-                entity.setDateRead(strDate);
-                entity.setLangRead(strLang);
-                entity.setMedium(tfMedium.getText().trim());
-                entity.setNote(taNote.getText().trim());
-                entity.setScore(score);
+                entity = BookReaded.builder().build();
             }
+            entity.setDateRead(strDate);
+            entity.setLangRead(strLang);
+            entity.setMedium(tfMedium.getText().trim());
+            entity.setGoodreadsId(tfGoodreadId.getText().trim());
+            entity.setLibFile(tfLibFile.getText().trim());
+            entity.setNote(taNote.getText().trim());
+            entity.setScore(score);
+
             return;
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

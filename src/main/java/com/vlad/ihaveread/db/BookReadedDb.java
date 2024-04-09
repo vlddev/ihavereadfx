@@ -98,7 +98,9 @@ public class BookReadedDb {
     }
 
     public BookReaded insertBookReaded(BookReaded book) throws SQLException {
-        String sql = "INSERT INTO book_readed (book_id, date_read, lang_read, medium, score, note) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+        String sql = """
+            INSERT INTO book_readed (book_id, date_read, lang_read, medium, score, note, goodreads_id, lib_file) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id""";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, book.getBookId());
             ps.setString(2, book.getDateRead());
@@ -106,6 +108,8 @@ public class BookReadedDb {
             ps.setString(4, book.getMedium());
             ps.setInt(5, book.getScore());
             ps.setString(6, book.getNote());
+            ps.setString(7, book.getGoodreadsId());
+            ps.setString(8, book.getLibFile());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 book.setId(rs.getInt(1));
@@ -117,7 +121,10 @@ public class BookReadedDb {
     }
 
     public void updateBookReaded(BookReaded item) throws SQLException {
-        String sql = "UPDATE book_readed SET book_id = ?, date_read = ?, lang_read = ?, medium = ?, score = ?, note = ? WHERE id = ?";
+        String sql = """
+            UPDATE book_readed 
+            SET book_id = ?, date_read = ?, lang_read = ?, medium = ?, score = ?, note = ?, goodreads_id = ?, lib_file = ?
+            WHERE id = ?""";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, item.getBookId());
             ps.setString(2, item.getDateRead());
@@ -125,7 +132,9 @@ public class BookReadedDb {
             ps.setString(4, item.getMedium());
             ps.setInt(5, item.getScore());
             ps.setString(6, item.getNote());
-            ps.setInt(7, item.getId());
+            ps.setString(7, item.getGoodreadsId());
+            ps.setString(8, item.getLibFile());
+            ps.setInt(9, item.getId());
             ps.executeUpdate();
         }
     }
@@ -162,6 +171,8 @@ public class BookReadedDb {
                 .medium(rs.getString("medium"))
                 .score(rs.getInt("score"))
                 .note(rs.getString("note"))
+                .goodreadsId(rs.getString("goodreads_id"))
+                .libFile(rs.getString("lib_file"))
                 .build();
     }
 }

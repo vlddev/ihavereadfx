@@ -71,7 +71,9 @@ public class SqliteDb implements AutoCloseable {
                 	"medium"	TEXT,
                 	"score"	INTEGER,
                 	"title_read"	TEXT,
-                	"note"	TEXT
+                	"note"	TEXT,
+                	"goodreads_id" TEXT,
+                	"lib_file" TEXT
                 )""");
         st.executeBatch();
         st.close();

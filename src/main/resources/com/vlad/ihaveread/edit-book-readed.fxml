@@ -20,12 +20,18 @@
             <Label text="Medium" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
             <TextField fx:id="tfMedium" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.fillWidth="false"/>
 
-            <Label text="Score" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="tfScore" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.fillWidth="false"/>
+            <Label text="GoodreadId" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="tfGoodreadId" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.fillWidth="false"/>
 
-            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <Label text="Lib file" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <TextField fx:id="tfLibFile" prefWidth="440" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.fillWidth="false"/>
+
+            <Label text="Score" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <TextField fx:id="tfScore" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.fillWidth="false"/>
+
+            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
             <TextArea fx:id="taNote" prefHeight="100" prefWidth="440" wrapText="true"
-                      GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.fillWidth="true"/>
+                      GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
 
             <columnConstraints>
                 <ColumnConstraints/>

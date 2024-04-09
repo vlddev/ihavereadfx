@@ -16,4 +16,6 @@ public class BookReaded {
     String medium;
     String note;
     Integer score;
+    String goodreadsId;
+    String libFile;
 }
