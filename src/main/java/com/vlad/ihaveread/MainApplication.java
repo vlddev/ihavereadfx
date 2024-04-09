@@ -11,11 +11,16 @@ import java.io.File;
 
 public class MainApplication extends Application {
 
-    public static final String DEFAULT_DB_FILE = "./ihaveread.db";
     public static final String PARAM_DB_FILE = "dbfile";
+    public static final String PARAM_LIB_ROOT = "libroot";
+    public static final String DEFAULT_DB_FILE = "./ihaveread.db";
+    public static final String DEFAULT_LIB_ROOT = "./";
+
+    public static String LIB_ROOT = DEFAULT_LIB_ROOT;
 
     @Override
     public void start(Stage stage) throws Exception {
+        LIB_ROOT = System.getProperty(PARAM_LIB_ROOT, DEFAULT_LIB_ROOT);
         String strDbFile = System.getProperty(PARAM_DB_FILE, DEFAULT_DB_FILE);
         File dbFile = new File(strDbFile);
         if (!dbFile.exists()) {

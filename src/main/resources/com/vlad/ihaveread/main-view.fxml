@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import com.vlad.ihaveread.GoodreadsLinkCell?>
+<?import com.vlad.ihaveread.LibLinkCell?>
 <TabPane maxHeight="1200" maxWidth="1900" minHeight="100" minWidth="200" prefHeight="900" prefWidth="1300"
          tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
          fx:id="tabPane"
@@ -272,6 +273,9 @@
                                     <cellValueFactory>
                                         <PropertyValueFactory property="libFile"/>
                                     </cellValueFactory>
+                                    <cellFactory>
+                                        <LibLinkCell/>
+                                    </cellFactory>
                                 </TableColumn>
                                 <TableColumn prefWidth="300" text="note">
                                     <cellValueFactory>

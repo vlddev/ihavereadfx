@@ -1,6 +1,7 @@
 package com.vlad.ihaveread;
 
 import com.vlad.ihaveread.dao.BookReaded;
+import com.vlad.ihaveread.util.Util;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,24 +77,20 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
     }
 
     @FXML
-    private void initialize() {
-    }
-
-    @FXML
     private void onCreate(ActionEvent event) {
         try {
             // validate input
-            String strDate = tfReadDate.getText().trim();
+            String strDate = Util.trimOrEmpty(tfReadDate.getText());
             if (strDate.length() == 0) {
                 throw new RuntimeException("Date not set");
             }
-            String strLang = tfReadLang.getText().trim();
+            String strLang = Util.trimOrEmpty(tfReadLang.getText());
             if (strLang.length() == 0) {
                 throw new RuntimeException("Language not set");
             }
             int score;
             try {
-                score = Integer.parseInt(tfScore.getText().trim());
+                score = Integer.parseInt(Util.trimOrNull(tfScore.getText()));
             } catch (NumberFormatException e) {
                 throw new RuntimeException("Score must be number");
             }
@@ -103,10 +100,10 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             }
             entity.setDateRead(strDate);
             entity.setLangRead(strLang);
-            entity.setMedium(tfMedium.getText().trim());
-            entity.setGoodreadsId(tfGoodreadId.getText().trim());
-            entity.setLibFile(tfLibFile.getText().trim());
-            entity.setNote(taNote.getText().trim());
+            entity.setMedium(Util.trimOrNull(tfMedium.getText()));
+            entity.setGoodreadsId(Util.trimOrNull(tfGoodreadId.getText()));
+            entity.setLibFile(Util.trimOrNull(tfLibFile.getText()));
+            entity.setNote(Util.trimOrNull(taNote.getText()));
             entity.setScore(score);
 
             return;
