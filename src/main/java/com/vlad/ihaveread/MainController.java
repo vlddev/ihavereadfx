@@ -75,43 +75,13 @@ public class MainController {
     public void initListeners() {
         lstFoundAuthors.getSelectionModel().selectedItemProperty().addListener(
                 (ov, oldVal, newVal) -> onSelectAuthor(newVal));
-        lstFoundAuthors.setCellFactory(callback -> new ListCell<>() {
-            @Override
-            protected void updateItem(Author item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getName());
-                }
-            }
-        });
+        lstFoundAuthors.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
         lstAuthorNames.getSelectionModel().selectedItemProperty().addListener(
                 (ov, oldVal, newVal) -> onSelectAuthorName(newVal));
-        lstAuthorNames.setCellFactory(callback -> new ListCell<>() {
-            @Override
-            protected void updateItem(AuthorName item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getName());
-                }
-            }
-        });
+        lstAuthorNames.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
         lstFoundBooks.getSelectionModel().selectedItemProperty().addListener(
                 (ov, oldVal, newVal) -> onSelectBookName(newVal));
-        lstFoundBooks.setCellFactory(callback -> new ListCell<>() {
-            @Override
-            protected void updateItem(Book item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getTitle());
-                }
-            }
-        });
+        lstFoundBooks.setCellFactory(callback -> new PropertyListCellFactory<>("title"));
         lstBookAuthors.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(Author item, boolean empty) {

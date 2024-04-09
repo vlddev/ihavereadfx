@@ -26,7 +26,7 @@ public class LibLinkCell implements Callback<TableColumn<PropertySheet.Item, Str
                         if (Files.exists(Path.of(file))) {
                             new ProcessBuilder("xdg-open", file).start();
                         } else {
-                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
                             alert.setTitle("Warning");
                             alert.setHeaderText("File not exist");
                             alert.show();
