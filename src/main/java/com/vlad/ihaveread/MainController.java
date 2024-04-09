@@ -268,11 +268,18 @@ public class MainController {
 
     public void doDeleteAuthor() {
         if (curAuthor != null) {
-            // TODO ask "are you sure?"
-            try {
-                sqliteDb.getAuthorDb().deleteAuthor(curAuthor.getId());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm deletion");
+            alert.setHeaderText("Delete "+curAuthor.getName()+"?");
+            //alert.setContentText("");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                try {
+                    sqliteDb.getAuthorDb().deleteAuthor(curAuthor.getId());
+                    doSearchAuthor();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

@@ -29,7 +29,7 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1600, 1000);
 
-        MainController mainController = (MainController) fxmlLoader.getController();
+        MainController mainController = fxmlLoader.getController();
         mainController.setSqliteDb(sqliteDb);
         mainController.initListeners();
         mainController.initComponents(scene);
