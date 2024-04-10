@@ -17,7 +17,7 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
 
     private BookReaded entity;
     @FXML
-    private TextField tfReadLang, tfReadDate, tfMedium, tfScore, tfGoodreadId, tfLibFile;
+    private TextField tfReadLang, tfReadDate, tfMedium, tfScore;
     @FXML
     private TextArea taNote;
 
@@ -60,8 +60,6 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             tfReadLang.setText(entity.getLangRead());
             tfReadDate.setText(entity.getDateRead());
             tfMedium.setText(entity.getMedium());
-            tfGoodreadId.setText(entity.getGoodreadsId());
-            tfLibFile.setText(entity.getLibFile());
             tfScore.setText(entity.getScore().toString());
             taNote.setText(entity.getNote());
         } else {
@@ -70,8 +68,6 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             tfReadDate.clear();
             tfMedium.clear();
             tfScore.clear();
-            tfGoodreadId.clear();
-            tfLibFile.clear();
             taNote.clear();
         }
     }
@@ -101,8 +97,6 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             entity.setDateRead(strDate);
             entity.setLangRead(strLang);
             entity.setMedium(Util.trimOrNull(tfMedium.getText()));
-            entity.setGoodreadsId(Util.trimOrNull(tfGoodreadId.getText()));
-            entity.setLibFile(Util.trimOrNull(tfLibFile.getText()));
             entity.setNote(Util.trimOrNull(taNote.getText()));
             entity.setScore(score);
 

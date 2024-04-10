@@ -231,7 +231,7 @@
                                     <PropertyValueFactory property="lang"/>
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="300" text="name">
+                            <TableColumn prefWidth="350" text="name">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="name"/>
                                 </cellValueFactory>
@@ -244,7 +244,7 @@
                                     <GoodreadsLinkCell/>
                                 </cellFactory>
                             </TableColumn>
-                            <TableColumn prefWidth="250" text="lib file">
+                            <TableColumn prefWidth="350" text="lib file">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="libFile"/>
                                 </cellValueFactory>
@@ -289,23 +289,7 @@
                                         <PropertyValueFactory property="score"/>
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn prefWidth="100" text="goodreads id">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="goodreadsId"/>
-                                    </cellValueFactory>
-                                    <cellFactory>
-                                        <GoodreadsLinkCell/>
-                                    </cellFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="250" text="lib file">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="libFile"/>
-                                    </cellValueFactory>
-                                    <cellFactory>
-                                        <LibLinkCell/>
-                                    </cellFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="300" text="note">
+                                <TableColumn prefWidth="400" text="note">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="note"/>
                                     </cellValueFactory>
