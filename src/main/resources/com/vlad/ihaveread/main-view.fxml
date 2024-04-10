@@ -36,11 +36,11 @@
                 <center>
                     <TableView fx:id="tvFoundReadBooks">
                         <columns>
-                            <TableColumn prefWidth="40" text="id">
+                            <!--TableColumn prefWidth="40" text="id">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="bookId"/>
                                 </cellValueFactory>
-                            </TableColumn>
+                            </TableColumn-->
                             <TableColumn prefWidth="100" text="read on">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="dateRead"/>
@@ -85,6 +85,12 @@
                                 <cellValueFactory>
                                     <PropertyValueFactory property="note"/>
                                 </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="100" text="goodreads">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="goodreadsId"/>
+                                </cellValueFactory>
+                                <cellFactory><GoodreadsLinkCell/> </cellFactory>
                             </TableColumn>
                         </columns>
                     </TableView>

@@ -19,4 +19,5 @@ public class BookReadedTblRow {
     String authors;
     String publishDate;
     String genre;
+    String goodreadsId;
 }
