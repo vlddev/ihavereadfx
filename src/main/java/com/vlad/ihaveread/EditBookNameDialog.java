@@ -1,6 +1,7 @@
 package com.vlad.ihaveread;
 
 import com.vlad.ihaveread.dao.BookName;
+import com.vlad.ihaveread.util.Util;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,9 +15,9 @@ import java.util.Objects;
 
 public class EditBookNameDialog extends Dialog<BookName> {
 
-    private BookName bookName;
+    private BookName entity;
     @FXML
-    private TextField tfName, tfLang;
+    private TextField tfName, tfLang, tfGoodreadId, tfLibFile;
 
     @FXML
     private ButtonType btnCreate;
@@ -41,7 +42,7 @@ public class EditBookNameDialog extends Dialog<BookName> {
                     return null;
                 }
 
-                return bookName;
+                return entity;
             });
 
             setOnShowing(dialogEvent -> Platform.runLater(() -> tfName.requestFocus()));
@@ -50,16 +51,20 @@ public class EditBookNameDialog extends Dialog<BookName> {
         }
     }
 
-    public void setBookName(BookName bookName) {
-        this.bookName = bookName;
-        if (bookName != null) {
+    public void setEntity(BookName entity) {
+        this.entity = entity;
+        if (entity != null) {
             setTitle("Edit book name");
-            tfName.setText(bookName.getName());
-            tfLang.setText(bookName.getLang());
+            tfName.setText(entity.getName());
+            tfLang.setText(entity.getLang());
+            tfGoodreadId.setText(entity.getGoodreadsId());
+            tfLibFile.setText(entity.getLibFile());
         } else {
             setTitle("New book name");
             tfName.clear();
             tfLang.clear();
+            tfGoodreadId.clear();
+            tfLibFile.clear();
         }
     }
 
@@ -71,30 +76,28 @@ public class EditBookNameDialog extends Dialog<BookName> {
     private void onCreate(ActionEvent event) {
         try {
             // validate input
-            String strName = tfName.getText().trim();
+            String strName = Util.trimOrEmpty(tfName.getText());
             if (strName.length() == 0) {
                 throw new RuntimeException("Name not set");
             }
-            String strLang = tfLang.getText().trim();
+            String strLang = Util.trimOrEmpty(tfLang.getText());
             if (strLang.length() == 0) {
                 throw new RuntimeException("Language not set");
             }
 
-            if (bookName == null) { //new book name
-                bookName = BookName.builder().name(strName)
-                        .lang(strLang).build();
-            } else {
-                bookName.setName(strName);
-                bookName.setLang(strLang);
+            if (entity == null) { //new book name
+                entity = BookName.builder().build();
             }
+            entity.setName(strName);
+            entity.setLang(strLang);
+            entity.setGoodreadsId(Util.trimOrNull(tfGoodreadId.getText()));
+            entity.setLibFile(Util.trimOrNull(tfLibFile.getText()));
             return;
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(getDialogPane().getScene().getWindow());
             alert.initModality(Modality.APPLICATION_MODAL);
-
             alert.setResizable(true);
-
             alert.setTitle(getTitle());
             alert.setHeaderText(null);
             alert.setContentText(e.getLocalizedMessage());

@@ -224,8 +224,36 @@
                         </HBox>
 
                         <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-                        <ListView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="8"/>
+                        <TableView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                            <columns>
+                            <TableColumn prefWidth="40" text="lang">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="lang"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="300" text="name">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="name"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="100" text="goodreads id">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="goodreadsId"/>
+                                </cellValueFactory>
+                                <cellFactory>
+                                    <GoodreadsLinkCell/>
+                                </cellFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="250" text="lib file">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="libFile"/>
+                                </cellValueFactory>
+                                <cellFactory>
+                                    <LibLinkCell/>
+                                </cellFactory>
+                            </TableColumn>
+                            </columns>
+                        </TableView>
                         <HBox GridPane.columnIndex="1" GridPane.rowIndex="9">
                             <Button fx:id="btnAddBookName" mnemonicParsing="false" onAction="#doAddBookName"
                                     text="Add name"/>

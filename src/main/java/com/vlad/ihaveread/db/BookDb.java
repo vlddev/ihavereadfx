@@ -93,12 +93,14 @@ public class BookDb {
     }
 
     public void insertBookNames(List<BookName> bookNames) throws SQLException {
-        String sql = "INSERT INTO book_names(book_id, name, lang) VALUES (?,?,?)";
+        String sql = "INSERT INTO book_names(book_id, name, lang, goodreads_id, lib_file) VALUES (?,?,?,?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             for (BookName bookName : bookNames) {
                 ps.setInt(1, bookName.getBookId());
                 ps.setString(2, bookName.getName());
                 ps.setString(3, bookName.getLang());
+                ps.setString(4, bookName.getGoodreadsId());
+                ps.setString(5, bookName.getLibFile());
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -106,11 +108,13 @@ public class BookDb {
     }
 
     public BookName insertBookName(BookName bookName) throws SQLException {
-        String sql = "INSERT INTO book_names(book_id, name, lang) VALUES (?,?,?) RETURNING id";
+        String sql = "INSERT INTO book_names(book_id, name, lang, goodreads_id, lib_file) VALUES (?,?,?,?,?) RETURNING id";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookName.getBookId());
             ps.setString(2, bookName.getName());
             ps.setString(3, bookName.getLang());
+            ps.setString(4, bookName.getGoodreadsId());
+            ps.setString(5, bookName.getLibFile());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 bookName.setId(rs.getInt(1));
@@ -122,12 +126,17 @@ public class BookDb {
     }
 
     public void updateBookName(BookName bookName) throws SQLException {
-        String sql = "UPDATE book_names SET book_id = ?, name = ?, lang = ? WHERE id = ?)";
+        String sql = """
+            UPDATE book_names
+            SET book_id = ?, name = ?, lang = ?, goodreads_id = ?, lib_file = ?
+            WHERE id = ?""";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookName.getBookId());
             ps.setString(2, bookName.getName());
             ps.setString(3, bookName.getLang());
-            ps.setInt(4, bookName.getId());
+            ps.setString(4, bookName.getGoodreadsId());
+            ps.setString(5, bookName.getLibFile());
+            ps.setInt(6, bookName.getId());
             ps.executeUpdate();
         }
     }
@@ -187,6 +196,8 @@ public class BookDb {
                 .bookId(rs.getInt("book_id"))
                 .name(rs.getString("name"))
                 .lang(rs.getString("lang"))
+                .goodreadsId(rs.getString("goodreads_id"))
+                .libFile(rs.getString("lib_file"))
                 .build();
     }
 }

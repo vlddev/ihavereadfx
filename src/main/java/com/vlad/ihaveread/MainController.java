@@ -44,7 +44,7 @@ public class MainController {
     private ListView<Book> lstFoundBooks;
 
     @FXML
-    private ListView<BookName> lstBookNames;
+    private TableView<BookName> lstBookNames;
 
     @FXML
     private TextField tfAuthorNamesName, tfAuthorNamesLang, tfAuthorNamesType;
@@ -98,6 +98,7 @@ public class MainController {
                 }
             }
         });
+        /*
         lstBookNames.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(BookName item, boolean empty) {
@@ -113,6 +114,17 @@ public class MainController {
                     });
                 }
             }
+        });*/
+        // double-click on table row - show edit dialog
+        lstBookNames.setRowFactory(tv -> {
+            TableRow<BookName> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    //BookReaded rowData = row.getItem();
+                    doEditBookName();
+                }
+            });
+            return row ;
         });
         // double-click on table row - show book in Book-Tab
         tvFoundReadBooks.setRowFactory(tv -> {
@@ -425,7 +437,7 @@ public class MainController {
     }
 
     public void doAddBookName() throws SQLException {
-        editBookNameDialog.setBookName(null);
+        editBookNameDialog.setEntity(null);
         Optional<BookName> ret = editBookNameDialog.showAndWait();
         if (ret.isPresent()) {
             ret.get().setBookId(curBook.getId());
@@ -437,7 +449,7 @@ public class MainController {
     public void doEditBookName() {
         int selInd = lstBookNames.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
-            editBookNameDialog.setBookName(lstBookNames.getItems().get(selInd));
+            editBookNameDialog.setEntity(lstBookNames.getItems().get(selInd));
             Optional<BookName> ret = editBookNameDialog.showAndWait();
             if (ret.isPresent()) {
                 try {

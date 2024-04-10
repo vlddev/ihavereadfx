@@ -12,4 +12,6 @@ public class BookName {
     Integer bookId;
     String name;
     String lang;
+    String goodreadsId;
+    String libFile;
 }

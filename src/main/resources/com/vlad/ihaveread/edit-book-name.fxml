@@ -16,6 +16,12 @@
             <Label text="Language" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <TextField fx:id="tfLang" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.fillWidth="false"/>
 
+            <Label text="GoodreadId" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="tfGoodreadId" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.fillWidth="false"/>
+
+            <Label text="Lib file" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="tfLibFile" prefWidth="440" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.fillWidth="false"/>
+
             <columnConstraints>
                 <ColumnConstraints/>
                 <ColumnConstraints hgrow="ALWAYS"/>
