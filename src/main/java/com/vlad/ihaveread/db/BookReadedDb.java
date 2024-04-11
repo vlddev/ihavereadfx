@@ -156,8 +156,16 @@ public class BookReadedDb {
                 .score(rs.getInt("score"))
                 .genre(rs.getString("genre"))
                 .note(rs.getString("note"))
-                .goodreadsId(rs.getString("goodreads_id"))
+                .goodreadsId(composeGoodreadsId(rs))
                 .build();
+    }
+
+    private String composeGoodreadsId(ResultSet rs) throws SQLException {
+        String ret = rs.getString("goodreads_id");
+        if (ret == null || ret.length() == 0) {
+            ret = "search:"+rs.getString("title")+" "+rs.getString("authors");
+        }
+        return ret;
     }
 
     public BookReaded getBookReadedFromRs(ResultSet rs) throws SQLException {

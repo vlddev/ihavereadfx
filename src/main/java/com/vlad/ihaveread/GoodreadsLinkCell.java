@@ -17,7 +17,12 @@ public class GoodreadsLinkCell<S, T> implements Callback<TableColumn<S, T>, Tabl
 
             {
                 hyperlink.setOnAction(event -> {
-                    String url = "https://www.goodreads.com/book/show/"+getItem();
+                    String strItem = (getItem() == null ? "" : getItem().toString());
+                    String url = "https://www.goodreads.com/book/show/"+strItem;
+                    if (strItem.startsWith("search:")) {
+                        strItem = strItem.substring(7).replace(" ", "+");
+                        url = "https://www.goodreads.com/search?q="+strItem;
+                    }
                     try {
                         new ProcessBuilder("xdg-open", url).start();
                     } catch (IOException e) {
@@ -32,7 +37,11 @@ public class GoodreadsLinkCell<S, T> implements Callback<TableColumn<S, T>, Tabl
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    hyperlink.setText(item == null ? "" : item.toString());
+                    String linkText = (item == null ? "" : item.toString());
+                    if (linkText.startsWith("search:")) {
+                        linkText = "search";
+                    }
+                    hyperlink.setText(linkText);
                     setGraphic(hyperlink);
                 }
             }
