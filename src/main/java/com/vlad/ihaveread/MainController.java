@@ -68,6 +68,9 @@ public class MainController {
     @FXML
     private TextArea taBookNote;
 
+    @FXML
+    private Label lblStatus;
+
     public void setSqliteDb(SqliteDb sqliteDb) {
         this.sqliteDb = sqliteDb;
     }
@@ -324,14 +327,15 @@ public class MainController {
 
     private void doSearchReadedBy(Function<String, List<BookReadedTblRow>> getBy) {
         String strToFind = tfSearchReadedText.getText().trim();
-        log.info("Search for '{}'", strToFind);
+        // log.info("Search for '{}'", strToFind);
         if (strToFind.length() > 0) {
             List<BookReadedTblRow> books = getBy.apply(strToFind);
             tvFoundReadBooks.getItems().clear();
             if (!books.isEmpty()) {
+                lblStatus.setText(""+books.size()+" row(s)");
                 tvFoundReadBooks.getItems().addAll(books);
             } else {
-                log.info("Nothing found");
+                lblStatus.setText("Nothing found");
             }
         }
     }

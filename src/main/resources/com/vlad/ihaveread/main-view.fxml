@@ -11,7 +11,7 @@
          tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
          fx:id="tabPane"
          fx:controller="com.vlad.ihaveread.MainController">
-    <Tab fx:id="tabReaded" text="Readed">
+    <Tab fx:id="tabReaded" text="Read">
         <AnchorPane>
             <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                         AnchorPane.topAnchor="0">
@@ -20,9 +20,7 @@
                 </padding>
                 <top>
                     <HBox>
-                        <padding>
-                            <Insets bottom="10"/>
-                        </padding>
+                        <padding><Insets bottom="10"/></padding>
                         <TextField fx:id="tfSearchReadedText" prefWidth="300"/>
                         <Separator orientation="VERTICAL"/>
                         <Button fx:id="btnReadedSearch" mnemonicParsing="false" onAction="#doSearchReadedByYear"
@@ -95,6 +93,12 @@
                         </columns>
                     </TableView>
                 </center>
+                <bottom>
+                    <HBox BorderPane.alignment="CENTER">
+                        <padding><Insets top="10"/></padding>
+                        <Label fx:id="lblStatus" text=""/>
+                    </HBox>
+                </bottom>
             </BorderPane>
         </AnchorPane>
     </Tab>
