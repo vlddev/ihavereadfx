@@ -228,9 +228,12 @@
                         <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
                         <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
                                   GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
-                        <HBox GridPane.columnIndex="0" GridPane.rowIndex="7">
+                        <HBox GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2">
                             <Button fx:id="btnSaveBook" mnemonicParsing="false" onAction="#doSaveBook"
                                     text="Save book"/>
+                            <Separator prefWidth="40" orientation="VERTICAL"/>
+                            <Button fx:id="btnDeleteBook" mnemonicParsing="false" onAction="#doDeleteBook"
+                                    text="Delete book"/>
                         </HBox>
 
                         <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="8"/>

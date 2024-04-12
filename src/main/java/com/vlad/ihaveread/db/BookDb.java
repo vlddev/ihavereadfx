@@ -92,6 +92,24 @@ public class BookDb {
         }
     }
 
+    public void deleteBook(int bookId) throws SQLException {
+        String sql = "DELETE FROM author_book WHERE book_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.executeUpdate();
+        }
+        sql = "DELETE FROM book_names WHERE book_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.executeUpdate();
+        }
+        sql = "DELETE FROM book WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.executeUpdate();
+        }
+    }
+
     public void insertBookNames(List<BookName> bookNames) throws SQLException {
         String sql = "INSERT INTO book_names(book_id, name, lang, goodreads_id, lib_file) VALUES (?,?,?,?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {

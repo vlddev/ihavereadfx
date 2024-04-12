@@ -440,6 +440,23 @@ public class MainController {
         sqliteDb.getBookDb().updateBook(curBook);
     }
 
+    public void doDeleteBook() throws SQLException {
+        if (curBook != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm deletion");
+            alert.setHeaderText("Delete "+curBook.getTitle()+"?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK){
+                try {
+                    sqliteDb.getBookDb().deleteBook(curBook.getId());
+                    doSearchBook();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
     public void doAddBookName() throws SQLException {
         editBookNameDialog.setEntity(null);
         Optional<BookName> ret = editBookNameDialog.showAndWait();
