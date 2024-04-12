@@ -12,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class NewBookreadedDialog extends Dialog<String> {
+
+    private static final Logger log = LoggerFactory.getLogger(NewBookreadedDialog.class);
 
     @FXML
     private TextField tfReadTitle, tfReadLang, tfOrigTitle, tfOrigLang, tfPublishDate, tfGenre, tfReadDate, tfMedium, tfScore;
@@ -33,7 +37,7 @@ public class NewBookreadedDialog extends Dialog<String> {
     private ButtonType btnCreate;
 
     @FXML
-    private ListView lstBookAuthors;
+    private ListView<Author> lstBookAuthors;
 
     private SelectAuthorDialog selectAuthorDialog;
 
@@ -53,17 +57,7 @@ public class NewBookreadedDialog extends Dialog<String> {
             btnDeleteAuthor.addEventHandler(ActionEvent.ANY, this::onDeleteAuthor);
             setSelectAuthorDialog(new SelectAuthorDialog(owner, sqliteDb));
 
-            lstBookAuthors.setCellFactory(callback -> new ListCell<Author>() {
-                @Override
-                protected void updateItem(Author item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getName());
-                    }
-                }
-            });
+            lstBookAuthors.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
 
             initOwner(owner);
             initModality(Modality.APPLICATION_MODAL);
@@ -91,6 +85,20 @@ public class NewBookreadedDialog extends Dialog<String> {
         this.selectAuthorDialog = selectAuthorDialog;
     }
 
+    private void clear() {
+        lstBookAuthors.getItems().clear();
+        tfReadTitle.clear();
+        tfReadLang.clear();
+        tfOrigTitle.clear();
+        tfOrigLang.clear();
+        tfPublishDate.clear();
+        tfGenre.clear();
+        tfReadDate.clear();
+        tfMedium.clear();
+        tfScore.clear();
+        taNote.clear();
+    }
+
     @FXML
     private void initialize() {
     }
@@ -98,7 +106,7 @@ public class NewBookreadedDialog extends Dialog<String> {
     @FXML
     private void onAddAuthor(ActionEvent event) {
         Optional<Author> ret = selectAuthorDialog.showAndWait();
-        if (ret.isPresent()) {
+        if (ret.isPresent() && !lstBookAuthors.getItems().contains(ret.get())) {
             lstBookAuthors.getItems().add(ret.get());
         }
     }
@@ -125,7 +133,7 @@ public class NewBookreadedDialog extends Dialog<String> {
                 throw new RuntimeException("ReadLang not set");
             }
             String strOrigTitle = tfOrigTitle.getText().trim();
-            String strOrigLang = tfReadLang.getText().trim();
+            String strOrigLang = tfOrigLang.getText().trim();
             if (strOrigTitle.length() > 0 && strOrigLang.length() == 0) {
                 throw new RuntimeException("OrigLang not set");
             }
@@ -171,8 +179,20 @@ public class NewBookreadedDialog extends Dialog<String> {
 
             sqliteDb.getConnection().commit();
             sqliteDb.getConnection().setAutoCommit(true);
+            //cleanup all fields
+            clear();
             return;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
+            log.error("Error", e);
+            if (e instanceof SQLException) {
+                try {
+                    sqliteDb.getConnection().rollback();
+                    sqliteDb.getConnection().setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    throw new RuntimeException(ex);
+                }
+            }
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(getDialogPane().getScene().getWindow());
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -181,15 +201,8 @@ public class NewBookreadedDialog extends Dialog<String> {
 
             alert.setTitle(getTitle());
             alert.setHeaderText(null);
-            alert.setContentText(e.getLocalizedMessage());
+            alert.setContentText(e.getMessage());
             alert.show();
-        } catch (SQLException e) {
-            try {
-                sqliteDb.getConnection().rollback();
-                sqliteDb.getConnection().setAutoCommit(true);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
         }
 
         event.consume();

@@ -27,7 +27,7 @@ public class SelectAuthorDialog extends Dialog<Author> {
     private ButtonType btnOk;
 
     @FXML
-    private ListView lstAuthors;
+    private ListView<Author> lstAuthors;
 
     private SqliteDb sqliteDb;
 
@@ -42,18 +42,9 @@ public class SelectAuthorDialog extends Dialog<Author> {
             dialogPane.lookupButton(btnOk).addEventFilter(ActionEvent.ANY, this::onSelect);
 
             btnSearch.addEventHandler(ActionEvent.ANY, this::onSearchAuthor);
+            setOnShown(this::clear);
 
-            lstAuthors.setCellFactory(callback -> new ListCell<Author>() {
-                @Override
-                protected void updateItem(Author item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getName());
-                    }
-                }
-            });
+            lstAuthors.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
 
             initOwner(owner);
             initModality(Modality.APPLICATION_MODAL);
@@ -75,9 +66,15 @@ public class SelectAuthorDialog extends Dialog<Author> {
         }
     }
 
+    private void clear(DialogEvent dialogEvent) {
+        tfSearch.clear();
+        lstAuthors.getItems().clear();
+    }
+
     @FXML
     private void initialize() {
     }
+
     @FXML
     private void onSearchAuthor(ActionEvent event) {
         String strToFind = tfSearch.getText().trim();
