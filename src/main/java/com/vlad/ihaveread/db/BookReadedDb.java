@@ -11,10 +11,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookReadedDb {
+
+    private static final String SELECT_READ_BOOKS_TBL_COLUMNS = """
+        SELECT distinct br.book_id, br.date_read,
+            (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
+            ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
+            ifnull((select bn.goodreads_id from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read),
+               (select 'alt:'||bn.goodreads_id from book_names bn where bn.book_id = b.id limit 1)) goodreads_id,
+            br.lang_read, b.publish_date, br.medium, br.score, b.genre, b.note""";
+
     Connection con;
 
     public BookReadedDb(Connection c) {
         this.con = c;
+    }
+
+    public List<BookReadedTblRow> getReadedBooksByYear(String dateRead) {
+        String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
+            FROM book_readed br, book b, author_book ab, author a
+            WHERE
+            br.book_id = b.id
+            and br.book_id = ab.book_id
+            and ab.author_id = a.id
+            and br.date_read like ?
+            order by br.date_read""";
+        return getReadedBooksBySql(sql, dateRead+"%");
+    }
+
+    public List<BookReadedTblRow> getReadedBooksByAuthor(String author) {
+        String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
+            FROM book_readed br, book b, author_book ab, author a, author_names an
+            WHERE
+             br.book_id = b.id
+             and br.book_id = ab.book_id
+             and ab.author_id = a.id
+             and an.author_id = a.id
+             and an.name like ?
+            order by br.date_read""";
+        return getReadedBooksBySql(sql, "%"+author+"%");
+    }
+
+    public List<BookReadedTblRow> getReadedBooksByTitle(String title) {
+        String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
+             FROM book_readed br, book b, author_book ab, author a
+             WHERE
+             br.book_id = b.id
+             and br.book_id = ab.book_id
+             and ab.author_id = a.id
+             and b.id in (select distinct book_id from book_names where name like ?)
+             order by br.date_read""";
+        return getReadedBooksBySql(sql, "%"+title+"%");
     }
 
     public List<BookReaded> getByBookId(int bookId) throws SQLException {
@@ -29,58 +75,6 @@ public class BookReadedDb {
             rs.close();
         }
         return ret;
-    }
-
-    public List<BookReadedTblRow> getReadedBooksByYear(String dateRead) {
-        String sql = """
-        SELECT distinct br.book_id, br.date_read,
-            (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
-            ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
-            (select bn.goodreads_id from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read) goodreads_id,
-            br.lang_read, b.publish_date, br.medium, br.score, b.genre, b.note
-        from book_readed br, book b, author_book ab, author a
-        where
-        br.book_id = b.id
-        and br.book_id = ab.book_id
-        and ab.author_id = a.id
-        and br.date_read like ?
-        order by br.date_read""";
-        return getReadedBooksBySql(sql, dateRead+"%");
-    }
-
-    public List<BookReadedTblRow> getReadedBooksByAuthor(String author) {
-        String sql = """
-            SELECT distinct br.book_id, br.date_read,
-                 (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
-                 ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
-                 (select bn.goodreads_id from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read) goodreads_id,
-                 br.lang_read, b.publish_date, br.medium, br.score, b.genre, b.note
-            FROM book_readed br, book b, author_book ab, author a, author_names an
-            WHERE
-             br.book_id = b.id
-             and br.book_id = ab.book_id
-             and ab.author_id = a.id
-             and an.author_id = a.id
-             and an.name like ?
-            order by br.date_read""";
-        return getReadedBooksBySql(sql, "%"+author+"%");
-    }
-
-    public List<BookReadedTblRow> getReadedBooksByTitle(String title) {
-        String sql = """
-            SELECT distinct br.book_id, br.date_read,
-                 (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
-                 ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
-                 (select bn.goodreads_id from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read) goodreads_id,
-                 br.lang_read, b.publish_date, br.medium, br.score, b.genre, b.note
-             from book_readed br, book b, author_book ab, author a
-             where
-             br.book_id = b.id
-             and br.book_id = ab.book_id
-             and ab.author_id = a.id
-             and b.id in (select distinct book_id from book_names where name like ?)
-             order by br.date_read""";
-        return getReadedBooksBySql(sql, "%"+title+"%");
     }
 
     private List<BookReadedTblRow> getReadedBooksBySql(String sql, String param) {

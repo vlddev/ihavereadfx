@@ -9,6 +9,9 @@ import java.io.IOException;
 
 public class GoodreadsLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
 
+    private static final String GOODREADS_SHOW_LINK = "https://www.goodreads.com/book/show/";
+    private static final String GOODREADS_SEARCH_LINK = "https://www.goodreads.com/search?q=";
+
     @Override
     public TableCell<S, T> call(TableColumn<S, T> arg) {
         return new TableCell<>() {
@@ -18,10 +21,12 @@ public class GoodreadsLinkCell<S, T> implements Callback<TableColumn<S, T>, Tabl
             {
                 hyperlink.setOnAction(event -> {
                     String strItem = (getItem() == null ? "" : getItem().toString());
-                    String url = "https://www.goodreads.com/book/show/"+strItem;
+                    String url = GOODREADS_SHOW_LINK+strItem;
                     if (strItem.startsWith("search:")) {
                         strItem = strItem.substring(7).replace(" ", "+");
-                        url = "https://www.goodreads.com/search?q="+strItem;
+                        url = GOODREADS_SEARCH_LINK+strItem;
+                    } else if (strItem.startsWith("alt:")) {
+                        url = GOODREADS_SHOW_LINK+strItem.substring(4);
                     }
                     try {
                         new ProcessBuilder("xdg-open", url).start();
