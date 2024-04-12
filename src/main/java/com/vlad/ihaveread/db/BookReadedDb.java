@@ -16,8 +16,8 @@ public class BookReadedDb {
         SELECT distinct br.book_id, br.date_read,
             (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
             ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
-            ifnull((select bn.goodreads_id from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read),
-               (select 'alt:'||bn.goodreads_id from book_names bn where bn.book_id = b.id limit 1)) goodreads_id,
+            ifnull((select NULLIF(bn.goodreads_id,'') from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read),
+               (select 'alt:'||bn.goodreads_id from book_names bn where bn.book_id = b.id and NULLIF(bn.goodreads_id,'') is not null limit 1)) goodreads_id,
             br.lang_read, b.publish_date, br.medium, br.score, b.genre, b.note""";
 
     Connection con;

@@ -103,6 +103,11 @@ public class BookDb {
             ps.setInt(1, bookId);
             ps.executeUpdate();
         }
+        sql = "DELETE FROM book_readed WHERE book_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.executeUpdate();
+        }
         sql = "DELETE FROM book WHERE id = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookId);

@@ -23,12 +23,11 @@
                         <padding><Insets bottom="10"/></padding>
                         <TextField fx:id="tfSearchReadedText" prefWidth="300"/>
                         <Separator orientation="VERTICAL"/>
-                        <Button fx:id="btnReadedSearch" mnemonicParsing="false" onAction="#doSearchReadedByYear"
-                                text="by year"/>
+                        <Button onAction="#doSearchReadedByYear" text="by _year"/>
                         <Separator orientation="VERTICAL"/>
-                        <Button mnemonicParsing="false" onAction="#doSearchReadedByAuthor" text="by author"/>
+                        <Button onAction="#doSearchReadedByAuthor" text="by _author"/>
                         <Separator orientation="VERTICAL"/>
-                        <Button mnemonicParsing="false" onAction="#doSearchReadedByTitle" text="by title"/>
+                        <Button onAction="#doSearchReadedByTitle" text="by _title"/>
                     </HBox>
                 </top>
                 <center>
