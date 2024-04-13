@@ -23,7 +23,14 @@ public class LibLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<
                     String file = MainApplication.LIB_ROOT+getItem();
                     try {
                         if (Files.exists(Path.of(file))) {
-                            new ProcessBuilder("xdg-open", file).start();
+                            if (file.toLowerCase().endsWith(".epub") ||
+                                file.toLowerCase().endsWith(".fb2") ||
+                                file.toLowerCase().endsWith(".fb2.zip")
+                            ) {
+                                new ProcessBuilder("foliate", file).start();
+                            } else {
+                                new ProcessBuilder("xdg-open", file).start();
+                            }
                         } else {
                             Alert alert = new Alert(Alert.AlertType.WARNING);
                             alert.setTitle("Warning");
