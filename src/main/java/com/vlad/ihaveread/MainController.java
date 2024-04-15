@@ -101,29 +101,11 @@ public class MainController {
                 }
             }
         });
-        /*
-        lstBookNames.setCellFactory(callback -> new ListCell<>() {
-            @Override
-            protected void updateItem(BookName item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getLang()+" | "+item.getName());
-                    setOnMouseClicked(mouseClickedEvent -> {
-                        if (mouseClickedEvent.getButton().equals(MouseButton.PRIMARY) && mouseClickedEvent.getClickCount() == 2) {
-                            doEditBookName();
-                        }
-                    });
-                }
-            }
-        });*/
         // double-click on table row - show edit dialog
         lstBookNames.setRowFactory(tv -> {
             TableRow<BookName> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-                    //BookReaded rowData = row.getItem();
                     doEditBookName();
                 }
             });
@@ -164,7 +146,6 @@ public class MainController {
     public void doSearchAuthor() throws SQLException {
         clearAuthor();
         String strToFind = tfSearchText.getText().trim();
-        log.info("Search for author '{}'", strToFind);
         if (strToFind.length() > 0) {
             List<Author> authors = sqliteDb.getAuthorDb().findByName("%"+strToFind+"%");
             lstFoundAuthors.getItems().clear();
@@ -173,6 +154,7 @@ public class MainController {
                 lstFoundAuthors.getSelectionModel().select(0);
                 lstFoundAuthors.requestFocus();
             } else {
+                //TODO add status message
                 log.info("Nothing found");
             }
         }
@@ -440,7 +422,7 @@ public class MainController {
         sqliteDb.getBookDb().updateBook(curBook);
     }
 
-    public void doDeleteBook() throws SQLException {
+    public void doDeleteBook() {
         if (curBook != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm deletion");

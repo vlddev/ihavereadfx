@@ -93,7 +93,8 @@ public class NewBookreadedDialog extends Dialog<String> {
         tfOrigLang.clear();
         tfPublishDate.clear();
         tfGenre.clear();
-        tfReadDate.clear();
+        // set to current date
+        tfReadDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         tfMedium.clear();
         tfScore.clear();
         taNote.clear();

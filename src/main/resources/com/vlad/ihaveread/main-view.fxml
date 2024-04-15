@@ -19,14 +19,11 @@
                     <Insets bottom="10" left="10" right="10" top="10"/>
                 </padding>
                 <top>
-                    <HBox>
+                    <HBox spacing="10">
                         <padding><Insets bottom="10"/></padding>
                         <TextField fx:id="tfSearchReadedText" prefWidth="300"/>
-                        <Separator orientation="VERTICAL"/>
                         <Button onAction="#doSearchReadedByYear" text="by _year"/>
-                        <Separator orientation="VERTICAL"/>
                         <Button onAction="#doSearchReadedByAuthor" text="by _author"/>
-                        <Separator orientation="VERTICAL"/>
                         <Button onAction="#doSearchReadedByTitle" text="by _title"/>
                     </HBox>
                 </top>
@@ -110,14 +107,10 @@
                         <Insets bottom="10" left="10" right="10" top="10"/>
                     </padding>
                     <top>
-                        <HBox prefHeight="30" BorderPane.alignment="CENTER">
+                        <HBox prefHeight="30" BorderPane.alignment="CENTER" spacing="10">
                             <TextField fx:id="tfSearchText" prefWidth="300" onAction="#doSearchAuthor"/>
-                            <Separator orientation="VERTICAL"/>
                             <Button mnemonicParsing="false" onAction="#doSearchAuthor" text="Search"/>
-                            <Separator orientation="VERTICAL"/>
-                            <Button fx:id="btnAuthorBooks" mnemonicParsing="false" onAction="#showAuthorBooks"
-                                    text="Show books"/>
-                            <Separator orientation="VERTICAL"/>
+                            <Button mnemonicParsing="false" onAction="#showAuthorBooks" text="Show books"/>
                             <Button mnemonicParsing="false" onAction="#doAddAuthor" text="New author"/>
                         </HBox>
                     </top>
@@ -140,12 +133,10 @@
                             <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                             <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                             <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                            <HBox GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                                <Button fx:id="btnAuthorSave" mnemonicParsing="false" onAction="#doSaveAuthor"
-                                        text="Save"/>
-                                <Separator orientation="VERTICAL"/>
-                                <Button fx:id="btnAuthorDelete" mnemonicParsing="false"
-                                        onAction="#doDeleteAuthor" text="Delete"/>
+                            <HBox GridPane.columnIndex="0" spacing="10"
+                                  GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                <Button mnemonicParsing="false" onAction="#doSaveAuthor" text="Save"/>
+                                <Button mnemonicParsing="false" onAction="#doDeleteAuthor" text="Delete"/>
                             </HBox>
                             <ListView fx:id="lstAuthorNames" prefHeight="100" GridPane.columnIndex="0"
                                       GridPane.columnSpan="2" GridPane.rowIndex="4"/>
@@ -158,16 +149,11 @@
                             <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
                             <TextField fx:id="tfAuthorNamesType" GridPane.columnIndex="1"
                                        GridPane.rowIndex="7"/>
-                            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                  GridPane.rowIndex="8">
-                                <Button fx:id="btnAuthorNamesSave" mnemonicParsing="false"
-                                        onAction="#doSaveAuthorName" text="Save"/>
-                                <Separator orientation="VERTICAL"/>
-                                <Button fx:id="btnAuthorNamesNew" mnemonicParsing="false"
-                                        onAction="#doAddAuthorName" text="New"/>
-                                <Separator orientation="VERTICAL"/>
-                                <Button fx:id="btnAuthorNamesDelete" mnemonicParsing="false"
-                                        onAction="#doDeleteAuthorName" text="Delete"/>
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="8">
+                                <Button mnemonicParsing="false" onAction="#doSaveAuthorName" text="Save"/>
+                                <Button mnemonicParsing="false" onAction="#doAddAuthorName" text="New"/>
+                                <Button mnemonicParsing="false" onAction="#doDeleteAuthorName" text="Delete"/>
                             </HBox>
                         </GridPane>
                     </center>
@@ -183,11 +169,9 @@
                     <Insets bottom="10" left="10" right="10" top="10"/>
                 </padding>
                 <top>
-                    <HBox prefHeight="30.0" BorderPane.alignment="CENTER">
+                    <HBox prefHeight="30.0" BorderPane.alignment="CENTER" spacing="10">
                         <TextField fx:id="tfBookSearchText" prefWidth="300" onAction="#doSearchBook"/>
-                        <Separator orientation="VERTICAL"/>
                         <Button mnemonicParsing="false" onAction="#doSearchBook" text="Search"/>
-                        <Separator orientation="VERTICAL"/>
                         <Button mnemonicParsing="false" onAction="#doAddBook" text="New book"/>
                     </HBox>
                 </top>
@@ -202,12 +186,9 @@
                         <Label text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                         <ListView fx:id="lstBookAuthors" prefHeight="100" GridPane.columnIndex="1"
                                   GridPane.rowIndex="0"/>
-                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <Button fx:id="btnAddAuthor" mnemonicParsing="false" onAction="#doAddBookAuthor"
-                                    text="Add author"/>
-                            <Separator orientation="VERTICAL"/>
-                            <Button fx:id="btnDeleteAuthor" mnemonicParsing="false"
-                                    onAction="#doDeleteBookAuthor" text="Delete author"/>
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="10">
+                            <Button mnemonicParsing="false" onAction="#doAddBookAuthor" text="Add author"/>
+                            <Button mnemonicParsing="false" onAction="#doDeleteBookAuthor" text="Delete author"/>
                         </HBox>
 
                         <Label text="Title" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
@@ -227,10 +208,9 @@
                         <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
                         <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
                                   GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
-                        <HBox GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2">
+                        <HBox GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2" spacing="40">
                             <Button fx:id="btnSaveBook" mnemonicParsing="false" onAction="#doSaveBook"
                                     text="Save book"/>
-                            <Separator prefWidth="40" orientation="VERTICAL"/>
                             <Button fx:id="btnDeleteBook" mnemonicParsing="false" onAction="#doDeleteBook"
                                     text="Delete book"/>
                         </HBox>
@@ -266,20 +246,15 @@
                             </TableColumn>
                             </columns>
                         </TableView>
-                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="9">
-                            <Button fx:id="btnAddBookName" mnemonicParsing="false" onAction="#doAddBookName"
-                                    text="Add name"/>
-                            <Separator orientation="VERTICAL"/>
-                            <Button fx:id="btnEditBookName" mnemonicParsing="false" onAction="#doEditBookName"
-                                    text="Edit name"/>
-                            <Separator orientation="VERTICAL"/>
-                            <Button fx:id="btnDeleteBookName" mnemonicParsing="false"
-                                    onAction="#doDeleteBookName" text="Delete name"/>
+                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                            <Button mnemonicParsing="false" onAction="#doAddBookName" text="Add name"/>
+                            <Button mnemonicParsing="false" onAction="#doEditBookName" text="Edit name"/>
+                            <Button mnemonicParsing="false" onAction="#doDeleteBookName" text="Delete name"/>
                         </HBox>
 
                         <Label text="Read book" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
-                        <TableView fx:id="lstReadBooks" prefHeight="100" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="10">
+                        <TableView fx:id="lstReadBooks" prefHeight="100"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="10">
                             <columns>
                                 <TableColumn prefWidth="100" text="read on">
                                     <cellValueFactory>
@@ -308,15 +283,10 @@
                                 </TableColumn>
                             </columns>
                         </TableView>
-                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="11">
-                            <Button fx:id="btnAddReadBook" mnemonicParsing="false" onAction="#doAddReadBook"
-                                    text="Add book"/>
-                            <Separator orientation="VERTICAL"/>
-                            <Button fx:id="btnEditReadBook" mnemonicParsing="false" onAction="#doEditReadBook"
-                                    text="Edit book"/>
-                            <Separator orientation="VERTICAL"/>
-                            <Button fx:id="btndeleteReadBook" mnemonicParsing="false"
-                                    onAction="#doDeleteReadBook" text="Delete book"/>
+                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                            <Button mnemonicParsing="false" onAction="#doAddReadBook" text="Add book"/>
+                            <Button mnemonicParsing="false" onAction="#doEditReadBook" text="Edit book"/>
+                            <Button mnemonicParsing="false" onAction="#doDeleteReadBook" text="Delete book"/>
                         </HBox>
 
                         <columnConstraints>
