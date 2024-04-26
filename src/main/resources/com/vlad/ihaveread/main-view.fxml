@@ -92,7 +92,7 @@
                 <bottom>
                     <HBox BorderPane.alignment="CENTER">
                         <padding><Insets top="10"/></padding>
-                        <Label fx:id="lblStatus" text=""/>
+                        <Label fx:id="lblStatus" />
                     </HBox>
                 </bottom>
             </BorderPane>
@@ -100,65 +100,63 @@
     </Tab>
     <Tab fx:id="tabAuthor" text="Author">
         <AnchorPane minHeight="0" minWidth="0" prefHeight="180" prefWidth="200">
-            <children>
-                <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-                            AnchorPane.topAnchor="0">
-                    <padding>
-                        <Insets bottom="10" left="10" right="10" top="10"/>
-                    </padding>
-                    <top>
-                        <HBox prefHeight="30" BorderPane.alignment="CENTER" spacing="10">
-                            <TextField fx:id="tfSearchText" prefWidth="300" onAction="#doSearchAuthor"/>
-                            <Button mnemonicParsing="false" onAction="#doSearchAuthor" text="Search"/>
-                            <Button mnemonicParsing="false" onAction="#showAuthorBooks" text="Show books"/>
-                            <Button mnemonicParsing="false" onAction="#doAddAuthor" text="New author"/>
+            <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                        AnchorPane.topAnchor="0">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10"/>
+                </padding>
+                <top>
+                    <HBox prefHeight="30" BorderPane.alignment="CENTER" spacing="10">
+                        <TextField fx:id="tfSearchText" prefWidth="300" onAction="#doSearchAuthor"/>
+                        <Button mnemonicParsing="false" onAction="#doSearchAuthor" text="Search"/>
+                        <Button mnemonicParsing="false" onAction="#showAuthorBooks" text="Show books"/>
+                        <Button mnemonicParsing="false" onAction="#doAddAuthor" text="New author"/>
+                    </HBox>
+                </top>
+                <left>
+                    <ListView fx:id="lstFoundAuthors" prefWidth="300" BorderPane.alignment="CENTER"/>
+                </left>
+                <center>
+                    <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
+                        <padding>
+                            <Insets left="10"/>
+                        </padding>
+                        <columnConstraints>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                        </columnConstraints>
+                        <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="tfAuthorName" prefWidth="300" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="0"/>
+                        <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <HBox GridPane.columnIndex="0" spacing="10"
+                              GridPane.columnSpan="2" GridPane.rowIndex="3">
+                            <Button mnemonicParsing="false" onAction="#doSaveAuthor" text="Save"/>
+                            <Button mnemonicParsing="false" onAction="#doDeleteAuthor" text="Delete"/>
                         </HBox>
-                    </top>
-                    <left>
-                        <ListView fx:id="lstFoundAuthors" prefWidth="300" BorderPane.alignment="CENTER"/>
-                    </left>
-                    <center>
-                        <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
-                            <padding>
-                                <Insets left="10"/>
-                            </padding>
-                            <columnConstraints>
-                                <ColumnConstraints/>
-                                <ColumnConstraints/>
-                            </columnConstraints>
-                            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                            <TextField fx:id="tfAuthorName" prefWidth="300" GridPane.columnIndex="1"
-                                       GridPane.rowIndex="0"/>
-                            <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                            <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                            <TextField fx:id="tfAuthorNote" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                            <HBox GridPane.columnIndex="0" spacing="10"
-                                  GridPane.columnSpan="2" GridPane.rowIndex="3">
-                                <Button mnemonicParsing="false" onAction="#doSaveAuthor" text="Save"/>
-                                <Button mnemonicParsing="false" onAction="#doDeleteAuthor" text="Delete"/>
-                            </HBox>
-                            <ListView fx:id="lstAuthorNames" prefHeight="100" GridPane.columnIndex="0"
-                                      GridPane.columnSpan="2" GridPane.rowIndex="4"/>
-                            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                            <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1"
-                                       GridPane.rowIndex="5"/>
-                            <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-                            <TextField fx:id="tfAuthorNamesLang" GridPane.columnIndex="1"
-                                       GridPane.rowIndex="6"/>
-                            <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-                            <TextField fx:id="tfAuthorNamesType" GridPane.columnIndex="1"
-                                       GridPane.rowIndex="7"/>
-                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="8">
-                                <Button mnemonicParsing="false" onAction="#doSaveAuthorName" text="Save"/>
-                                <Button mnemonicParsing="false" onAction="#doAddAuthorName" text="New"/>
-                                <Button mnemonicParsing="false" onAction="#doDeleteAuthorName" text="Delete"/>
-                            </HBox>
-                        </GridPane>
-                    </center>
-                </BorderPane>
-            </children>
+                        <ListView fx:id="lstAuthorNames" prefHeight="100" GridPane.columnIndex="0"
+                                  GridPane.columnSpan="2" GridPane.rowIndex="4"/>
+                        <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="5"/>
+                        <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <TextField fx:id="tfAuthorNamesLang" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="6"/>
+                        <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <TextField fx:id="tfAuthorNamesType" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="7"/>
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2"
+                              GridPane.columnIndex="0" GridPane.rowIndex="8">
+                            <Button mnemonicParsing="false" onAction="#doSaveAuthorName" text="Save"/>
+                            <Button mnemonicParsing="false" onAction="#doAddAuthorName" text="New"/>
+                            <Button mnemonicParsing="false" onAction="#doDeleteAuthorName" text="Delete"/>
+                        </HBox>
+                    </GridPane>
+                </center>
+            </BorderPane>
         </AnchorPane>
     </Tab>
     <Tab fx:id="tabBook" text="Book">
@@ -209,10 +207,8 @@
                         <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
                                   GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
                         <HBox GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2" spacing="40">
-                            <Button fx:id="btnSaveBook" mnemonicParsing="false" onAction="#doSaveBook"
-                                    text="Save book"/>
-                            <Button fx:id="btnDeleteBook" mnemonicParsing="false" onAction="#doDeleteBook"
-                                    text="Delete book"/>
+                            <Button mnemonicParsing="false" onAction="#doSaveBook" text="Save book"/>
+                            <Button mnemonicParsing="false" onAction="#doDeleteBook" text="Delete book"/>
                         </HBox>
 
                         <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
