@@ -6,7 +6,7 @@
 
     <groupId>com.vlad</groupId>
     <artifactId>ihaveread</artifactId>
-    <version>1.2</version>
+    <version>1.2-SNAPSHOT</version>
     <name>ihaveread</name>
 
     <properties>
@@ -140,4 +140,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub vlddev Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/vlddev/repo</url>
+        </repository>
+    </distributionManagement>
+
 </project>
