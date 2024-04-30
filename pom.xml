@@ -145,7 +145,7 @@
         <repository>
             <id>github</id>
             <name>GitHub vlddev Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/vlddev/repo</url>
+            <url>https://maven.pkg.github.com/vlddev/ihavereadfx</url>
         </repository>
     </distributionManagement>
 
