@@ -57,6 +57,13 @@ public class NewAuthorDialog extends Dialog<String> {
     private void initialize() {
     }
 
+    private void clear() {
+        tfAuthorNames.clear();
+        tfAuthorSurname.clear();
+        tfAuthorLang.clear();
+        tfAuthorNote.clear();
+    }
+
     @FXML
     private void onCreate(ActionEvent event) {
         try {
@@ -72,6 +79,8 @@ public class NewAuthorDialog extends Dialog<String> {
 
             Author newAuthor = sqliteDb.getAuthorDb().insertAuthor(tfAuthorSurname.getText().trim(), tfAuthorNames.getText().trim(),
                     tfAuthorLang.getText().trim(), tfAuthorNote.getText().trim());
+            //cleanup all fields
+            clear();
             return;
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
