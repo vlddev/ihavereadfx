@@ -2,6 +2,7 @@ package com.vlad.ihaveread;
 
 import com.vlad.ihaveread.dao.*;
 import com.vlad.ihaveread.db.SqliteDb;
+import com.vlad.ihaveread.util.Util;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,12 +24,12 @@ public class MainController {
     private SqliteDb sqliteDb;
     private Author curAuthor;
     private Book curBook;
-    private AuthorName curAuthorName;
 
     private NewAuthorDialog newAuthorDialog;
     private NewBookreadedDialog newBookreadedDialog;
     private SelectAuthorDialog selectAuthorDialog;
     private EditBookNameDialog editBookNameDialog;
+    private EditAuthorNameDialog editAuthorNameDialog;
     private EditBookReadedDialog editBookReadedDialog;
 
     @FXML
@@ -38,16 +39,13 @@ public class MainController {
     private ListView<Author> lstFoundAuthors, lstBookAuthors;
 
     @FXML
-    private ListView<AuthorName> lstAuthorNames;
-
-    @FXML
     private ListView<Book> lstFoundBooks;
 
     @FXML
-    private TableView<BookName> lstBookNames;
+    private TableView<AuthorName> lstAuthorNames;
 
     @FXML
-    private TextField tfAuthorNamesName, tfAuthorNamesLang, tfAuthorNamesType;
+    private TableView<BookName> lstBookNames;
 
     @FXML
     private Tab tabBook, tabAuthor, tabReaded;
@@ -69,7 +67,7 @@ public class MainController {
     private TextArea taBookNote;
 
     @FXML
-    private Label lblStatus;
+    private Label lblStatus, lblAuthorStatus, lblBookStatus;
 
     public void setSqliteDb(SqliteDb sqliteDb) {
         this.sqliteDb = sqliteDb;
@@ -79,9 +77,6 @@ public class MainController {
         lstFoundAuthors.getSelectionModel().selectedItemProperty().addListener(
                 (ov, oldVal, newVal) -> onSelectAuthor(newVal));
         lstFoundAuthors.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
-        lstAuthorNames.getSelectionModel().selectedItemProperty().addListener(
-                (ov, oldVal, newVal) -> onSelectAuthorName(newVal));
-        lstAuthorNames.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
         lstFoundBooks.getSelectionModel().selectedItemProperty().addListener(
                 (ov, oldVal, newVal) -> onSelectBookName(newVal));
         lstFoundBooks.setCellFactory(callback -> new PropertyListCellFactory<>("title"));
@@ -107,6 +102,16 @@ public class MainController {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     doEditBookName();
+                }
+            });
+            return row ;
+        });
+        // double-click on table row - show edit dialog
+        lstAuthorNames.setRowFactory(tv -> {
+            TableRow<AuthorName> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    doEditAuthorName();
                 }
             });
             return row ;
@@ -140,6 +145,7 @@ public class MainController {
         newBookreadedDialog = new NewBookreadedDialog(scene.getWindow(), sqliteDb);
         selectAuthorDialog = new SelectAuthorDialog(scene.getWindow(), sqliteDb);
         editBookNameDialog = new EditBookNameDialog(scene.getWindow());
+        editAuthorNameDialog = new EditAuthorNameDialog(scene.getWindow());
         editBookReadedDialog = new EditBookReadedDialog(scene.getWindow());
     }
 
@@ -150,12 +156,12 @@ public class MainController {
             List<Author> authors = sqliteDb.getAuthorDb().findByName("%"+strToFind+"%");
             lstFoundAuthors.getItems().clear();
             if (!authors.isEmpty()) {
+                lblAuthorStatus.setText(""+authors.size()+" row(s)");
                 lstFoundAuthors.getItems().addAll(authors);
                 lstFoundAuthors.getSelectionModel().select(0);
                 lstFoundAuthors.requestFocus();
             } else {
-                //TODO add status message
-                log.info("Nothing found");
+                lblAuthorStatus.setText("Nothing found");
             }
         }
     }
@@ -192,30 +198,11 @@ public class MainController {
     public void loadAuthorNames(int authorId) {
         try {
             List<AuthorName> authorNames = sqliteDb.getAuthorDb().getAuthorNames(authorId);
-            clearAuthorName();
             lstAuthorNames.getItems().clear();
             lstAuthorNames.getItems().addAll(authorNames);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void clearAuthorName() {
-        tfAuthorNamesName.clear();
-        tfAuthorNamesLang.clear();
-        tfAuthorNamesType.clear();
-        curAuthorName = null;
-    }
-
-    public void onSelectAuthorName(AuthorName authorName) {
-        if (authorName == null) {
-            clearAuthorName();
-            return;
-        }
-        tfAuthorNamesName.setText(authorName.getName());
-        tfAuthorNamesLang.setText(authorName.getLang());
-        tfAuthorNamesType.setText(authorName.getType());
-        curAuthorName = authorName;
     }
 
     public void doAddAuthor() {
@@ -240,7 +227,6 @@ public class MainController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm deletion");
             alert.setHeaderText("Delete "+curAuthor.getName()+"?");
-            //alert.setContentText("");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK){
                 try {
@@ -253,45 +239,47 @@ public class MainController {
         }
     }
 
-    public void doSaveAuthorName() {
-        if (curAuthorName != null) {
-            String oldName = curAuthorName.getName();
-            curAuthorName.setName(tfAuthorNamesName.getText());
-            curAuthorName.setLang(tfAuthorNamesLang.getText());
-            curAuthorName.setType(tfAuthorNamesType.getText());
-            try {
-                sqliteDb.getAuthorDb().updateAuthorName(oldName, curAuthorName);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+    public void doEditAuthorName() {
+        int selInd = lstAuthorNames.getSelectionModel().getSelectedIndex();
+        if (selInd > -1) {
+            String oldName = lstAuthorNames.getItems().get(selInd).getName();
+            editAuthorNameDialog.setEntity(lstAuthorNames.getItems().get(selInd));
+            Optional<AuthorName> ret = editAuthorNameDialog.showAndWait();
+            if (ret.isPresent()) {
+                try {
+                    sqliteDb.getAuthorDb().updateAuthorName(oldName, ret.get());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                lstAuthorNames.getItems().set(selInd, ret.get());
             }
-            loadAuthorNames(curAuthorName.getAuthorId());
+        }
+    }
+
+    public void doDeleteAuthorName() throws SQLException {
+        int selInd = lstAuthorNames.getSelectionModel().getSelectedIndex();
+        if (selInd > -1) {
+            AuthorName item = lstAuthorNames.getItems().get(selInd);
+            sqliteDb.getAuthorDb().deleteAuthorName(item);
+            lstAuthorNames.getItems().remove(selInd);
         }
     }
 
     public void doAddAuthorName() {
-        String strAuthorName = tfAuthorNamesName.getText().trim();
-        if (curAuthor != null && curAuthorName == null && strAuthorName.length() > 0) {
-            List<AuthorName> authorNames = new ArrayList<>(1);
-            authorNames.add(AuthorName.builder().authorId(curAuthor.getId())
-                    .lang(tfAuthorNamesLang.getText()).type(tfAuthorNamesType.getText()).name(strAuthorName)
-                    .build());
-            try {
-                sqliteDb.getAuthorDb().insertAuthorNames(authorNames);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+        if (curAuthor != null) {
+            editAuthorNameDialog.setEntity(null);
+            Optional<AuthorName> ret = editAuthorNameDialog.showAndWait();
+            if (ret.isPresent()) {
+                ret.get().setAuthorId(curAuthor.getId());
+                List<AuthorName> authorNames = new ArrayList<>(1);
+                authorNames.add(ret.get());
+                try {
+                    sqliteDb.getAuthorDb().insertAuthorNames(authorNames);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                loadAuthorNames(curAuthor.getId());
             }
-            loadAuthorNames(curAuthor.getId());
-        }
-    }
-
-    public void doDeleteAuthorName() {
-        if (curAuthorName != null) {
-            try {
-                sqliteDb.getAuthorDb().deleteAuthorName(curAuthorName);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            loadAuthorNames(curAuthor.getId());
         }
     }
 
@@ -337,16 +325,16 @@ public class MainController {
     public void doSearchBook() throws SQLException {
         clearBook();
         String strToFind = tfBookSearchText.getText().trim();
-        log.info("Search for book '{}'", strToFind);
         if (strToFind.length() > 0) {
             List<Book> books = sqliteDb.getBookDb().findByName("%"+strToFind+"%");
             lstFoundBooks.getItems().clear();
             if (!books.isEmpty()) {
+                lblBookStatus.setText(""+books.size()+" row(s)");
                 lstFoundBooks.getItems().addAll(books);
                 lstFoundBooks.getSelectionModel().select(0);
                 lstFoundBooks.requestFocus();
             } else {
-                log.info("Nothing found");
+                lblBookStatus.setText("Nothing found");
             }
         }
     }
@@ -418,7 +406,7 @@ public class MainController {
         curBook.setTitle(tfBookTitle.getText().trim());
         curBook.setGenre(tfGenre.getText().trim());
         curBook.setPublishDate(tfPublishDate.getText().trim());
-        curBook.setNote(taBookNote.getText().trim());
+        curBook.setNote(Util.trimOrNull(taBookNote.getText()));
         sqliteDb.getBookDb().updateBook(curBook);
     }
 

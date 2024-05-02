@@ -13,4 +13,6 @@ module com.vlad.ihaveread {
 
     opens com.vlad.ihaveread.dao to javafx.base;
     exports com.vlad.ihaveread.dao;
+
+    exports com.vlad.ihaveread.db;
 }

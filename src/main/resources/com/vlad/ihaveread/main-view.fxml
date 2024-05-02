@@ -126,7 +126,7 @@
                             <ColumnConstraints/>
                         </columnConstraints>
                         <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <TextField fx:id="tfAuthorName" prefWidth="300" GridPane.columnIndex="1"
+                        <TextField fx:id="tfAuthorName" prefWidth="400" GridPane.columnIndex="1"
                                    GridPane.rowIndex="0"/>
                         <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                         <TextField fx:id="tfAuthorLang" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
@@ -137,25 +137,41 @@
                             <Button mnemonicParsing="false" onAction="#doSaveAuthor" text="Save"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteAuthor" text="Delete"/>
                         </HBox>
-                        <ListView fx:id="lstAuthorNames" prefHeight="100" GridPane.columnIndex="0"
-                                  GridPane.columnSpan="2" GridPane.rowIndex="4"/>
-                        <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                        <TextField fx:id="tfAuthorNamesName" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="5"/>
-                        <Label text="Lang" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-                        <TextField fx:id="tfAuthorNamesLang" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="6"/>
-                        <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-                        <TextField fx:id="tfAuthorNamesType" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="7"/>
+                        <!--ListView fx:id="lstAuthorNames" prefHeight="100" GridPane.columnIndex="0"
+                                  GridPane.columnSpan="2" GridPane.rowIndex="4"/-->
+                        <TableView fx:id="lstAuthorNames" prefHeight="160" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
+                            <columns>
+                                <TableColumn prefWidth="300" text="name">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="name"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="40" text="lang">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="lang"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="60" text="type">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="type"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                        </TableView>
                         <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnSpan="2"
-                              GridPane.columnIndex="0" GridPane.rowIndex="8">
-                            <Button mnemonicParsing="false" onAction="#doSaveAuthorName" text="Save"/>
-                            <Button mnemonicParsing="false" onAction="#doAddAuthorName" text="New"/>
+                              GridPane.columnIndex="0" GridPane.rowIndex="5">
+                            <Button mnemonicParsing="false" onAction="#doAddAuthorName" text="Add"/>
+                            <Button mnemonicParsing="false" onAction="#doEditAuthorName" text="Edit"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteAuthorName" text="Delete"/>
                         </HBox>
                     </GridPane>
                 </center>
+                <bottom>
+                    <HBox BorderPane.alignment="CENTER">
+                        <padding><Insets top="10"/></padding>
+                        <Label fx:id="lblAuthorStatus" />
+                    </HBox>
+                </bottom>
             </BorderPane>
         </AnchorPane>
     </Tab>
@@ -291,6 +307,12 @@
                         </columnConstraints>
                     </GridPane>
                 </center>
+                <bottom>
+                    <HBox BorderPane.alignment="CENTER">
+                        <padding><Insets top="10"/></padding>
+                        <Label fx:id="lblBookStatus" />
+                    </HBox>
+                </bottom>
             </BorderPane>
         </AnchorPane>
     </Tab>

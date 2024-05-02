@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.Objects;
 
 public class MainApplication extends Application {
 
@@ -30,14 +31,15 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1600, 1000);
 
+        stage.getIcons().add(new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("icon.png"))));
+        stage.setTitle("I have read");
+        stage.setScene(scene);
+
         MainController mainController = fxmlLoader.getController();
         mainController.setSqliteDb(sqliteDb);
         mainController.initListeners();
         mainController.initComponents(scene);
 
-        stage.getIcons().add(new Image(MainApplication.class.getResourceAsStream("icon.png")));
-        stage.setTitle("I have read");
-        stage.setScene(scene);
         stage.show();
     }
 

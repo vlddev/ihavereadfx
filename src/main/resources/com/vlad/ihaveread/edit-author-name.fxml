@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefWidth="550">
+
+    <content>
+        <GridPane hgap="5" vgap="5">
+            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="tfName" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Language" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="tfLang" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.fillWidth="false"/>
+
+            <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="tfType" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.fillWidth="false"/>
+
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+        </GridPane>
+    </content>
+
+    <buttonTypes>
+        <ButtonType fx:id="btnCreate" text="Apply" buttonData="OK_DONE"/>
+        <ButtonType text="Cancel" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+
+</DialogPane>
