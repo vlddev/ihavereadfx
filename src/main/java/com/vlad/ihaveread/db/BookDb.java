@@ -30,14 +30,16 @@ public class BookDb {
         return ret;
     }
 
-    public List<BookName> getBookNameByBookId(int bookId) throws SQLException {
+    public List<BookName> getBookNameByBookId(int bookId, Author author) throws SQLException {
         List<BookName> ret = new ArrayList<>();
         String sql = "SELECT * FROM book_names WHERE book_id = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ret.add(getBookNameFromRs(rs));
+                BookName bn = getBookNameFromRs(rs);
+                bn.setLibFile(composeLibFile(bn, author));
+                ret.add(bn);
             }
             rs.close();
         }
@@ -223,4 +225,17 @@ public class BookDb {
                 .libFile(rs.getString("lib_file"))
                 .build();
     }
+
+    private String composeLibFile(BookName bn, Author author) throws SQLException {
+        String ret = bn.getLibFile();
+        if (ret == null || ret.length() == 0) {
+            if ("uk".equals(author.getLang())) {
+                ret = "/_ukr/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName();
+            } else {
+                ret = "/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName()+"/"+bn.getLang();
+            }
+        }
+        return ret;
+    }
+
 }

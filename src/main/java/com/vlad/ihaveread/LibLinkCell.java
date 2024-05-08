@@ -20,10 +20,14 @@ public class LibLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<
 
             {
                 hyperlink.setOnAction(event -> {
-                    String file = MainApplication.LIB_ROOT+getItem();
+                    String strItem = (getItem() == null ? "" : getItem().toString());
+                    String file = MainApplication.LIB_ROOT+strItem;
                     try {
-                        if (Files.exists(Path.of(file))) {
-                            if (file.toLowerCase().endsWith(".epub") ||
+                        Path filePath = Path.of(file);
+                        if (Files.exists(filePath)) {
+                            if (Files.isDirectory(filePath)) {
+                                new ProcessBuilder("xdg-open", file).start();
+                            } else if (file.toLowerCase().endsWith(".epub") ||
                                 file.toLowerCase().endsWith(".fb2") ||
                                 file.toLowerCase().endsWith(".fb2.zip")
                             ) {
@@ -34,7 +38,7 @@ public class LibLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<
                         } else {
                             Alert alert = new Alert(Alert.AlertType.WARNING);
                             alert.setTitle("Warning");
-                            alert.setHeaderText("File not exist");
+                            alert.setHeaderText("File '"+file+"' not exist");
                             alert.show();
                         }
                     } catch (IOException e) {

@@ -20,4 +20,5 @@ public class BookReadedTblRow {
     String publishDate;
     String genre;
     String goodreadsId;
+    String hasFile;
 }

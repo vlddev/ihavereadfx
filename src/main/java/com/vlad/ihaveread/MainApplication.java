@@ -30,6 +30,7 @@ public class MainApplication extends Application {
         SqliteDb sqliteDb = new SqliteDb("jdbc:sqlite:"+strDbFile);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1600, 1000);
+        scene.getStylesheets().add("custom.css");
 
         stage.getIcons().add(new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("icon.png"))));
         stage.setTitle("I have read");

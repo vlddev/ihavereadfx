@@ -86,6 +86,11 @@
                                 </cellValueFactory>
                                 <cellFactory><GoodreadsLinkCell/> </cellFactory>
                             </TableColumn>
+                            <TableColumn prefWidth="30" text="file">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="hasFile"/>
+                                </cellValueFactory>
+                            </TableColumn>
                         </columns>
                     </TableView>
                 </center>

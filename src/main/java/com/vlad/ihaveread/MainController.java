@@ -297,7 +297,6 @@ public class MainController {
 
     private void doSearchReadedBy(Function<String, List<BookReadedTblRow>> getBy) {
         String strToFind = tfSearchReadedText.getText().trim();
-        // log.info("Search for '{}'", strToFind);
         if (strToFind.length() > 0) {
             List<BookReadedTblRow> books = getBy.apply(strToFind);
             tvFoundReadBooks.getItems().clear();
@@ -371,8 +370,9 @@ public class MainController {
         taBookNote.setText(book.getNote());
         // fill lists
         try {
-            lstBookAuthors.getItems().addAll(sqliteDb.getAuthorDb().getByBookId(book.getId()));
-            lstBookNames.getItems().addAll(sqliteDb.getBookDb().getBookNameByBookId(book.getId()));
+            List<Author> authors = sqliteDb.getAuthorDb().getByBookId(book.getId());
+            lstBookAuthors.getItems().addAll(authors);
+            lstBookNames.getItems().addAll(sqliteDb.getBookDb().getBookNameByBookId(book.getId(), authors.get(0)));
             lstReadBooks.getItems().addAll(sqliteDb.getBookReadedDb().getByBookId(book.getId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
