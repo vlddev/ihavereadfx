@@ -7,12 +7,9 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
-public class BookName {
-    Integer id;
-    Integer bookId;
-    String name;
-    String lang;
-    String goodreadsId;
+public class BookLibFile {
+    Integer bookNameId;
+    String bookName;
+    String bookDir;
     String libFile;
-    BookLibFile bookLibFile;
 }

@@ -7,6 +7,8 @@ module com.vlad.ihaveread {
     requires lombok;
     requires java.sql;
     requires org.slf4j;
+    requires java.string.similarity;
+    requires org.apache.commons.io;
 
     opens com.vlad.ihaveread to javafx.fxml;
     exports com.vlad.ihaveread;

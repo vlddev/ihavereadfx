@@ -255,7 +255,7 @@
                             </TableColumn>
                             <TableColumn prefWidth="350" text="lib file">
                                 <cellValueFactory>
-                                    <PropertyValueFactory property="libFile"/>
+                                    <PropertyValueFactory property="bookLibFile"/>
                                 </cellValueFactory>
                                 <cellFactory>
                                     <LibLinkCell/>
@@ -266,6 +266,7 @@
                         <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="9">
                             <Button mnemonicParsing="false" onAction="#doAddBookName" text="Add name"/>
                             <Button mnemonicParsing="false" onAction="#doEditBookName" text="Edit name"/>
+                            <Button mnemonicParsing="false" onAction="#doFindLibFile" text="Find file"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteBookName" text="Delete name"/>
                         </HBox>
 

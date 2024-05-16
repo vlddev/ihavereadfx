@@ -6,7 +6,7 @@
 
     <groupId>com.vlad</groupId>
     <artifactId>ihaveread</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
     <name>ihaveread</name>
 
     <properties>
@@ -64,6 +64,16 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.45.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>info.debatty</groupId>
+            <artifactId>java-string-similarity</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.16.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

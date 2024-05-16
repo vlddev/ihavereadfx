@@ -1,6 +1,7 @@
 package com.vlad.ihaveread;
 
-import javafx.scene.control.Alert;
+import com.vlad.ihaveread.dao.BookLibFile;
+import com.vlad.ihaveread.util.Util;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -20,29 +21,37 @@ public class LibLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<
 
             {
                 hyperlink.setOnAction(event -> {
-                    String strItem = (getItem() == null ? "" : getItem().toString());
-                    String file = MainApplication.LIB_ROOT+strItem;
-                    try {
-                        Path filePath = Path.of(file);
-                        if (Files.exists(filePath)) {
-                            if (Files.isDirectory(filePath)) {
-                                new ProcessBuilder("xdg-open", file).start();
-                            } else if (file.toLowerCase().endsWith(".epub") ||
-                                file.toLowerCase().endsWith(".fb2") ||
-                                file.toLowerCase().endsWith(".fb2.zip")
-                            ) {
-                                new ProcessBuilder("foliate", file).start();
+                    T item = getItem();
+                    if (item instanceof BookLibFile) {
+                        BookLibFile bookLibFile = (BookLibFile)item;
+                        try {
+                            if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().length() == 0) {
+                                Path bookDir = Path.of(MainApplication.LIB_ROOT, bookLibFile.getBookDir());
+                                if (Files.isDirectory(bookDir)) {
+                                    new ProcessBuilder("xdg-open", bookDir.toString()).start();
+                                } else {
+                                    Util.warningAlert("Warning", "Folder '"+bookLibFile.getBookDir()+"' not exist").show();
+                                }
                             } else {
-                                new ProcessBuilder("xdg-open", file).start();
+                                String file = MainApplication.LIB_ROOT+bookLibFile.getLibFile();
+                                Path filePath = Path.of(file);
+                                if (Files.exists(filePath)) {
+                                    if (Files.isDirectory(filePath)) {
+                                        new ProcessBuilder("xdg-open", file).start();
+                                    } else if (file.toLowerCase().endsWith(".epub") ||
+                                            file.toLowerCase().endsWith(".fb2") ||
+                                            file.toLowerCase().endsWith(".fb2.zip")) {
+                                        new ProcessBuilder("foliate", file).start();
+                                    } else {
+                                        new ProcessBuilder("xdg-open", file).start();
+                                    }
+                                } else {
+                                    Util.warningAlert("Warning", "File '"+file+"' not exist").show();
+                                }
                             }
-                        } else {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setTitle("Warning");
-                            alert.setHeaderText("File '"+file+"' not exist");
-                            alert.show();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 });
             }
@@ -53,7 +62,16 @@ public class LibLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    hyperlink.setText(item == null ? "" : item.toString());
+                    if (item instanceof BookLibFile) {
+                        BookLibFile bookLibFile = (BookLibFile)item;
+                        if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().length() == 0) {
+                            hyperlink.setText(bookLibFile.getBookDir());
+                        } else {
+                            hyperlink.setText(bookLibFile.getLibFile());
+                        }
+                    } else {
+                        hyperlink.setText(item == null ? "" : item.toString());
+                    }
                     setGraphic(hyperlink);
                 }
             }

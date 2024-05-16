@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -433,6 +435,8 @@ public class MainController {
         if (ret.isPresent()) {
             ret.get().setBookId(curBook.getId());
             BookName newEntity = sqliteDb.getBookDb().insertBookName(ret.get());
+            Author author = lstBookAuthors.getItems().get(0);
+            newEntity.setBookLibFile(sqliteDb.getBookDb().composeBookLibFile(newEntity, author));
             lstBookNames.getItems().add(newEntity);
         }
     }
@@ -450,6 +454,52 @@ public class MainController {
                 }
                 lstBookNames.getItems().set(selInd, ret.get());
             }
+        }
+    }
+
+    public void doFindLibFile() {
+        int selInd = lstBookNames.getSelectionModel().getSelectedIndex();
+        if (selInd > -1) {
+            BookName bn = lstBookNames.getItems().get(selInd);
+            BookLibFile bookLibFile = bn.getBookLibFile();
+            if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().length() == 0) {
+                String bookDir = MainApplication.LIB_ROOT+bookLibFile.getBookDir();
+                if (Files.isDirectory(Path.of(bookDir))) {
+                    // get files similar to book name from dir
+                    List<String> bookFiles = Util.getSimilarFiles(bookLibFile.getBookName(), bookDir);
+                    if (bookFiles.size() > 0) {
+                        if (bookFiles.size() == 1) {
+                            String libFile = Path.of(bookLibFile.getBookDir(),bookFiles.get(0)).toString();
+                            bookLibFile.setLibFile(libFile);
+                            bn.setLibFile(libFile);
+                        } else {
+                            // show dialog to select one of files
+                            ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(bookFiles.get(0), bookFiles);
+                            Optional<String> selected = choiceDialog.showAndWait();
+                            if (selected.isPresent()) {
+                                String libFile = Path.of(bookLibFile.getBookDir(), selected.get()).toString();
+                                bookLibFile.setLibFile(libFile);
+                                bn.setLibFile(libFile);
+                            }
+                        }
+                        // update LibFile in BookNames
+                        try {
+                            if (bn.getLibFile() != null && bn.getLibFile().length() > 0) {
+                                sqliteDb.getBookDb().updateBookName(bn);
+                            }
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        lstBookNames.getItems().set(selInd, bn);
+                    } else {
+                        Util.infoAlert("Not found", "No similar files").show();
+                    }
+                } else {
+                    Util.warningAlert("Warning", "Folder '"+bookLibFile.getBookDir()+"' not exist").show();
+                }
+            }
+        } else {
+            Util.infoAlert("Select record", "Record not selected").show();
         }
     }
 

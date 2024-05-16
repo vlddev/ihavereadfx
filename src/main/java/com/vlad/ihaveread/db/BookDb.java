@@ -2,6 +2,7 @@ package com.vlad.ihaveread.db;
 
 import com.vlad.ihaveread.dao.*;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +39,7 @@ public class BookDb {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BookName bn = getBookNameFromRs(rs);
-                bn.setLibFile(composeLibFile(bn, author));
+                bn.setBookLibFile(composeBookLibFile(bn, author));
                 ret.add(bn);
             }
             rs.close();
@@ -226,14 +227,22 @@ public class BookDb {
                 .build();
     }
 
-    private String composeLibFile(BookName bn, Author author) throws SQLException {
-        String ret = bn.getLibFile();
-        if (ret == null || ret.length() == 0) {
+    public BookLibFile composeBookLibFile(BookName bn, Author author) {
+        BookLibFile ret = BookLibFile.builder()
+                .libFile(bn.getLibFile())
+                .bookNameId(bn.getId())
+                .bookName(bn.getName())
+                .build();
+        if (bn.getLibFile() == null || bn.getLibFile().length() == 0) {
+            String bookDir = "";
             if ("uk".equals(author.getLang())) {
-                ret = "/_ukr/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName();
+                bookDir = "/_ukr/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName();
             } else {
-                ret = "/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName()+"/"+bn.getLang();
+                bookDir = "/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName()+"/"+bn.getLang();
             }
+            ret.setBookDir(bookDir);
+        } else {
+            ret.setBookDir(Path.of(bn.getLibFile()).getParent().toString());
         }
         return ret;
     }
