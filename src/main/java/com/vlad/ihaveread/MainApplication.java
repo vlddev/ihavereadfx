@@ -18,16 +18,17 @@ public class MainApplication extends Application {
     public static final String DEFAULT_LIB_ROOT = "./";
 
     public static String LIB_ROOT = DEFAULT_LIB_ROOT;
+    public static String DB_FILE = DEFAULT_DB_FILE;
 
     @Override
     public void start(Stage stage) throws Exception {
         LIB_ROOT = System.getProperty(PARAM_LIB_ROOT, DEFAULT_LIB_ROOT);
-        String strDbFile = System.getProperty(PARAM_DB_FILE, DEFAULT_DB_FILE);
-        File dbFile = new File(strDbFile);
+        DB_FILE = System.getProperty(PARAM_DB_FILE, DEFAULT_DB_FILE);
+        File dbFile = new File(DB_FILE);
         if (!dbFile.exists()) {
-            throw new RuntimeException("DB file "+strDbFile+" not exist.");
+            throw new RuntimeException("DB file "+DB_FILE+" not exist.");
         }
-        SqliteDb sqliteDb = new SqliteDb("jdbc:sqlite:"+strDbFile);
+        SqliteDb sqliteDb = new SqliteDb("jdbc:sqlite:"+DB_FILE);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1600, 1000);
         scene.getStylesheets().add("custom.css");
@@ -40,6 +41,7 @@ public class MainApplication extends Application {
         mainController.setSqliteDb(sqliteDb);
         mainController.initListeners();
         mainController.initComponents(scene);
+        mainController.initData();
 
         stage.show();
     }

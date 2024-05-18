@@ -45,6 +45,19 @@ public class AuthorDb {
         return ret;
     }
 
+    public int getAuthorCount() throws SQLException {
+        int ret = 0;
+        String sql = "SELECT count(*) FROM author";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ret = rs.getInt(1);
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
     public List<Author> getByBookId(int bookId) throws SQLException {
         List<Author> ret = new ArrayList<>();
         String sql = """

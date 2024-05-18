@@ -78,6 +78,19 @@ public class BookReadedDb {
         return ret;
     }
 
+    public int getBookReadedCount() throws SQLException {
+        int ret = 0;
+        String sql = "SELECT count(*) FROM book_readed";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ret = rs.getInt(1);
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
     private List<BookReadedTblRow> getReadedBooksBySql(String sql, String param) {
         List<BookReadedTblRow> ret = new ArrayList<>();
         try (PreparedStatement ps = con.prepareStatement(sql)) {

@@ -322,4 +322,44 @@
             </BorderPane>
         </AnchorPane>
     </Tab>
+    <Tab fx:id="tabTools" text="Tools">
+        <AnchorPane minHeight="0" minWidth="0" prefHeight="180" prefWidth="200">
+            <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                        AnchorPane.topAnchor="0">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10"/>
+                </padding>
+                <top>
+                    <HBox prefHeight="30.0" BorderPane.alignment="CENTER" spacing="10">
+                        <Button mnemonicParsing="false" onAction="#doBackupDb" text="Backup DB"/>
+                    </HBox>
+                </top>
+                <center>
+                    <GridPane hgap="5" vgap="5">
+                        <padding>
+                            <Insets left="10"/>
+                        </padding>
+
+                        <Label text="Author count" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblAuthorCount" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label text="Book count" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblBookCount" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label text="BookReaded count" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="lblBookReadedCount" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <columnConstraints>
+                            <ColumnConstraints/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+                    </GridPane>
+                </center>
+                <bottom>
+                    <HBox BorderPane.alignment="CENTER">
+                        <padding><Insets top="10"/></padding>
+                        <Label fx:id="lblToolsStatus" />
+                    </HBox>
+                </bottom>
+            </BorderPane>
+        </AnchorPane>
+    </Tab>
 </TabPane>

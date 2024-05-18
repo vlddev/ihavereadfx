@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -69,7 +71,10 @@ public class MainController {
     private TextArea taBookNote;
 
     @FXML
-    private Label lblStatus, lblAuthorStatus, lblBookStatus;
+    private Label lblStatus, lblAuthorStatus, lblBookStatus, lblToolsStatus;
+
+    @FXML
+    private Label lblAuthorCount, lblBookCount, lblBookReadedCount;
 
     public void setSqliteDb(SqliteDb sqliteDb) {
         this.sqliteDb = sqliteDb;
@@ -149,6 +154,12 @@ public class MainController {
         editBookNameDialog = new EditBookNameDialog(scene.getWindow());
         editAuthorNameDialog = new EditAuthorNameDialog(scene.getWindow());
         editBookReadedDialog = new EditBookReadedDialog(scene.getWindow());
+    }
+
+    public void initData() throws SQLException {
+        lblAuthorCount.setText(""+sqliteDb.getAuthorDb().getAuthorCount());
+        lblBookCount.setText(""+sqliteDb.getBookDb().getBookCount());
+        lblBookReadedCount.setText(""+sqliteDb.getBookReadedDb().getBookReadedCount());
     }
 
     public void doSearchAuthor() throws SQLException {
@@ -545,5 +556,22 @@ public class MainController {
             sqliteDb.getBookReadedDb().deleteBookReaded(item.getId());
             lstReadBooks.getItems().remove(selInd);
         }
+    }
+
+    public void doBackupDb() {
+        String sqliteDb = MainApplication.DB_FILE;
+        String dumpFile = sqliteDb + "_dump.sql";
+        String strStatus = "";
+        try {
+            ProcessBuilder builder = new ProcessBuilder("sqlite3", "-batch", sqliteDb, ".dump").inheritIO()
+                    .redirectOutput(new File(dumpFile));
+            Process process = builder.start();
+            int exitCode = process.waitFor();
+            strStatus = "Done. Exit code = "+exitCode;
+        } catch (InterruptedException | IOException e) {
+            strStatus = "Error. "+e.getMessage();
+            //throw new RuntimeException(e);
+        }
+        lblToolsStatus.setText(strStatus);
     }
 }
