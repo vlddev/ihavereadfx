@@ -460,10 +460,13 @@ public class MainController {
             if (ret.isPresent()) {
                 try {
                     sqliteDb.getBookDb().updateBookName(ret.get());
+                    //reload BookNames
+                    lstBookNames.getItems().clear();
+                    Author author = lstBookAuthors.getItems().get(0);
+                    lstBookNames.getItems().addAll(sqliteDb.getBookDb().getBookNameByBookId(ret.get().getBookId(), author));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                lstBookNames.getItems().set(selInd, ret.get());
             }
         }
     }
@@ -498,10 +501,13 @@ public class MainController {
                             if (bn.getLibFile() != null && bn.getLibFile().length() > 0) {
                                 sqliteDb.getBookDb().updateBookName(bn);
                             }
+                            //reload BookNames
+                            lstBookNames.getItems().clear();
+                            Author author = lstBookAuthors.getItems().get(0);
+                            lstBookNames.getItems().addAll(sqliteDb.getBookDb().getBookNameByBookId(bn.getBookId(), author));
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        lstBookNames.getItems().set(selInd, bn);
                     } else {
                         Util.infoAlert("Not found", "No similar files").show();
                     }

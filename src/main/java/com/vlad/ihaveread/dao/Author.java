@@ -12,4 +12,14 @@ public class Author {
     String name;
     String lang;
     String note;
+
+    public String getBaseDir(BookName bn) {
+        String ret = "";
+        if ("uk".equals(getLang())) {
+            ret = "/_ukr/"+getName().substring(0,1).toLowerCase()+"/"+getName();
+        } else {
+            ret = "/"+getName().substring(0,1).toLowerCase()+"/"+getName()+"/"+bn.getLang();
+        }
+        return ret;
+    }
 }

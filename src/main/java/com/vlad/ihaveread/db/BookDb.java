@@ -247,13 +247,7 @@ public class BookDb {
                 .bookName(bn.getName())
                 .build();
         if (bn.getLibFile() == null || bn.getLibFile().length() == 0) {
-            String bookDir = "";
-            if ("uk".equals(author.getLang())) {
-                bookDir = "/_ukr/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName();
-            } else {
-                bookDir = "/"+author.getName().substring(0,1).toLowerCase()+"/"+author.getName()+"/"+bn.getLang();
-            }
-            ret.setBookDir(bookDir);
+            ret.setBookDir(author.getBaseDir(bn));
         } else {
             ret.setBookDir(Path.of(bn.getLibFile()).getParent().toString());
         }
