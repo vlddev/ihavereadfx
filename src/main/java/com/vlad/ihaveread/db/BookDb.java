@@ -60,6 +60,23 @@ public class BookDb {
         return ret;
     }
 
+    public List<Tag> getBookTagsByBookId(int bookId) throws SQLException {
+        List<Tag> ret = new ArrayList<>();
+        String sql = """
+            SELECT t.*
+            FROM tag t, book_tag bt
+            WHERE bt.book_id = ? and t.id = bt.tag_id""";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getTagFromRs(rs));
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
     public List<Book> findByName(String namePart) throws SQLException {
         List<Book> ret = new ArrayList<>();
         String sql = """
@@ -75,6 +92,68 @@ public class BookDb {
             rs.close();
         }
         return ret;
+    }
+
+    public List<Tag> findTagLikeName(String namePart) throws SQLException {
+        List<Tag> ret = new ArrayList<>();
+        String sql = """
+            SELECT t.*
+            FROM tag t
+            WHERE t.name_en like ? or t.name_uk like ?
+            order by t.name_en""";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, namePart);
+            ps.setString(2, namePart);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getTagFromRs(rs));
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
+    public List<Tag> findTagByName(String name) throws SQLException {
+        List<Tag> ret = new ArrayList<>();
+        String sql = """
+            SELECT t.*
+            FROM tag t
+            WHERE t.name_en = ? or t.name_uk = ?""";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, name);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getTagFromRs(rs));
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
+    public Tag insertTag(Tag tag) throws SQLException {
+        String sql = "INSERT INTO tag(name_en, name_uk) VALUES (?, ?) RETURNING id";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, tag.getNameEn());
+            ps.setString(2, tag.getNameUk());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tag.setId(rs.getInt(1));
+                return tag;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public void updateTag(Tag tag) throws SQLException {
+        String sql = "UPDATE tag SET name_en = ?, name_uk = ?  WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, tag.getNameEn());
+            ps.setString(2, tag.getNameUk());
+            ps.setInt(3, tag.getId());
+            int ret = ps.executeUpdate();
+        }
     }
 
     public Book insertBook(Book book) throws SQLException {
@@ -218,6 +297,24 @@ public class BookDb {
         }
     }
 
+    public void insertBookTag(int bookId, int tagId) throws SQLException {
+        String sql = "INSERT INTO book_tag(book_id, tag_id) VALUES (?,?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.setInt(2, tagId);
+            ps.executeUpdate();
+        }
+    }
+
+    public void deleteBookTag(int bookId, int tagId) throws SQLException {
+        String sql = "DELETE FROM book_tag WHERE book_id = ? AND tag_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            ps.setInt(2, tagId);
+            ps.executeUpdate();
+        }
+    }
+
     public Book getBookFromRs(ResultSet rs) throws SQLException {
         return Book.builder()
                 .id(rs.getInt("id"))
@@ -237,6 +334,14 @@ public class BookDb {
                 .lang(rs.getString("lang"))
                 .goodreadsId(rs.getString("goodreads_id"))
                 .libFile(rs.getString("lib_file"))
+                .build();
+    }
+
+    public Tag getTagFromRs(ResultSet rs) throws SQLException {
+        return Tag.builder()
+                .id(rs.getInt("id"))
+                .nameEn(rs.getString("name_en"))
+                .nameUk(rs.getString("name_uk"))
                 .build();
     }
 

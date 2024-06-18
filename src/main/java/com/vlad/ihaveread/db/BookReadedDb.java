@@ -27,6 +27,17 @@ public class BookReadedDb {
         this.con = c;
     }
 
+    public List<BookReadedTblRow> getReadedBooksByCustomWhere(String wherePart) {
+        String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
+            FROM book_readed br, book b, author_book ab, author a
+            WHERE
+            br.book_id = b.id
+            and br.book_id = ab.book_id
+            and ab.author_id = a.id
+            and""" + " " + wherePart + " order by br.date_read";
+        return getReadedBooksBySql(sql);
+    }
+
     public List<BookReadedTblRow> getReadedBooksByYear(String dateRead) {
         String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
             FROM book_readed br, book b, author_book ab, author a
@@ -64,6 +75,20 @@ public class BookReadedDb {
         return getReadedBooksBySql(sql, "%"+title+"%");
     }
 
+    public List<BookReadedTblRow> getReadedBooksByTag(String tagNameEn) {
+        String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
+            FROM book_readed br, book b, author_book ab, author a, tag t, book_tag bt
+            WHERE
+            br.book_id = b.id
+            and br.book_id = ab.book_id
+            and ab.author_id = a.id
+            and bt.book_id = b.id
+            and t.id = bt.tag_id
+            and t.name_en = ?
+            order by br.date_read""";
+        return getReadedBooksBySql(sql, tagNameEn);
+    }
+
     public List<BookReaded> getByBookId(int bookId) throws SQLException {
         List<BookReaded> ret = new ArrayList<>();
         String sql = "SELECT * FROM book_readed WHERE book_id = ? ORDER BY date_read";
@@ -87,6 +112,20 @@ public class BookReadedDb {
                 ret = rs.getInt(1);
             }
             rs.close();
+        }
+        return ret;
+    }
+
+    private List<BookReadedTblRow> getReadedBooksBySql(String sql) {
+        List<BookReadedTblRow> ret = new ArrayList<>();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(getFromRs(rs));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return ret;
     }

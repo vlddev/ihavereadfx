@@ -25,6 +25,7 @@
                         <Button onAction="#doSearchReadedByYear" text="by _year"/>
                         <Button onAction="#doSearchReadedByAuthor" text="by _author"/>
                         <Button onAction="#doSearchReadedByTitle" text="by _title"/>
+                        <Button onAction="#doSearchReadedByCustomWhere" text="by _where"/>
                     </HBox>
                 </top>
                 <center>
@@ -142,8 +143,6 @@
                             <Button mnemonicParsing="false" onAction="#doSaveAuthor" text="Save"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteAuthor" text="Delete"/>
                         </HBox>
-                        <!--ListView fx:id="lstAuthorNames" prefHeight="100" GridPane.columnIndex="0"
-                                  GridPane.columnSpan="2" GridPane.rowIndex="4"/-->
                         <TableView fx:id="lstAuthorNames" prefHeight="160" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
                             <columns>
                                 <TableColumn prefWidth="300" text="name">
@@ -224,16 +223,24 @@
                         <Label text="Genre" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
                         <TextField fx:id="tfGenre" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-                        <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <Label text="Tag(s)" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <ListView fx:id="lstBookTags" prefHeight="100" GridPane.columnIndex="1"
+                                  GridPane.rowIndex="6"/>
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" spacing="10">
+                            <Button mnemonicParsing="false" onAction="#doAddBookTag" text="Add tag"/>
+                            <Button mnemonicParsing="false" onAction="#doDeleteBookTag" text="Delete tag"/>
+                        </HBox>
+
+                        <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
                         <TextArea fx:id="taBookNote" prefHeight="100" prefWidth="440" wrapText="true"
-                                  GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="true"/>
-                        <HBox GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2" spacing="40">
+                                  GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.fillWidth="true"/>
+                        <HBox GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.columnSpan="2" spacing="40">
                             <Button mnemonicParsing="false" onAction="#doSaveBook" text="Save book"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteBook" text="Delete book"/>
                         </HBox>
 
-                        <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-                        <TableView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                        <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+                        <TableView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="10">
                             <columns>
                             <TableColumn prefWidth="40" text="lang">
                                 <cellValueFactory>
@@ -263,16 +270,16 @@
                             </TableColumn>
                             </columns>
                         </TableView>
-                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="11">
                             <Button mnemonicParsing="false" onAction="#doAddBookName" text="Add name"/>
                             <Button mnemonicParsing="false" onAction="#doEditBookName" text="Edit name"/>
                             <Button mnemonicParsing="false" onAction="#doFindLibFile" text="Find file"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteBookName" text="Delete name"/>
                         </HBox>
 
-                        <Label text="Read book" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+                        <Label text="Read book" GridPane.columnIndex="0" GridPane.rowIndex="12"/>
                         <TableView fx:id="lstReadBooks" prefHeight="100"
-                                   GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                   GridPane.columnIndex="1" GridPane.rowIndex="12">
                             <columns>
                                 <TableColumn prefWidth="100" text="read on">
                                     <cellValueFactory>
@@ -301,7 +308,7 @@
                                 </TableColumn>
                             </columns>
                         </TableView>
-                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="13">
                             <Button mnemonicParsing="false" onAction="#doAddReadBook" text="Add book"/>
                             <Button mnemonicParsing="false" onAction="#doEditReadBook" text="Edit book"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteReadBook" text="Delete book"/>
@@ -317,6 +324,53 @@
                     <HBox BorderPane.alignment="CENTER">
                         <padding><Insets top="10"/></padding>
                         <Label fx:id="lblBookStatus" />
+                    </HBox>
+                </bottom>
+            </BorderPane>
+        </AnchorPane>
+    </Tab>
+    <Tab fx:id="tabTag" text="Tags">
+        <AnchorPane minHeight="0" minWidth="0" prefHeight="180" prefWidth="200">
+            <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                        AnchorPane.topAnchor="0">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10"/>
+                </padding>
+                <top>
+                    <HBox prefHeight="30" BorderPane.alignment="CENTER" spacing="10">
+                        <TextField fx:id="tfTagSearchText" prefWidth="300" onAction="#doSearchTag"/>
+                        <Button mnemonicParsing="false" onAction="#doSearchTag" text="Search"/>
+                        <Button mnemonicParsing="false" onAction="#showTagBooks" text="Show books"/>
+                        <Button mnemonicParsing="false" onAction="#doAddTag" text="New tag"/>
+                    </HBox>
+                </top>
+                <left>
+                    <ListView fx:id="lstFoundTags" prefWidth="300" BorderPane.alignment="CENTER"/>
+                </left>
+                <center>
+                    <GridPane hgap="10" vgap="10" BorderPane.alignment="CENTER">
+                        <padding>
+                            <Insets left="10"/>
+                        </padding>
+                        <columnConstraints>
+                            <ColumnConstraints/>
+                            <ColumnConstraints/>
+                        </columnConstraints>
+                        <Label text="NameEn" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="tfTagNameEn" prefWidth="400" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="0"/>
+                        <Label text="NameUk" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextField fx:id="tfTagNameUk" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <HBox GridPane.columnIndex="0" spacing="10"
+                              GridPane.columnSpan="2" GridPane.rowIndex="3">
+                            <Button mnemonicParsing="false" onAction="#doSaveTag" text="Save"/>
+                        </HBox>
+                    </GridPane>
+                </center>
+                <bottom>
+                    <HBox BorderPane.alignment="CENTER">
+                        <padding><Insets top="10"/></padding>
+                        <Label fx:id="lblTagStatus" />
                     </HBox>
                 </bottom>
             </BorderPane>
@@ -346,6 +400,11 @@
                         <Label fx:id="lblBookCount" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                         <Label text="BookReaded count" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                         <Label fx:id="lblBookReadedCount" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <Label text="Tools" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <Button mnemonicParsing="false" onAction="#doGenreToTags" text="Genre -> Tags"/>
+                        </HBox>
 
                         <columnConstraints>
                             <ColumnConstraints/>

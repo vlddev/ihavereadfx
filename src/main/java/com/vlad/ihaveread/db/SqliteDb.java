@@ -15,12 +15,14 @@ public class SqliteDb implements AutoCloseable {
     AuthorDb authorDb;
     BookDb bookDb;
     BookReadedDb bookReadedDb;
+    DbUtil dbUtil;
 
     public SqliteDb(String dbUrl) throws SQLException {
         this.connection = DriverManager.getConnection(dbUrl);
         this.authorDb = new AuthorDb(connection);
         this.bookDb = new BookDb(connection);
         this.bookReadedDb = new BookReadedDb(connection);
+        this.dbUtil = new DbUtil(this);
     }
 
     public void createTables() throws SQLException {

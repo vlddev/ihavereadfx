@@ -28,10 +28,13 @@ public class MainController {
     private SqliteDb sqliteDb;
     private Author curAuthor;
     private Book curBook;
+    private Tag curTag;
 
     private NewAuthorDialog newAuthorDialog;
+    private NewTagDialog newTagDialog;
     private NewBookreadedDialog newBookreadedDialog;
     private SelectAuthorDialog selectAuthorDialog;
+    private SelectTagDialog selectTagDialog;
     private EditBookNameDialog editBookNameDialog;
     private EditAuthorNameDialog editAuthorNameDialog;
     private EditBookReadedDialog editBookReadedDialog;
@@ -43,6 +46,9 @@ public class MainController {
     private ListView<Author> lstFoundAuthors, lstBookAuthors;
 
     @FXML
+    private ListView<Tag> lstBookTags;
+
+    @FXML
     private ListView<Book> lstFoundBooks;
 
     @FXML
@@ -52,7 +58,7 @@ public class MainController {
     private TableView<BookName> lstBookNames;
 
     @FXML
-    private Tab tabBook, tabAuthor, tabReaded;
+    private Tab tabBook, tabAuthor, tabReaded, tabTag;
 
     @FXML
     private TabPane tabPane;
@@ -71,7 +77,13 @@ public class MainController {
     private TextArea taBookNote;
 
     @FXML
-    private Label lblStatus, lblAuthorStatus, lblBookStatus, lblToolsStatus;
+    private TextField tfTagSearchText, tfTagNameEn, tfTagNameUk;
+
+    @FXML
+    private ListView<Tag> lstFoundTags;
+
+    @FXML
+    private Label lblStatus, lblAuthorStatus, lblBookStatus, lblTagStatus, lblToolsStatus;
 
     @FXML
     private Label lblAuthorCount, lblBookCount, lblBookReadedCount;
@@ -87,6 +99,8 @@ public class MainController {
         lstFoundBooks.getSelectionModel().selectedItemProperty().addListener(
                 (ov, oldVal, newVal) -> onSelectBookName(newVal));
         lstFoundBooks.setCellFactory(callback -> new PropertyListCellFactory<>("title"));
+        lstFoundTags.getSelectionModel().selectedItemProperty().addListener(
+                (ov, oldVal, newVal) -> onSelectTag(newVal));
         lstBookAuthors.setCellFactory(callback -> new ListCell<>() {
             @Override
             protected void updateItem(Author item, boolean empty) {
@@ -149,8 +163,10 @@ public class MainController {
 
     public void initComponents(Scene scene) {
         newAuthorDialog = new NewAuthorDialog(scene.getWindow(), sqliteDb);
+        newTagDialog = new NewTagDialog(scene.getWindow(), sqliteDb);
         newBookreadedDialog = new NewBookreadedDialog(scene.getWindow(), sqliteDb);
         selectAuthorDialog = new SelectAuthorDialog(scene.getWindow(), sqliteDb);
+        selectTagDialog = new SelectTagDialog(scene.getWindow(), sqliteDb);
         editBookNameDialog = new EditBookNameDialog(scene.getWindow());
         editAuthorNameDialog = new EditAuthorNameDialog(scene.getWindow());
         editBookReadedDialog = new EditBookReadedDialog(scene.getWindow());
@@ -296,6 +312,62 @@ public class MainController {
         }
     }
 
+    public void doSearchTag() throws SQLException {
+        clearTag();
+        String strToFind = tfTagSearchText.getText().trim();
+        List<Tag> tags = sqliteDb.getBookDb().findTagLikeName("%"+strToFind+"%");
+        lstFoundTags.getItems().clear();
+        if (!tags.isEmpty()) {
+            lblTagStatus.setText(""+tags.size()+" row(s)");
+            lstFoundTags.getItems().addAll(tags);
+            lstFoundTags.getSelectionModel().select(0);
+            lstFoundTags.requestFocus();
+        } else {
+            lblTagStatus.setText("Nothing found");
+        }
+    }
+
+    public void clearTag() {
+        tfTagNameEn.clear();
+        tfTagNameUk.clear();
+        curTag = null;
+    }
+
+    public void onSelectTag(Tag tag) {
+        if (tag == null) {
+            clearTag();
+            return;
+        }
+        tfTagNameEn.setText(tag.getNameEn());
+        tfTagNameUk.setText(tag.getNameUk());
+        curTag = tag;
+    }
+
+    public void doAddTag() {
+        newTagDialog.showAndWait();
+    }
+
+    public void doSaveTag() {
+        if (curTag != null) {
+            curTag.setNameEn(tfTagNameEn.getText());
+            curTag.setNameUk(tfTagNameUk.getText());
+            try {
+                sqliteDb.getBookDb().updateTag(curTag);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void showTagBooks() {
+        if (curTag != null) {
+            tvFoundReadBooks.getItems().clear();
+            tfSearchReadedText.setText(curTag.getNameEn());
+            doSearchReadedByTag();
+            tabPane.getSelectionModel().select(tabReaded);
+        }
+    }
+
     public void doSearchReadedByTitle() {
         doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByTitle);
     }
@@ -306,6 +378,14 @@ public class MainController {
 
     public void doSearchReadedByYear() {
         doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByYear);
+    }
+
+    public void doSearchReadedByTag() {
+        doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByTag);
+    }
+
+    public void doSearchReadedByCustomWhere() {
+        doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByCustomWhere);
     }
 
     private void doSearchReadedBy(Function<String, List<BookReadedTblRow>> getBy) {
@@ -332,6 +412,7 @@ public class MainController {
         lstBookAuthors.getItems().clear();
         lstBookNames.getItems().clear();
         lstReadBooks.getItems().clear();
+        lstBookTags.getItems().clear();
     }
 
     public void doSearchBook() throws SQLException {
@@ -387,6 +468,7 @@ public class MainController {
             lstBookAuthors.getItems().addAll(authors);
             lstBookNames.getItems().addAll(sqliteDb.getBookDb().getBookNameByBookId(book.getId(), authors.get(0)));
             lstReadBooks.getItems().addAll(sqliteDb.getBookReadedDb().getByBookId(book.getId()));
+            lstBookTags.getItems().addAll(sqliteDb.getBookDb().getBookTagsByBookId(book.getId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -412,6 +494,23 @@ public class MainController {
         Author author = lstBookAuthors.getItems().get(selInd);
         sqliteDb.getBookDb().deleteBookAuthor(curBook.getId(), author.getId());
         lstBookAuthors.getItems().remove(selInd);
+    }
+
+    public void doAddBookTag() throws SQLException {
+        Optional<Tag> ret = selectTagDialog.showAndWait();
+        if (ret.isPresent()) {
+            if (!lstBookTags.getItems().contains(ret.get())) {
+                sqliteDb.getBookDb().insertBookTag(curBook.getId(), ret.get().getId());
+                lstBookTags.getItems().add(ret.get());
+            }
+        }
+    }
+
+    public void doDeleteBookTag() throws SQLException {
+        int selInd = lstBookTags.getSelectionModel().getSelectedIndex();
+        Tag tag = lstBookTags.getItems().get(selInd);
+        sqliteDb.getBookDb().deleteBookTag(curBook.getId(), tag.getId());
+        lstBookTags.getItems().remove(selInd);
     }
 
     public void doSaveBook() throws SQLException {
@@ -577,6 +676,16 @@ public class MainController {
         } catch (InterruptedException | IOException e) {
             strStatus = "Error. "+e.getMessage();
             //throw new RuntimeException(e);
+        }
+        lblToolsStatus.setText(strStatus);
+    }
+
+    public void doGenreToTags() {
+        String strStatus = "Done";
+        try {
+            sqliteDb.getDbUtil().convertBookGenreToTags();
+        } catch (SQLException e) {
+            strStatus = "Error. "+e.getMessage();
         }
         lblToolsStatus.setText(strStatus);
     }

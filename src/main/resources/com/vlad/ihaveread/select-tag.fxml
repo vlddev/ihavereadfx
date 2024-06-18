@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefWidth="400">
+
+    <content>
+        <GridPane hgap="5" vgap="5">
+            <Label text="Tag" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="tfSearch" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Button fx:id="btnSearch"  mnemonicParsing="false" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+            <ListView fx:id="lstTags" prefHeight="100" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"/>
+
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints/>
+            </columnConstraints>
+        </GridPane>
+    </content>
+
+    <buttonTypes>
+        <ButtonType fx:id="btnOk" text="Ok" buttonData="OK_DONE"/>
+        <ButtonType text="Cancel" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+
+</DialogPane>
