@@ -18,6 +18,7 @@ public class DbUtil {
         this.sqliteDb = sqliteDb;
     }
 
+    /*
     public void convertBookGenreToTags() throws SQLException {
         Connection con = sqliteDb.getConnection();
         String sql = "SELECT * FROM book ORDER BY id";
@@ -48,4 +49,5 @@ public class DbUtil {
             rs.close();
         }
     }
+    */
 }

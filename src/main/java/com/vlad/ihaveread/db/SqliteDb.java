@@ -54,7 +54,6 @@ public class SqliteDb implements AutoCloseable {
                 	"title"	TEXT NOT NULL,
                 	"publish_date"	TEXT,
                 	"lang"	TEXT,
-                	"genre"	TEXT,
                 	"note"	TEXT
                 )""");
         st.addBatch("""

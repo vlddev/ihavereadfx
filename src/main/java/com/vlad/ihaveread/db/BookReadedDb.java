@@ -13,13 +13,14 @@ import java.util.List;
 public class BookReadedDb {
 
     private static final String SELECT_READ_BOOKS_TBL_COLUMNS = """
-        SELECT distinct br.book_id, br.date_read,
-            (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
-            ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
-            ((select bn.lib_file from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read) is not NULL) has_lib_file,
-            ifnull((select NULLIF(bn.goodreads_id,'') from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read),
-               (select 'alt:'||bn.goodreads_id from book_names bn where bn.book_id = b.id and NULLIF(bn.goodreads_id,'') is not null limit 1)) goodreads_id,
-            br.lang_read, b.publish_date, br.medium, br.score, b.genre, b.note""";
+            SELECT distinct br.book_id, br.date_read,
+                (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
+                ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
+                ((select bn.lib_file from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read) is not NULL) has_lib_file,
+                ifnull((select NULLIF(bn.goodreads_id,'') from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read),
+                   (select 'alt:'||bn.goodreads_id from book_names bn where bn.book_id = b.id and NULLIF(bn.goodreads_id,'') is not null limit 1)) goodreads_id,
+                (select group_concat(t.name_uk, '; ') from tag t, book_tag bt where t.id = bt.tag_id and bt.book_id = b.id) tags,            
+                br.lang_read, b.publish_date, br.medium, br.score, b.note""";
 
     Connection con;
 
@@ -201,7 +202,7 @@ public class BookReadedDb {
                 .publishDate(rs.getString("publish_date"))
                 .medium(rs.getString("medium"))
                 .score(rs.getInt("score"))
-                .genre(rs.getString("genre"))
+                .tags(rs.getString("tags"))
                 .note(rs.getString("note"))
                 .goodreadsId(composeGoodreadsId(rs))
                 .hasFile(rs.getBoolean("has_lib_file")?"X":"")

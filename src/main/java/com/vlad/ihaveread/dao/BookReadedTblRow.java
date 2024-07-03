@@ -18,7 +18,7 @@ public class BookReadedTblRow {
     Integer score;
     String authors;
     String publishDate;
-    String genre;
+    String tags;
     String goodreadsId;
     String hasFile;
 }

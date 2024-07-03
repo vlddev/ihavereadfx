@@ -12,6 +12,5 @@ public class Book {
     String title;
     String publishDate;
     String lang;
-    String genre;
     String note;
 }

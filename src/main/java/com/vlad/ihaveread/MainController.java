@@ -71,7 +71,7 @@ public class MainController {
     private TableView<BookReaded> lstReadBooks;
 
     @FXML
-    private TextField tfBookSearchText, tfBookTitle, tfBookLang, tfPublishDate, tfGenre;
+    private TextField tfBookSearchText, tfBookTitle, tfBookLang, tfPublishDate;
 
     @FXML
     private TextArea taBookNote;
@@ -406,7 +406,6 @@ public class MainController {
         tfBookTitle.clear();
         tfBookLang.clear();
         tfPublishDate.clear();
-        tfGenre.clear();
         taBookNote.clear();
         curBook = null;
         lstBookAuthors.getItems().clear();
@@ -460,7 +459,6 @@ public class MainController {
         tfBookTitle.setText(book.getTitle());
         tfBookLang.setText(book.getLang());
         tfPublishDate.setText(book.getPublishDate());
-        tfGenre.setText(book.getGenre());
         taBookNote.setText(book.getNote());
         // fill lists
         try {
@@ -516,7 +514,6 @@ public class MainController {
     public void doSaveBook() throws SQLException {
         curBook.setLang(tfBookLang.getText().trim());
         curBook.setTitle(tfBookTitle.getText().trim());
-        curBook.setGenre(tfGenre.getText().trim());
         curBook.setPublishDate(tfPublishDate.getText().trim());
         curBook.setNote(Util.trimOrNull(taBookNote.getText()));
         sqliteDb.getBookDb().updateBook(curBook);
@@ -676,16 +673,6 @@ public class MainController {
         } catch (InterruptedException | IOException e) {
             strStatus = "Error. "+e.getMessage();
             //throw new RuntimeException(e);
-        }
-        lblToolsStatus.setText(strStatus);
-    }
-
-    public void doGenreToTags() {
-        String strStatus = "Done";
-        try {
-            sqliteDb.getDbUtil().convertBookGenreToTags();
-        } catch (SQLException e) {
-            strStatus = "Error. "+e.getMessage();
         }
         lblToolsStatus.setText(strStatus);
     }
