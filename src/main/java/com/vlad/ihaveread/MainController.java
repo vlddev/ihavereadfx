@@ -71,7 +71,7 @@ public class MainController {
     private TableView<BookReaded> lstReadBooks;
 
     @FXML
-    private TextField tfBookSearchText, tfBookTitle, tfBookLang, tfPublishDate;
+    private TextField tfBookSearchText, tfBookTitle, tfBookLang, tfPublishDate, tfSeries;
 
     @FXML
     private TextArea taBookNote;
@@ -406,6 +406,7 @@ public class MainController {
         tfBookTitle.clear();
         tfBookLang.clear();
         tfPublishDate.clear();
+        tfSeries.clear();
         taBookNote.clear();
         curBook = null;
         lstBookAuthors.getItems().clear();
@@ -459,6 +460,7 @@ public class MainController {
         tfBookTitle.setText(book.getTitle());
         tfBookLang.setText(book.getLang());
         tfPublishDate.setText(book.getPublishDate());
+        tfSeries.setText(book.getSeries());
         taBookNote.setText(book.getNote());
         // fill lists
         try {
@@ -514,6 +516,7 @@ public class MainController {
     public void doSaveBook() throws SQLException {
         curBook.setLang(tfBookLang.getText().trim());
         curBook.setTitle(tfBookTitle.getText().trim());
+        curBook.setSeries(tfSeries.getText().trim());
         curBook.setPublishDate(tfPublishDate.getText().trim());
         curBook.setNote(Util.trimOrNull(taBookNote.getText()));
         sqliteDb.getBookDb().updateBook(curBook);

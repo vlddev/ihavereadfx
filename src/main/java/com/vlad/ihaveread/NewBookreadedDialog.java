@@ -25,7 +25,7 @@ public class NewBookreadedDialog extends Dialog<String> {
     private static final Logger log = LoggerFactory.getLogger(NewBookreadedDialog.class);
 
     @FXML
-    private TextField tfReadTitle, tfReadLang, tfOrigTitle, tfOrigLang, tfPublishDate, tfReadDate, tfMedium, tfScore;
+    private TextField tfReadTitle, tfReadLang, tfOrigTitle, tfOrigLang, tfPublishDate, tfSeries, tfReadDate, tfMedium, tfScore;
 
     @FXML
     private TextArea taNote;
@@ -92,6 +92,7 @@ public class NewBookreadedDialog extends Dialog<String> {
         tfOrigTitle.clear();
         tfOrigLang.clear();
         tfPublishDate.clear();
+        tfSeries.clear();
         // set to current date
         tfReadDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         tfMedium.clear();
@@ -156,6 +157,7 @@ public class NewBookreadedDialog extends Dialog<String> {
             Book book = Book.builder()
                     .title(strOrigTitle)
                     .lang(strOrigLang)
+                    .series(tfSeries.getText().trim())
                     .publishDate(tfPublishDate.getText().trim())
                     .lang(strOrigLang)
                     .note(taNote.getText().trim())

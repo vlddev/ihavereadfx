@@ -157,12 +157,13 @@ public class BookDb {
     }
 
     public Book insertBook(Book book) throws SQLException {
-        String sql = "INSERT INTO book(title, publish_date, lang, note) VALUES (?, ?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO book(title, publish_date, lang, series, note) VALUES (?, ?, ?, ?, ?) RETURNING id";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getPublishDate());
             ps.setString(3, book.getLang());
-            ps.setString(4, book.getNote());
+            ps.setString(4, book.getSeries());
+            ps.setString(5, book.getNote());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 book.setId(rs.getInt(1));
@@ -174,13 +175,14 @@ public class BookDb {
     }
 
     public void updateBook(Book book) throws SQLException {
-        String sql = "UPDATE book SET title = ?, publish_date = ?, lang = ?, note = ?  WHERE id = ?";
+        String sql = "UPDATE book SET title = ?, publish_date = ?, lang = ?, series = ?, note = ?  WHERE id = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getPublishDate());
             ps.setString(3, book.getLang());
-            ps.setString(4, book.getNote());
-            ps.setInt(5, book.getId());
+            ps.setString(4, book.getSeries());
+            ps.setString(5, book.getNote());
+            ps.setInt(6, book.getId());
             int ret = ps.executeUpdate();
         }
     }
@@ -319,6 +321,7 @@ public class BookDb {
                 .title(rs.getString("title"))
                 .lang(rs.getString("lang"))
                 .publishDate(rs.getString("publish_date"))
+                .series(rs.getString("series"))
                 .note(rs.getString("note"))
                 .build();
     }

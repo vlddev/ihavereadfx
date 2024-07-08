@@ -10,6 +10,7 @@ import lombok.ToString;
 public class Book {
     Integer id;
     String title;
+    String series;
     String publishDate;
     String lang;
     String note;

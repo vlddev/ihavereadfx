@@ -220,6 +220,9 @@
                         <TextField fx:id="tfPublishDate" prefWidth="100" GridPane.columnIndex="1"
                                    GridPane.rowIndex="4" GridPane.fillWidth="false"/>
 
+                        <Label text="Series" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <TextField fx:id="tfSeries" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
                         <Label text="Tag(s)" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
                         <ListView fx:id="lstBookTags" prefHeight="100" GridPane.columnIndex="1"
                                   GridPane.rowIndex="6"/>

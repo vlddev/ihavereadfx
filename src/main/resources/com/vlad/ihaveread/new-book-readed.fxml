@@ -34,18 +34,21 @@
             <Label text="Publish date" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
             <TextField fx:id="tfPublishDate" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.fillWidth="false"/>
 
-            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+            <Label text="Series" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+            <TextField fx:id="tfSeries" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+            <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
             <TextArea fx:id="taNote" prefHeight="100" prefWidth="440" wrapText="true"
-                      GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.fillWidth="true"/>
+                      GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.fillWidth="true"/>
 
-            <Label text="Read date" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-            <TextField fx:id="tfReadDate" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.fillWidth="false"/>
+            <Label text="Read date" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+            <TextField fx:id="tfReadDate" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.fillWidth="false"/>
 
-            <Label text="Medium" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-            <TextField fx:id="tfMedium" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.fillWidth="false"/>
+            <Label text="Medium" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+            <TextField fx:id="tfMedium" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.fillWidth="false"/>
 
-            <Label text="Score" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
-            <TextField fx:id="tfScore" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.fillWidth="false"/>
+            <Label text="Score" GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+            <TextField fx:id="tfScore" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.fillWidth="false"/>
 
             <columnConstraints>
                 <ColumnConstraints/>
