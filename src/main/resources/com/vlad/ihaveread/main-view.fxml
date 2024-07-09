@@ -168,6 +168,9 @@
                             <Button mnemonicParsing="false" onAction="#doEditAuthorName" text="Edit"/>
                             <Button mnemonicParsing="false" onAction="#doDeleteAuthorName" text="Delete"/>
                         </HBox>
+                        <Label text="BaseDir" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <Label fx:id="lblAuthorBaseDir" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                        <Button mnemonicParsing="false" onAction="#doOpenBaseDir" text="Open Dir" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
                     </GridPane>
                 </center>
                 <bottom>

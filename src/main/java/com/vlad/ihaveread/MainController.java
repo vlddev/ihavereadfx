@@ -83,7 +83,7 @@ public class MainController {
     private ListView<Tag> lstFoundTags;
 
     @FXML
-    private Label lblStatus, lblAuthorStatus, lblBookStatus, lblTagStatus, lblToolsStatus;
+    private Label lblStatus, lblAuthorStatus, lblBookStatus, lblTagStatus, lblToolsStatus, lblAuthorBaseDir;
 
     @FXML
     private Label lblAuthorCount, lblBookCount, lblBookReadedCount;
@@ -220,6 +220,7 @@ public class MainController {
         tfAuthorName.setText(author.getName());
         tfAuthorLang.setText(author.getLang());
         tfAuthorNote.setText(author.getNote());
+        lblAuthorBaseDir.setText(author.getBaseDir());
         curAuthor = author;
         loadAuthorNames(author.getId());
     }
@@ -246,6 +247,25 @@ public class MainController {
             try {
                 sqliteDb.getAuthorDb().updateAuthor(curAuthor);
             } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void doOpenBaseDir() {
+        if (curAuthor != null) {
+            try {
+                Path authorDir = Path.of(MainApplication.LIB_ROOT, curAuthor.getBaseDir());
+                if (Files.isDirectory(authorDir)) {
+                    new ProcessBuilder("xdg-open", authorDir.toString()).start();
+                } else {
+                    if (Files.isDirectory(authorDir.getParent())) {
+                        new ProcessBuilder("xdg-open", authorDir.getParent().toString()).start();
+                    } else {
+                        Util.warningAlert("Warning", "Folder '"+authorDir.getParent()+"' not exist").show();
+                    }
+                }
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
