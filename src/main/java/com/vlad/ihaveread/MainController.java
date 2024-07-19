@@ -185,7 +185,7 @@ public class MainController {
             List<Author> authors = sqliteDb.getAuthorDb().findByName("%"+strToFind+"%");
             lstFoundAuthors.getItems().clear();
             if (!authors.isEmpty()) {
-                lblAuthorStatus.setText(""+authors.size()+" row(s)");
+                lblAuthorStatus.setText("Found "+authors.size()+" row(s)");
                 lstFoundAuthors.getItems().addAll(authors);
                 lstFoundAuthors.getSelectionModel().select(0);
                 lstFoundAuthors.requestFocus();
@@ -338,7 +338,7 @@ public class MainController {
         List<Tag> tags = sqliteDb.getBookDb().findTagLikeName("%"+strToFind+"%");
         lstFoundTags.getItems().clear();
         if (!tags.isEmpty()) {
-            lblTagStatus.setText(""+tags.size()+" row(s)");
+            lblTagStatus.setText(tags.size()+" row(s)");
             lstFoundTags.getItems().addAll(tags);
             lstFoundTags.getSelectionModel().select(0);
             lstFoundTags.requestFocus();
@@ -414,7 +414,7 @@ public class MainController {
             List<BookReadedTblRow> books = getBy.apply(strToFind);
             tvFoundReadBooks.getItems().clear();
             if (!books.isEmpty()) {
-                lblStatus.setText(""+books.size()+" row(s)");
+                lblStatus.setText(books.size()+" row(s)");
                 tvFoundReadBooks.getItems().addAll(books);
             } else {
                 lblStatus.setText("Nothing found");
@@ -442,7 +442,7 @@ public class MainController {
             List<Book> books = sqliteDb.getBookDb().findByName("%"+strToFind+"%");
             lstFoundBooks.getItems().clear();
             if (!books.isEmpty()) {
-                lblBookStatus.setText(""+books.size()+" row(s)");
+                lblBookStatus.setText(books.size()+" row(s)");
                 lstFoundBooks.getItems().addAll(books);
                 lstFoundBooks.getSelectionModel().select(0);
                 lstFoundBooks.requestFocus();

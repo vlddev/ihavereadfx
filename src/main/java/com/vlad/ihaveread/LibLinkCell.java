@@ -25,7 +25,7 @@ public class LibLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<
                     if (item instanceof BookLibFile) {
                         BookLibFile bookLibFile = (BookLibFile)item;
                         try {
-                            if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().length() == 0) {
+                            if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().isEmpty()) {
                                 Path bookDir = Path.of(MainApplication.LIB_ROOT, bookLibFile.getBookDir());
                                 if (Files.isDirectory(bookDir)) {
                                     new ProcessBuilder("xdg-open", bookDir.toString()).start();
@@ -64,7 +64,7 @@ public class LibLinkCell<S, T> implements Callback<TableColumn<S, T>, TableCell<
                 } else {
                     if (item instanceof BookLibFile) {
                         BookLibFile bookLibFile = (BookLibFile)item;
-                        if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().length() == 0) {
+                        if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().isEmpty()) {
                             hyperlink.setText(bookLibFile.getBookDir());
                         } else {
                             hyperlink.setText(bookLibFile.getLibFile());

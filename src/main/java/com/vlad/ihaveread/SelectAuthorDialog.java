@@ -57,7 +57,7 @@ public class SelectAuthorDialog extends Dialog<Author> {
                     return null;
                 }
 
-                return (Author) lstAuthors.getSelectionModel().getSelectedItem();
+                return lstAuthors.getSelectionModel().getSelectedItem();
             });
 
             setOnShowing(dialogEvent -> Platform.runLater(() -> tfSearch.requestFocus()));

@@ -57,7 +57,7 @@ public class SelectTagDialog extends Dialog<Tag> {
                     return null;
                 }
 
-                return (Tag) lstTags.getSelectionModel().getSelectedItem();
+                return lstTags.getSelectionModel().getSelectedItem();
             });
 
             setOnShowing(dialogEvent -> Platform.runLater(() -> tfSearch.requestFocus()));

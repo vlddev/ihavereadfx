@@ -18,7 +18,7 @@ public final class UkrainianToLatin {
     private static final int LENGTH_3 = 3;
     private static final int LENGTH_4 = 4;
     private static final int LENGTH_8 = 8;
-    private static final Set<String> PUNCTUATIONS = new HashSet<String>(Arrays.asList(
+    private static final Set<String> PUNCTUATIONS = new HashSet<>(Arrays.asList(
             ",", "-", "!", "?", ":", ";", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "…", "—", "“", "”",
             "«", "»", "[", "]", "–", "(", ")", "№", "{", "}", "/", "\\"));
 
@@ -86,7 +86,7 @@ public final class UkrainianToLatin {
     }
 
     static {
-        cyrToLat = new HashMap<String, ConvertCase>();
+        cyrToLat = new HashMap<>();
         for (Convert convert : Convert.values()) {
             cyrToLat.put(convert.getCyrillic().substring(INDEX_0, INDEX_1), new ConvertCase(convert, false));
             cyrToLat.put(convert.getCyrillic().substring(INDEX_1, INDEX_2), new ConvertCase(convert, true));

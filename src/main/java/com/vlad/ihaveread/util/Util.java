@@ -60,8 +60,7 @@ public class Util {
         }
         List<String> bookFiles = Stream.of(new File(bookDir).listFiles())
                 .filter(file -> !file.isDirectory())
-                .map(File::getName)
-                .collect(Collectors.toList());
+                .map(File::getName).toList();
         Cosine cosine = new Cosine();
         for(String origName : origNames) {
             for (String bookFile : bookFiles) {
