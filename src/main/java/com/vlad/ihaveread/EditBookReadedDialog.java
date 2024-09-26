@@ -81,11 +81,11 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
         try {
             // validate input
             String strDate = dpReadDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (strDate.length() == 0) {
+            if (strDate.isEmpty()) {
                 throw new RuntimeException("Date not set");
             }
             String strLang = Util.trimOrEmpty(tfReadLang.getText());
-            if (strLang.length() == 0) {
+            if (strLang.isEmpty()) {
                 throw new RuntimeException("Language not set");
             }
             int score;

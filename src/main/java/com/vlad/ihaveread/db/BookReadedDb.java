@@ -211,7 +211,7 @@ public class BookReadedDb {
 
     private String composeGoodreadsId(ResultSet rs) throws SQLException {
         String ret = rs.getString("goodreads_id");
-        if (ret == null || ret.length() == 0) {
+        if (ret == null || ret.isEmpty()) {
             ret = "search:"+rs.getString("title")+" "+rs.getString("authors");
         }
         return ret;

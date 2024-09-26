@@ -128,16 +128,16 @@ public class NewBookreadedDialog extends Dialog<String> {
                 throw new RuntimeException("Author(s) not set");
             }
             String strReadTitle = tfReadTitle.getText().trim();
-            if (strReadTitle.length() == 0) {
+            if (strReadTitle.isEmpty()) {
                 throw new RuntimeException("Title not set");
             }
             String strReadLang = tfReadLang.getText().trim();
-            if (strReadLang.length() == 0) {
+            if (strReadLang.isEmpty()) {
                 throw new RuntimeException("ReadLang not set");
             }
             String strOrigTitle = tfOrigTitle.getText().trim();
             String strOrigLang = tfOrigLang.getText().trim();
-            if (strOrigTitle.length() > 0 && strOrigLang.length() == 0) {
+            if (strOrigTitle.length() > 0 && strOrigLang.isEmpty()) {
                 throw new RuntimeException("OrigLang not set");
             }
             int score = 0;
@@ -149,7 +149,7 @@ public class NewBookreadedDialog extends Dialog<String> {
 
             List<BookName> bookNames = new ArrayList<>();
             bookNames.add(BookName.builder().name(strReadTitle).lang(strReadLang).build());
-            if (strOrigTitle.length() == 0) {
+            if (strOrigTitle.isEmpty()) {
                 strOrigTitle = strReadTitle;
                 strOrigLang = strReadLang;
             } else {
@@ -192,7 +192,7 @@ public class NewBookreadedDialog extends Dialog<String> {
                     sqliteDb.getConnection().rollback();
                     sqliteDb.getConnection().setAutoCommit(true);
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    log.error("Error", ex);
                     throw new RuntimeException(ex);
                 }
             }
