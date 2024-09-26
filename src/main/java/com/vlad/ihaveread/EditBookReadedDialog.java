@@ -11,13 +11,17 @@ import javafx.stage.Modality;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class EditBookReadedDialog extends Dialog<BookReaded> {
 
     private BookReaded entity;
     @FXML
-    private TextField tfReadLang, tfReadDate, tfMedium, tfScore;
+    private TextField tfReadLang, tfMedium, tfScore;
+    @FXML
+    private DatePicker dpReadDate;
     @FXML
     private TextArea taNote;
 
@@ -58,14 +62,14 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
         if (entity != null) {
             setTitle("Edit");
             tfReadLang.setText(entity.getLangRead());
-            tfReadDate.setText(entity.getDateRead());
+            dpReadDate.setValue(LocalDate.parse(entity.getDateRead(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             tfMedium.setText(entity.getMedium());
             tfScore.setText(entity.getScore().toString());
             taNote.setText(entity.getNote());
         } else {
             setTitle("New");
             tfReadLang.clear();
-            tfReadDate.clear();
+            dpReadDate.setValue(LocalDate.now());
             tfMedium.clear();
             tfScore.clear();
             taNote.clear();
@@ -76,7 +80,7 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
     private void onCreate(ActionEvent event) {
         try {
             // validate input
-            String strDate = Util.trimOrEmpty(tfReadDate.getText());
+            String strDate = dpReadDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (strDate.length() == 0) {
                 throw new RuntimeException("Date not set");
             }

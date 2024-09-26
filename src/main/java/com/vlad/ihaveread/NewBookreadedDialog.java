@@ -17,7 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class NewBookreadedDialog extends Dialog<String> {
@@ -25,7 +26,10 @@ public class NewBookreadedDialog extends Dialog<String> {
     private static final Logger log = LoggerFactory.getLogger(NewBookreadedDialog.class);
 
     @FXML
-    private TextField tfReadTitle, tfReadLang, tfOrigTitle, tfOrigLang, tfPublishDate, tfSeries, tfReadDate, tfMedium, tfScore;
+    private TextField tfReadTitle, tfReadLang, tfOrigTitle, tfOrigLang, tfPublishDate, tfSeries, tfMedium, tfScore;
+
+    @FXML
+    private DatePicker dpReadDate;
 
     @FXML
     private TextArea taNote;
@@ -64,8 +68,7 @@ public class NewBookreadedDialog extends Dialog<String> {
 
             setResizable(true);
             setTitle("New book readed");
-            // set to current date
-            tfReadDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            dpReadDate.setValue(LocalDate.now());
             setDialogPane(dialogPane);
             setResultConverter(buttonType -> {
                 if(!Objects.equals(ButtonBar.ButtonData.OK_DONE, buttonType.getButtonData())) {
@@ -93,8 +96,7 @@ public class NewBookreadedDialog extends Dialog<String> {
         tfOrigLang.clear();
         tfPublishDate.clear();
         tfSeries.clear();
-        // set to current date
-        tfReadDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        dpReadDate.setValue(LocalDate.now());
         tfMedium.clear();
         tfScore.clear();
         taNote.clear();
@@ -171,7 +173,7 @@ public class NewBookreadedDialog extends Dialog<String> {
             BookReaded bookReaded = BookReaded.builder()
                     .bookId(book.getId())
                     .langRead(strReadLang)
-                    .dateRead(tfReadDate.getText().trim())
+                    .dateRead(dpReadDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                     .medium(tfMedium.getText().trim())
                     .score(score)
                     .build();

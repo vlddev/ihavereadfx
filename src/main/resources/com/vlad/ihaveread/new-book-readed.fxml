@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -42,7 +39,7 @@
                       GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.fillWidth="true"/>
 
             <Label text="Read date" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-            <TextField fx:id="tfReadDate" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.fillWidth="false"/>
+            <DatePicker fx:id="dpReadDate" prefWidth="120" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
 
             <Label text="Medium" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
             <TextField fx:id="tfMedium" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.fillWidth="false"/>
