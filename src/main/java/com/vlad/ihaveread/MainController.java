@@ -182,7 +182,7 @@ public class MainController {
     public void doSearchAuthor() throws SQLException {
         clearAuthor();
         String strToFind = tfSearchText.getText().trim();
-        if (strToFind.length() > 0) {
+        if (!strToFind.isEmpty()) {
             List<Author> authors = sqliteDb.getAuthorDb().findByName("%"+strToFind+"%");
             lstFoundAuthors.getItems().clear();
             if (!authors.isEmpty()) {
@@ -411,7 +411,7 @@ public class MainController {
 
     private void doSearchReadedBy(Function<String, List<BookReadedTblRow>> getBy) {
         String strToFind = tfSearchReadedText.getText().trim();
-        if (strToFind.length() > 0) {
+        if (!strToFind.isEmpty()) {
             List<BookReadedTblRow> books = getBy.apply(strToFind);
             tvFoundReadBooks.getItems().clear();
             if (!books.isEmpty()) {
@@ -439,7 +439,7 @@ public class MainController {
     public void doSearchBook() throws SQLException {
         clearBook();
         String strToFind = tfBookSearchText.getText().trim();
-        if (strToFind.length() > 0) {
+        if (!strToFind.isEmpty()) {
             List<Book> books = sqliteDb.getBookDb().findByName("%"+strToFind+"%");
             lstFoundBooks.getItems().clear();
             if (!books.isEmpty()) {
@@ -596,12 +596,12 @@ public class MainController {
         if (selInd > -1) {
             BookName bn = lstBookNames.getItems().get(selInd);
             BookLibFile bookLibFile = bn.getBookLibFile();
-            if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().length() == 0) {
+            if (bookLibFile.getLibFile() == null || bookLibFile.getLibFile().isEmpty()) {
                 String bookDir = MainApplication.LIB_ROOT+bookLibFile.getBookDir();
                 if (Files.isDirectory(Path.of(bookDir))) {
                     // get files similar to book name from dir
                     List<String> bookFiles = Util.getSimilarFiles(bookLibFile.getBookName(), bookDir);
-                    if (bookFiles.size() > 0) {
+                    if (!bookFiles.isEmpty()) {
                         if (bookFiles.size() == 1) {
                             String libFile = Path.of(bookLibFile.getBookDir(),bookFiles.get(0)).toString();
                             bookLibFile.setLibFile(libFile);
@@ -618,7 +618,7 @@ public class MainController {
                         }
                         // update LibFile in BookNames
                         try {
-                            if (bn.getLibFile() != null && bn.getLibFile().length() > 0) {
+                            if (bn.getLibFile() != null && !bn.getLibFile().isEmpty()) {
                                 sqliteDb.getBookDb().updateBookName(bn);
                             }
                             //reload BookNames
@@ -687,7 +687,7 @@ public class MainController {
     public void doBackupDb() {
         String sqliteDb = MainApplication.DB_FILE;
         String dumpFile = sqliteDb + "_dump.sql";
-        String strStatus = "";
+        String strStatus;
         try {
             ProcessBuilder builder = new ProcessBuilder("sqlite3", "-batch", sqliteDb, ".dump").inheritIO()
                     .redirectOutput(new File(dumpFile));
@@ -703,7 +703,7 @@ public class MainController {
 
     public void doUploadDb() {
         String sqliteDb = MainApplication.DB_FILE;
-        String strStatus = "";
+        String strStatus;
         try {
             this.sqliteDb.close();
             strStatus = MegaUtil.uploadDbFile(sqliteDb);
@@ -716,7 +716,7 @@ public class MainController {
 
     public void doDownloadDb() {
         String sqliteDb = MainApplication.DB_FILE;
-        String strStatus = "";
+        String strStatus;
         try {
             this.sqliteDb.close();
             strStatus = MegaUtil.downloadDbFile(MainApplication.REMOTE_DB_FILE, sqliteDb);
