@@ -9,6 +9,7 @@ module com.vlad.ihaveread {
     requires org.slf4j;
     requires java.string.similarity;
     requires org.apache.commons.io;
+    requires megacmd4j;
 
     opens com.vlad.ihaveread to javafx.fxml;
     exports com.vlad.ihaveread;

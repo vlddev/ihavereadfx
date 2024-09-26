@@ -11,6 +11,7 @@ public class SqliteDb implements AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(SqliteDb.class);
 
+    String dbUrl;
     Connection connection;
     AuthorDb authorDb;
     BookDb bookDb;
@@ -18,6 +19,15 @@ public class SqliteDb implements AutoCloseable {
     DbUtil dbUtil;
 
     public SqliteDb(String dbUrl) throws SQLException {
+        this.dbUrl = dbUrl;
+        this.connection = DriverManager.getConnection(dbUrl);
+        this.authorDb = new AuthorDb(connection);
+        this.bookDb = new BookDb(connection);
+        this.bookReadedDb = new BookReadedDb(connection);
+        this.dbUtil = new DbUtil(this);
+    }
+
+    public void reconnect() throws SQLException {
         this.connection = DriverManager.getConnection(dbUrl);
         this.authorDb = new AuthorDb(connection);
         this.bookDb = new BookDb(connection);

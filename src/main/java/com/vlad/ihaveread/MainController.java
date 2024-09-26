@@ -2,6 +2,7 @@ package com.vlad.ihaveread;
 
 import com.vlad.ihaveread.dao.*;
 import com.vlad.ihaveread.db.SqliteDb;
+import com.vlad.ihaveread.util.MegaUtil;
 import com.vlad.ihaveread.util.Util;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -699,4 +700,31 @@ public class MainController {
         }
         lblToolsStatus.setText(strStatus);
     }
+
+    public void doUploadDb() {
+        String sqliteDb = MainApplication.DB_FILE;
+        String strStatus = "";
+        try {
+            this.sqliteDb.close();
+            strStatus = MegaUtil.uploadDbFile(sqliteDb);
+            this.sqliteDb.reconnect();
+        } catch (Exception e) {
+            strStatus = "Error. "+e.getMessage();
+        }
+        lblToolsStatus.setText(strStatus);
+    }
+
+    public void doDownloadDb() {
+        String sqliteDb = MainApplication.DB_FILE;
+        String strStatus = "";
+        try {
+            this.sqliteDb.close();
+            strStatus = MegaUtil.downloadDbFile(MainApplication.REMOTE_DB_FILE, sqliteDb);
+            this.sqliteDb.reconnect();
+        } catch (Exception e) {
+            strStatus = "Error. "+e.getMessage();
+        }
+        lblToolsStatus.setText(strStatus);
+    }
+
 }

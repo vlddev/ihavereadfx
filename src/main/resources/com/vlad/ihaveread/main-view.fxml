@@ -406,7 +406,8 @@
 
                         <Label text="Tools" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
                         <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                            <Button mnemonicParsing="false" text="Dummy util"/>
+                            <Button mnemonicParsing="false" onAction="#doUploadDb" text="Upload DB"/>
+                            <Button mnemonicParsing="false" onAction="#doDownloadDb" text="Download DB"/>
                         </HBox>
 
                         <columnConstraints>

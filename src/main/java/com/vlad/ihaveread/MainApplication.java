@@ -16,6 +16,7 @@ public class MainApplication extends Application {
     public static final String PARAM_LIB_ROOT = "libroot";
     public static final String DEFAULT_DB_FILE = "./ihaveread.db";
     public static final String DEFAULT_LIB_ROOT = "./";
+    public static final String REMOTE_DB_FILE = "ihaveread/ihaveread.db";
 
     public static String LIB_ROOT = DEFAULT_LIB_ROOT;
     public static String DB_FILE = DEFAULT_DB_FILE;
