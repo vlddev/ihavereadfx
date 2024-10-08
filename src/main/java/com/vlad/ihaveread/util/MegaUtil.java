@@ -44,6 +44,7 @@ public class MegaUtil {
             if (bDoUpload) {
                 log.info("upload DB file");
                 sessionMega.uploadFile(localDbPath, remoteDbFile).waitToUpload().run();
+                log.info("file successfully uploaded");
             } else {
                 ret = "Upload not needed";
                 log.info("Upload not needed");
