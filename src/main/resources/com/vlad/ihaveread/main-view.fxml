@@ -26,6 +26,8 @@
                         <Button onAction="#doSearchReadedByAuthor" text="by _author"/>
                         <Button onAction="#doSearchReadedByTitle" text="by _title"/>
                         <Button onAction="#doSearchReadedByCustomWhere" text="by _where"/>
+                        <Separator minWidth="100" orientation="VERTICAL"/>
+                        <Button onAction="#doShowInBooks" text="_show in books"/>
                     </HBox>
                 </top>
                 <center>

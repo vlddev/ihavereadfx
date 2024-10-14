@@ -14,11 +14,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javafx.scene.input.MouseButton;
+import lombok.SneakyThrows;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -144,7 +147,7 @@ public class MainController {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     BookReadedTblRow rowData = row.getItem();
-                    showInBookTab(rowData);
+                    showInBookTab(Collections.singletonList(rowData));
                 }
             });
             return row ;
@@ -409,6 +412,13 @@ public class MainController {
         doSearchReadedBy(sqliteDb.getBookReadedDb()::getReadedBooksByCustomWhere);
     }
 
+    public void doShowInBooks() {
+        if (tvFoundReadBooks.getItems().size() > 0) {
+            tvFoundReadBooks.getItems();
+            showInBookTab(tvFoundReadBooks.getItems());
+        }
+    }
+
     private void doSearchReadedBy(Function<String, List<BookReadedTblRow>> getBy) {
         String strToFind = tfSearchReadedText.getText().trim();
         if (!strToFind.isEmpty()) {
@@ -453,16 +463,21 @@ public class MainController {
         }
     }
 
-    public void showInBookTab(BookReadedTblRow bookReaded) {
-        try {
-            Book book = sqliteDb.getBookDb().getById(bookReaded.getBookId());
-            lstFoundBooks.getItems().clear();
-            lstFoundBooks.getItems().add(book);
-            lstFoundBooks.getSelectionModel().select(book);
-            tabPane.getSelectionModel().select(tabBook);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void showInBookTab(List<BookReadedTblRow> booksReaded) {
+        List<Book> lstBooks = booksReaded.stream()
+                .map(BookReadedTblRow::getBookId)
+                .map(id -> {
+                    try {
+                        return sqliteDb.getBookDb().getById(id);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
+        lstFoundBooks.getItems().clear();
+        lstFoundBooks.getItems().addAll(lstBooks);
+        lstFoundBooks.getSelectionModel().select(lstBooks.get(0));
+        tabPane.getSelectionModel().select(tabBook);
     }
 
     public void showInAuthorTab(Author entity) {
