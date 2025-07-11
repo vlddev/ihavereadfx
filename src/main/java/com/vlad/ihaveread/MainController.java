@@ -552,7 +552,7 @@ public class MainController {
     public void doSaveBook() throws SQLException {
         curBook.setLang(tfBookLang.getText().trim());
         curBook.setTitle(tfBookTitle.getText().trim());
-        curBook.setSeries(tfSeries.getText().trim());
+        curBook.setSeries(Util.trimOrNull(tfSeries.getText().trim()));
         curBook.setPublishDate(tfPublishDate.getText().trim());
         curBook.setNote(Util.trimOrNull(taBookNote.getText()));
         sqliteDb.getBookDb().updateBook(curBook);
