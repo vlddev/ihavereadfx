@@ -13,14 +13,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javafx.scene.input.MouseButton;
+import javafx.scene.input.*;
 import lombok.SneakyThrows;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -97,6 +94,14 @@ public class MainController {
     }
 
     public void initListeners() {
+        lstBookTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        final KeyCodeCombination keyCodeCopy = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
+        lstBookTags.setOnKeyPressed(event -> {
+            if (keyCodeCopy.match(event)) {
+                copySelectedTagsToClipboard(lstBookTags);
+            }
+        });
+
         lstFoundAuthors.getSelectionModel().selectedItemProperty().addListener(
                 (ov, oldVal, newVal) -> onSelectAuthor(newVal));
         lstFoundAuthors.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
@@ -180,6 +185,12 @@ public class MainController {
         lblAuthorCount.setText(""+sqliteDb.getAuthorDb().getAuthorCount());
         lblBookCount.setText(""+sqliteDb.getBookDb().getBookCount());
         lblBookReadedCount.setText(""+sqliteDb.getBookReadedDb().getBookReadedCount());
+    }
+
+    public void copySelectedTagsToClipboard(final ListView<Tag> lst) {
+        final ClipboardContent clipboardContent = new ClipboardContent();
+        clipboardContent.putString(lst.getSelectionModel().getSelectedItems().stream().map(Tag::getNameEn).collect(Collectors.joining("|")));
+        Clipboard.getSystemClipboard().setContent(clipboardContent);
     }
 
     public void doSearchAuthor() throws SQLException {
@@ -533,11 +544,13 @@ public class MainController {
     }
 
     public void doAddBookTag() throws SQLException {
-        Optional<Tag> ret = selectTagDialog.showAndWait();
+        Optional<List<Tag>> ret = selectTagDialog.showAndWait();
         if (ret.isPresent()) {
-            if (!lstBookTags.getItems().contains(ret.get())) {
-                sqliteDb.getBookDb().insertBookTag(curBook.getId(), ret.get().getId());
-                lstBookTags.getItems().add(ret.get());
+            for(Tag tag : ret.get()) {
+                if (!lstBookTags.getItems().contains(tag)) {
+                    sqliteDb.getBookDb().insertBookTag(curBook.getId(), tag.getId());
+                    lstBookTags.getItems().add(tag);
+                }
             }
         }
     }

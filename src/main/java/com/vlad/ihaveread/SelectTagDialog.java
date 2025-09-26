@@ -12,10 +12,11 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SelectTagDialog extends Dialog<Tag> {
+public class SelectTagDialog extends Dialog<List<Tag>> {
 
     @FXML
     private TextField tfSearch;
@@ -41,8 +42,9 @@ public class SelectTagDialog extends Dialog<Tag> {
             DialogPane dialogPane = loader.load();
             dialogPane.lookupButton(btnOk).addEventFilter(ActionEvent.ANY, this::onSelect);
 
-            btnSearch.addEventHandler(ActionEvent.ANY, this::onSearchAuthor);
+            btnSearch.addEventHandler(ActionEvent.ANY, this::onSearch);
             setOnShown(this::clear);
+            lstTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
             //lstTags.setCellFactory(callback -> new PropertyListCellFactory<>("name"));
 
@@ -57,7 +59,7 @@ public class SelectTagDialog extends Dialog<Tag> {
                     return null;
                 }
 
-                return lstTags.getSelectionModel().getSelectedItem();
+                return lstTags.getSelectionModel().getSelectedItems();
             });
 
             setOnShowing(dialogEvent -> Platform.runLater(() -> tfSearch.requestFocus()));
@@ -76,12 +78,15 @@ public class SelectTagDialog extends Dialog<Tag> {
     }
 
     @FXML
-    private void onSearchAuthor(ActionEvent event) {
+    private void onSearch(ActionEvent event) {
         String strToFind = tfSearch.getText().trim();
+        String[] lstToFind = strToFind.split("\\|");
         if (strToFind.length() > 0) {
-            List<Tag> tags = null;
+            List<Tag> tags = new ArrayList<>();
             try {
-                tags = sqliteDb.getBookDb().findTagLikeName("%"+strToFind+"%");
+                for (String str : lstToFind) {
+                    tags.addAll(sqliteDb.getBookDb().findTagLikeName("%"+str.trim()+"%"));
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
