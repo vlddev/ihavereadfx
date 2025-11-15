@@ -351,7 +351,7 @@ public class BookDb {
                 .bookNameId(bn.getId())
                 .bookName(bn.getName())
                 .build();
-        if (bn.getLibFile() == null || bn.getLibFile().length() == 0) {
+        if (bn.getLibFile() == null || bn.getLibFile().isEmpty()) {
             ret.setBookDir(author.getBaseDir(bn));
         } else {
             if (Path.of(bn.getLibFile()).getParent() != null) {
