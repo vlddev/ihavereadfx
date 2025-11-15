@@ -354,7 +354,11 @@ public class BookDb {
         if (bn.getLibFile() == null || bn.getLibFile().length() == 0) {
             ret.setBookDir(author.getBaseDir(bn));
         } else {
-            ret.setBookDir(Path.of(bn.getLibFile()).getParent().toString());
+            if (Path.of(bn.getLibFile()).getParent() != null) {
+                ret.setBookDir(Path.of(bn.getLibFile()).getParent().toString());
+            } else {
+                ret.setBookDir(author.getBaseDir(bn));
+            }
         }
         return ret;
     }
