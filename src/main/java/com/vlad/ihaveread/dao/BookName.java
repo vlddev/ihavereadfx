@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Data
 @Builder
-@ToString
+//@ToString
 public class BookName {
     Integer id;
     Integer bookId;
@@ -15,4 +15,9 @@ public class BookName {
     String goodreadsId;
     String libFile;
     BookLibFile bookLibFile;
+
+    @Override
+    public String toString() {
+        return ""+id+"|"+lang+"|"+name;
+    }
 }

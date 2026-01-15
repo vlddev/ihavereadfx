@@ -193,12 +193,12 @@ public class BookDb {
             ps.setInt(1, bookId);
             ps.executeUpdate();
         }
-        sql = "DELETE FROM book_names WHERE book_id = ?";
+        sql = "DELETE FROM book_readed WHERE book_name_id in (SELECT id FROM book_names WHERE book_id = ?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookId);
             ps.executeUpdate();
         }
-        sql = "DELETE FROM book_readed WHERE book_id = ?";
+        sql = "DELETE FROM book_names WHERE book_id = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookId);
             ps.executeUpdate();
@@ -260,7 +260,12 @@ public class BookDb {
     }
 
     public void deleteBookName(int bookNameId) throws SQLException {
-        String sql = "DELETE FROM book_names WHERE id = ?";
+        String sql = "DELETE FROM book_readed WHERE book_name_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookNameId);
+            ps.executeUpdate();
+        }
+        sql = "DELETE FROM book_names WHERE id = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookNameId);
             ps.executeUpdate();

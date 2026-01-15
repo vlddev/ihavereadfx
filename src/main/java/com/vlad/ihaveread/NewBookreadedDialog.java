@@ -43,6 +43,9 @@ public class NewBookreadedDialog extends Dialog<String> {
     @FXML
     private ListView<Author> lstBookAuthors;
 
+    @FXML
+    private CheckBox cbWantToRead;
+
     private SelectAuthorDialog selectAuthorDialog;
 
     private SqliteDb sqliteDb;
@@ -141,19 +144,21 @@ public class NewBookreadedDialog extends Dialog<String> {
                 throw new RuntimeException("OrigLang not set");
             }
             int score = 0;
-            try {
-                score = Integer.parseInt(tfScore.getText().trim());
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Score must be number");
+            if (!cbWantToRead.isSelected()) {
+                try {
+                    score = Integer.parseInt(tfScore.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new RuntimeException("Score must be number");
+                }
             }
 
-            List<BookName> bookNames = new ArrayList<>();
-            bookNames.add(BookName.builder().name(strReadTitle).lang(strReadLang).build());
+            BookName readBookName = BookName.builder().name(strReadTitle).lang(strReadLang).build();
+            BookName origBookName = null;
             if (strOrigTitle.isEmpty()) {
                 strOrigTitle = strReadTitle;
                 strOrigLang = strReadLang;
             } else {
-                bookNames.add(BookName.builder().name(strOrigTitle).lang(strOrigLang).build());
+                origBookName = BookName.builder().name(strOrigTitle).lang(strOrigLang).build();
             }
 
             Book book = Book.builder()
@@ -166,17 +171,27 @@ public class NewBookreadedDialog extends Dialog<String> {
                     .build();
             sqliteDb.getConnection().setAutoCommit(false);
             book = sqliteDb.getBookDb().insertBook(book);
-            for (BookName bookName : bookNames) {
-                bookName.setBookId(book.getId());
+            readBookName.setBookId(book.getId());
+            readBookName = sqliteDb.getBookDb().insertBookName(readBookName);
+            if (origBookName != null) {
+                origBookName.setBookId(book.getId());
+                origBookName = sqliteDb.getBookDb().insertBookName(origBookName);
             }
-            sqliteDb.getBookDb().insertBookNames(bookNames);
-            BookReaded bookReaded = BookReaded.builder()
-                    .bookId(book.getId())
-                    .langRead(strReadLang)
-                    .dateRead(dpReadDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    .medium(tfMedium.getText().trim())
-                    .score(score)
-                    .build();
+            BookReaded bookReaded;
+            if (cbWantToRead.isSelected()) {
+                bookReaded = BookReaded.builder()
+                        .bookNameId(readBookName.getId())
+                        .score(score)
+                        .build();
+            } else {
+                bookReaded = BookReaded.builder()
+                        .bookNameId(readBookName.getId())
+                        .dateRead(dpReadDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        .medium(tfMedium.getText().trim())
+                        .score(score)
+                        .build();
+            }
+
             sqliteDb.getBookReadedDb().insertBookReaded(bookReaded);
             sqliteDb.getBookDb().insertBookAuthors(book, lstBookAuthors.getItems());
 

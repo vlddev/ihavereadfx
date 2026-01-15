@@ -72,20 +72,18 @@ public class SqliteDb implements AutoCloseable {
                 	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 	"book_id"	INTEGER NOT NULL,
                 	"name"	TEXT NOT NULL,
-                	"lang"	TEXT NOT NULL
+                	"lang"	TEXT NOT NULL,
+                	"goodreads_id" TEXT,
+                	"lib_file" TEXT
                 )""");
         st.addBatch("""
                 CREATE TABLE "book_readed" (
                 	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                	"book_id"	INTEGER NOT NULL,
+                	"book_name_id"	INTEGER NOT NULL,
                 	"date_read"	TEXT,
-                	"lang_read"	TEXT NOT NULL,
                 	"medium"	TEXT,
                 	"score"	INTEGER,
-                	"title_read"	TEXT,
-                	"note"	TEXT,
-                	"goodreads_id" TEXT,
-                	"lib_file" TEXT
+                	"note"	TEXT
                 )""");
         st.executeBatch();
         st.close();

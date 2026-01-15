@@ -1,8 +1,10 @@
 package com.vlad.ihaveread;
 
+import com.vlad.ihaveread.dao.BookName;
 import com.vlad.ihaveread.dao.BookReaded;
 import com.vlad.ihaveread.util.Util;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,13 +15,17 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 public class EditBookReadedDialog extends Dialog<BookReaded> {
 
     private BookReaded entity;
+    private List<BookName> bookNames;
     @FXML
-    private TextField tfReadLang, tfMedium, tfScore;
+    private ComboBox<BookName> cbBookNames;
+    @FXML
+    private TextField tfMedium, tfScore;
     @FXML
     private DatePicker dpReadDate;
     @FXML
@@ -51,24 +57,28 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
                 return entity;
             });
 
-            setOnShowing(dialogEvent -> Platform.runLater(() -> tfReadLang.requestFocus()));
+            setOnShowing(dialogEvent -> Platform.runLater(() -> cbBookNames.requestFocus()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void setEntity(BookReaded entity) {
+    public void setEntity(BookReaded entity, List<BookName> bookNames) {
         this.entity = entity;
+        this.bookNames = bookNames;
+        cbBookNames.setItems((ObservableList) bookNames);
         if (entity != null) {
             setTitle("Edit");
-            tfReadLang.setText(entity.getLangRead());
-            dpReadDate.setValue(LocalDate.parse(entity.getDateRead(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            cbBookNames.getSelectionModel().select(bookNames.stream().filter(e->e.getId().equals(entity.getBookNameId())).findFirst().get());
+            if (entity.getDateRead() != null) {
+                dpReadDate.setValue(LocalDate.parse(entity.getDateRead(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
             tfMedium.setText(entity.getMedium());
             tfScore.setText(entity.getScore().toString());
             taNote.setText(entity.getNote());
         } else {
             setTitle("New");
-            tfReadLang.clear();
+            cbBookNames.getSelectionModel().selectFirst();
             dpReadDate.setValue(LocalDate.now());
             tfMedium.clear();
             tfScore.clear();
@@ -84,10 +94,7 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
             if (strDate.isEmpty()) {
                 throw new RuntimeException("Date not set");
             }
-            String strLang = Util.trimOrEmpty(tfReadLang.getText());
-            if (strLang.isEmpty()) {
-                throw new RuntimeException("Language not set");
-            }
+            // TODO: check cbBookNames selection
             int score;
             try {
                 score = Integer.parseInt(Util.trimOrNull(tfScore.getText()));
@@ -99,7 +106,7 @@ public class EditBookReadedDialog extends Dialog<BookReaded> {
                 entity = BookReaded.builder().build();
             }
             entity.setDateRead(strDate);
-            entity.setLangRead(strLang);
+            entity.setBookNameId(cbBookNames.getSelectionModel().getSelectedItem().getId());
             entity.setMedium(Util.trimOrNull(tfMedium.getText()));
             entity.setNote(Util.trimOrNull(taNote.getText()));
             entity.setScore(score);

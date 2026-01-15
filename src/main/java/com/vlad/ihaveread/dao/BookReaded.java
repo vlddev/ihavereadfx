@@ -9,10 +9,8 @@ import lombok.ToString;
 @ToString
 public class BookReaded {
     Integer id;
-    Integer bookId;
+    Integer bookNameId;
     String dateRead;
-    String langRead;
-    String titleRead;
     String medium;
     String note;
     Integer score;

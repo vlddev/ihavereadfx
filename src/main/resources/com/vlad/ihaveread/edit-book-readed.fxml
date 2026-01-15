@@ -8,8 +8,8 @@
     <content>
         <GridPane hgap="5" vgap="5">
 
-            <Label text="Read lang" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="tfReadLang" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.fillWidth="false"/>
+            <Label text="Book" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <ComboBox fx:id="cbBookNames" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.fillWidth="false"/>
 
             <Label text="Read date" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <DatePicker fx:id="dpReadDate" prefWidth="120" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.fillWidth="false"/>

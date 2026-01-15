@@ -18,7 +18,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javafx.scene.input.*;
-import lombok.SneakyThrows;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -678,10 +677,9 @@ public class MainController {
     }
 
     public void doAddReadBook() throws SQLException {
-        editBookReadedDialog.setEntity(null);
+        editBookReadedDialog.setEntity(null, lstBookNames.getItems());
         Optional<BookReaded> ret = editBookReadedDialog.showAndWait();
         if (ret.isPresent()) {
-            ret.get().setBookId(curBook.getId());
             BookReaded newEntity = sqliteDb.getBookReadedDb().insertBookReaded(ret.get());
             lstReadBooks.getItems().add(newEntity);
         }
@@ -690,7 +688,7 @@ public class MainController {
     public void doEditReadBook() {
         int selInd = lstReadBooks.getSelectionModel().getSelectedIndex();
         if (selInd > -1) {
-            editBookReadedDialog.setEntity(lstReadBooks.getItems().get(selInd));
+            editBookReadedDialog.setEntity(lstReadBooks.getItems().get(selInd), lstBookNames.getItems());
             Optional<BookReaded> ret = editBookReadedDialog.showAndWait();
             if (ret.isPresent()) {
                 try {

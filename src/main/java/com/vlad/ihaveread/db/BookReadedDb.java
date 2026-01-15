@@ -13,14 +13,14 @@ import java.util.List;
 public class BookReadedDb {
 
     private static final String SELECT_READ_BOOKS_TBL_COLUMNS = """
-            SELECT distinct br.book_id, br.date_read,
-                (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
-                ifnull((select bn.name from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read), b.title) title,
-                ((select NULLIF(bn.lib_file,'') from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read) is not NULL) has_lib_file,
-                ifnull((select NULLIF(bn.goodreads_id,'') from book_names bn where bn.book_id = b.id and bn.lang = br.lang_read),
-                   (select 'alt:'||bn.goodreads_id from book_names bn where bn.book_id = b.id and NULLIF(bn.goodreads_id,'') is not null limit 1)) goodreads_id,
-                (select group_concat(t.name_uk, '; ') from tag t, book_tag bt where t.id = bt.tag_id and bt.book_id = b.id) tags,
-                br.lang_read, b.publish_date, br.medium, br.score, b.note""";
+            SELECT distinct b.id book_id, br.date_read,
+             (select group_concat(a.name, '; ') from author a, author_book ab where ab.book_id = b.id and ab.author_id = a.id) authors,
+             bn.name title,
+             (NULLIF(bn.lib_file,'') is not null) has_lib_file,
+             ifnull(NULLIF(bn.goodreads_id,''),
+                (select 'alt:'||bn1.goodreads_id from book_names bn1 where bn1.book_id = b.id and NULLIF(bn1.goodreads_id,'') is not null limit 1)) goodreads_id,
+             (select group_concat(t.name_uk, '; ') from tag t, book_tag bt where t.id = bt.tag_id and bt.book_id = b.id) tags,
+             bn.lang lang_read, b.publish_date, br.medium, br.score, b.note""";
 
     Connection con;
 
@@ -30,10 +30,11 @@ public class BookReadedDb {
 
     public List<BookReadedTblRow> getReadedBooksByCustomWhere(String wherePart) {
         String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
-            FROM book_readed br, book b, author_book ab, author a
+            FROM book_readed br, book_names bn, book b, author_book ab, author a
             WHERE
-            br.book_id = b.id
-            and br.book_id = ab.book_id
+            bn.book_id = b.id
+            and br.book_name_id = bn.id
+            and b.id = ab.book_id
             and ab.author_id = a.id
             and""" + " " + wherePart + " order by br.date_read";
         return getReadedBooksBySql(sql);
@@ -41,10 +42,11 @@ public class BookReadedDb {
 
     public List<BookReadedTblRow> getReadedBooksByYear(String dateRead) {
         String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
-            FROM book_readed br, book b, author_book ab, author a
+            FROM book_readed br, book_names bn, book b, author_book ab, author a
             WHERE
-            br.book_id = b.id
-            and br.book_id = ab.book_id
+            bn.book_id = b.id
+            and br.book_name_id = bn.id
+            and b.id = ab.book_id
             and ab.author_id = a.id
             and br.date_read like ?
             order by br.date_read""";
@@ -53,10 +55,11 @@ public class BookReadedDb {
 
     public List<BookReadedTblRow> getReadedBooksByAuthor(String author) {
         String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
-            FROM book_readed br, book b, author_book ab, author a, author_names an
+            FROM book_readed br, book_names bn, book b, author_book ab, author a, author_names an
             WHERE
-             br.book_id = b.id
-             and br.book_id = ab.book_id
+             bn.book_id = b.id
+             and br.book_name_id = bn.id
+             and b.id = ab.book_id
              and ab.author_id = a.id
              and an.author_id = a.id
              and an.name like ?
@@ -66,33 +69,35 @@ public class BookReadedDb {
 
     public List<BookReadedTblRow> getReadedBooksByTitle(String title) {
         String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
-             FROM book_readed br, book b, author_book ab, author a
+             FROM book_readed br, book_names bn, book b, author_book ab, author a
              WHERE
-             br.book_id = b.id
-             and br.book_id = ab.book_id
-             and ab.author_id = a.id
-             and b.id in (select distinct book_id from book_names where name like ?)
+              bn.book_id = b.id
+              and br.book_name_id = bn.id
+              and b.id = ab.book_id
+              and ab.author_id = a.id
+              and bn.name like ?
              order by br.date_read""";
         return getReadedBooksBySql(sql, "%"+title+"%");
     }
 
     public List<BookReadedTblRow> getReadedBooksByTag(String tagNameEn) {
         String sql = SELECT_READ_BOOKS_TBL_COLUMNS + " " + """
-            FROM book_readed br, book b, author_book ab, author a, tag t, book_tag bt
+            FROM book_readed br, book_names bn, book b, author_book ab, author a, tag t, book_tag bt
             WHERE
-            br.book_id = b.id
-            and br.book_id = ab.book_id
-            and ab.author_id = a.id
-            and bt.book_id = b.id
-            and t.id = bt.tag_id
-            and t.name_en = ?
+             bn.book_id = b.id
+             and br.book_name_id = bn.id
+             and b.id = ab.book_id
+             and ab.author_id = a.id
+             and bt.book_id = b.id
+             and t.id = bt.tag_id
+             and t.name_en = ?
             order by br.date_read""";
         return getReadedBooksBySql(sql, tagNameEn);
     }
 
     public List<BookReaded> getByBookId(int bookId) throws SQLException {
         List<BookReaded> ret = new ArrayList<>();
-        String sql = "SELECT * FROM book_readed WHERE book_id = ? ORDER BY date_read";
+        String sql = "SELECT br.* FROM book_readed br, book_names bn WHERE br.book_name_id = bn.id and bn.book_id = ? ORDER BY br.date_read";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, bookId);
             ResultSet rs = ps.executeQuery();
@@ -148,15 +153,14 @@ public class BookReadedDb {
 
     public BookReaded insertBookReaded(BookReaded book) throws SQLException {
         String sql = """
-            INSERT INTO book_readed (book_id, date_read, lang_read, medium, score, note)
-            VALUES (?, ?, ?, ?, ?, ?) RETURNING id""";
+            INSERT INTO book_readed (book_name_id, date_read, medium, score, note)
+            VALUES (?, ?, ?, ?, ?) RETURNING id""";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, book.getBookId());
+            ps.setInt(1, book.getBookNameId());
             ps.setString(2, book.getDateRead());
-            ps.setString(3, book.getLangRead());
-            ps.setString(4, book.getMedium());
-            ps.setInt(5, book.getScore());
-            ps.setString(6, book.getNote());
+            ps.setString(3, book.getMedium());
+            ps.setInt(4, book.getScore());
+            ps.setString(5, book.getNote());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 book.setId(rs.getInt(1));
@@ -170,16 +174,15 @@ public class BookReadedDb {
     public void updateBookReaded(BookReaded item) throws SQLException {
         String sql = """
             UPDATE book_readed
-            SET book_id = ?, date_read = ?, lang_read = ?, medium = ?, score = ?, note = ?
+            SET book_name_id = ?, date_read = ?, medium = ?, score = ?, note = ?
             WHERE id = ?""";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, item.getBookId());
+            ps.setInt(1, item.getBookNameId());
             ps.setString(2, item.getDateRead());
-            ps.setString(3, item.getLangRead());
-            ps.setString(4, item.getMedium());
-            ps.setInt(5, item.getScore());
-            ps.setString(6, item.getNote());
-            ps.setInt(7, item.getId());
+            ps.setString(3, item.getMedium());
+            ps.setInt(4, item.getScore());
+            ps.setString(5, item.getNote());
+            ps.setInt(6, item.getId());
             ps.executeUpdate();
         }
     }
@@ -220,9 +223,8 @@ public class BookReadedDb {
     public BookReaded getBookReadedFromRs(ResultSet rs) throws SQLException {
         return BookReaded.builder()
                 .id(rs.getInt("id"))
-                .bookId(rs.getInt("book_id"))
+                .bookNameId(rs.getInt("book_name_id"))
                 .dateRead(rs.getString("date_read"))
-                .langRead(rs.getString("lang_read"))
                 .medium(rs.getString("medium"))
                 .score(rs.getInt("score"))
                 .note(rs.getString("note"))

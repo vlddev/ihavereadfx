@@ -247,6 +247,11 @@
                         <Label text="Book names" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
                         <TableView fx:id="lstBookNames" prefHeight="100" GridPane.columnIndex="1" GridPane.rowIndex="10">
                             <columns>
+                            <TableColumn prefWidth="50" text="id">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="id"/>
+                                </cellValueFactory>
+                            </TableColumn>
                             <TableColumn prefWidth="40" text="lang">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="lang"/>
@@ -291,9 +296,9 @@
                                         <PropertyValueFactory property="dateRead"/>
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn prefWidth="40" text="lang">
+                                <TableColumn prefWidth="50" text="bn_id">
                                     <cellValueFactory>
-                                        <PropertyValueFactory property="langRead"/>
+                                        <PropertyValueFactory property="bookNameId"/>
                                     </cellValueFactory>
                                 </TableColumn>
                                 <TableColumn prefWidth="100" text="medium">
