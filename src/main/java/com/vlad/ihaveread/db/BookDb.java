@@ -156,6 +156,24 @@ public class BookDb {
         }
     }
 
+    public List<String> findTextByType(String type) throws SQLException {
+        List<String> ret = new ArrayList<>();
+        String sql = """
+            SELECT t.content
+            FROM custom_text t
+            WHERE t.type = ?
+            ORDER by 1""";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ret.add(rs.getString(1));
+            }
+            rs.close();
+        }
+        return ret;
+    }
+
     public Book insertBook(Book book) throws SQLException {
         String sql = "INSERT INTO book(title, publish_date, lang, series, note) VALUES (?, ?, ?, ?, ?) RETURNING id";
         try (PreparedStatement ps = con.prepareStatement(sql)) {

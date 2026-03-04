@@ -85,6 +85,20 @@ public class SqliteDb implements AutoCloseable {
                 	"score"	INTEGER,
                 	"note"	TEXT
                 )""");
+        st.addBatch("""
+                CREATE TABLE IF NOT EXISTS "tag" (
+                 	"id"	INTEGER NOT NULL,
+                 	"name_en"	TEXT NOT NULL UNIQUE,
+                 	"name_uk"	TEXT NOT NULL UNIQUE,
+                 	PRIMARY KEY("id" AUTOINCREMENT)
+                 )""");
+        st.addBatch("""
+                CREATE TABLE IF NOT EXISTS "custom_text" (
+                 	"id"	INTEGER NOT NULL,
+                 	"type"	TEXT NOT NULL,
+                 	"content"	TEXT NOT NULL,
+                 	PRIMARY KEY("id" AUTOINCREMENT)
+                 )""");
         st.executeBatch();
         st.close();
     }

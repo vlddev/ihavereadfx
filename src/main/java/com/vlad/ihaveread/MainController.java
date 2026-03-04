@@ -753,4 +753,20 @@ public class MainController {
         lblToolsStatus.setText(strStatus);
     }
 
+    public void doSelectWhere() {
+        try {
+            List<String> whereList = sqliteDb.getBookDb().findTextByType("where");
+            if (whereList.isEmpty()) {
+                whereList = List.of("date_read is null", "score is null");
+            }
+            // show dialog to select one of Where-Clause
+            ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(whereList.get(0), whereList);
+            Optional<String> selected = choiceDialog.showAndWait();
+            if (selected.isPresent()) {
+                tfSearchReadedText.setText(selected.get());
+            }
+        } catch (Exception e) {
+            lblStatus.setText("Error. "+e.getMessage());
+        }
+    }
 }

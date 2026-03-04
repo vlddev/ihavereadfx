@@ -28,6 +28,7 @@
                         <Button onAction="#doSearchReadedByCustomWhere" text="by _where"/>
                         <Separator minWidth="100" orientation="VERTICAL"/>
                         <Button onAction="#doShowInBooks" text="_show in books"/>
+                        <Button onAction="#doSelectWhere" text="select where"/>
                     </HBox>
                 </top>
                 <center>
