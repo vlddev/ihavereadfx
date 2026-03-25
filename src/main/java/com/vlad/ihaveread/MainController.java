@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -759,6 +761,14 @@ public class MainController {
             if (whereList.isEmpty()) {
                 whereList = List.of("date_read is null", "score is null");
             }
+            //add current and previous month
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            LocalDate now = LocalDate.now();
+            String currentMonth = now.format(formatter);
+            String previousMonth = now.minusMonths(1).format(formatter);
+            whereList.add(0, previousMonth);
+            whereList.add(0, currentMonth);
+
             // show dialog to select one of Where-Clause
             ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(whereList.get(0), whereList);
             Optional<String> selected = choiceDialog.showAndWait();
