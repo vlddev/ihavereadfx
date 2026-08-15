@@ -1,0 +1,10 @@
+generate Product Requirements Document (PRD) 
+for book management android app using Go framework Fyne.
+The app must implement all features of this JavaFx application.
+
+It must be possible to upload database to external storage like mega
+and download and replace working database with external backup.
+
+write result to android_pdb.md
+
+
