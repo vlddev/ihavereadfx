@@ -95,6 +95,31 @@ public class MainController {
     }
 
     public void initListeners() {
+        tvFoundReadBooks.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        //build context menu
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem miAddTags = new MenuItem("Add tags");
+        miAddTags.setOnAction(event -> {
+            try {
+                addTagsToSelected();
+            } catch (SQLException e) {
+                lblStatus.setText("Error. "+e.getMessage());;
+            }
+        });
+        contextMenu.getItems().add(miAddTags);
+        MenuItem miShowInBooks = new MenuItem("Show in Books");
+        miShowInBooks.setOnAction(event -> {
+            doShowSelectedInBooks();
+        });
+        contextMenu.getItems().add(miShowInBooks);
+
+        tvFoundReadBooks.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(event.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(tvFoundReadBooks, event.getScreenX(), event.getScreenY());
+            }
+        });
+
         lstBookTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         final KeyCodeCombination keyCodeCopy = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         lstBookTags.setOnKeyPressed(event -> {
@@ -425,9 +450,28 @@ public class MainController {
     }
 
     public void doShowInBooks() {
-        if (tvFoundReadBooks.getItems().size() > 0) {
-            tvFoundReadBooks.getItems();
+        if (!tvFoundReadBooks.getItems().isEmpty()) {
             showInBookTab(tvFoundReadBooks.getItems());
+        }
+    }
+
+    public void doShowSelectedInBooks() {
+        if (!tvFoundReadBooks.getItems().isEmpty()) {
+            showInBookTab(tvFoundReadBooks.getSelectionModel().getSelectedItems());
+        }
+    }
+
+    public void addTagsToSelected() throws SQLException {
+        Optional<List<Tag>> ret = selectTagDialog.showAndWait();
+        if (ret.isPresent()) {
+            for(BookReadedTblRow row: tvFoundReadBooks.getSelectionModel().getSelectedItems()) {
+                List<Tag> bookTags = sqliteDb.getBookDb().getBookTagsByBookId(row.getBookId());
+                for(Tag tag : ret.get()) {
+                    if (!bookTags.contains(tag)) {
+                        sqliteDb.getBookDb().insertBookTag(row.getBookId(), tag.getId());
+                    }
+                }
+            }
         }
     }
 
