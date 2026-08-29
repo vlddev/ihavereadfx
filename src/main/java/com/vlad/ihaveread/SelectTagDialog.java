@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 
@@ -41,6 +42,12 @@ public class SelectTagDialog extends Dialog<List<Tag>> {
 
             DialogPane dialogPane = loader.load();
             dialogPane.lookupButton(btnOk).addEventFilter(ActionEvent.ANY, this::onSelect);
+
+            tfSearch.setOnKeyPressed(event -> {
+                if( event.getCode() == KeyCode.ENTER ) {
+                    onSearch(null);
+                }
+            });
 
             btnSearch.addEventHandler(ActionEvent.ANY, this::onSearch);
             setOnShown(this::clear);

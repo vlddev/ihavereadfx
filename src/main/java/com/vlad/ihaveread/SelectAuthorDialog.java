@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 
@@ -40,6 +41,12 @@ public class SelectAuthorDialog extends Dialog<Author> {
 
             DialogPane dialogPane = loader.load();
             dialogPane.lookupButton(btnOk).addEventFilter(ActionEvent.ANY, this::onSelect);
+
+            tfSearch.setOnKeyPressed(event -> {
+                if( event.getCode() == KeyCode.ENTER ) {
+                    onSearchAuthor(null);
+                }
+            });
 
             btnSearch.addEventHandler(ActionEvent.ANY, this::onSearchAuthor);
             setOnShown(this::clear);
